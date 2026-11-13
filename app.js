@@ -5,14 +5,14 @@
   Ejemplo México: 528111111111
 */
 const CONFIG = {
-  brandName: "MI MARCA",
-  announcement: "✨ Bienvenido — descubre nuestros productos y novedades",
-  heroTitle: "¡Descubre algo extraordinario!",
-  heroText: "Explora nuestros productos, mira los videos, síguenos en redes y contáctanos fácilmente.",
-  whatsappNumber: "", // Agrega aquí tu número, por ejemplo 528111111111
+  brandName: "DESAFÍOS LOCOS MONTERREY",
+  announcement: "🎉 ¡Diversión, juegos y entretenimiento para chicos y grandes!",
+  heroTitle: "¡La diversión llega con <span>DESAFÍOS LOCOS!</span>",
+  heroText: "Show 100% interactivo, dinámico y familiar. Conoce nuestras actividades, mira los videos y aparta tu fecha por WhatsApp.",
+  whatsappNumber: "528110276858", // WhatsApp de Desafíos Locos Monterrey
   whatsappMessage: "Hola, quiero más información. Vi tu página web.",
   social: [
-    { name: "Facebook", url: "", icon: "f" },
+    { name: "Facebook", url: "https://www.facebook.com/100064167999650", icon: "f" },
     { name: "TikTok", url: "", icon: "♪" },
     { name: "YouTube", url: "", icon: "▶" },
     { name: "Instagram", url: "", icon: "◎" }
