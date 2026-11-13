@@ -97,8 +97,7 @@ const CONFIG = {
     "WhatsApp Image 2024-12-30 at 12.44.47 AM (1).jpeg",
     "WhatsApp Image 2025-05-01 at 1.07.42 PM.jpeg",
     "WhatsApp Image 2025-12-14 at 2.02.31 PM.jpeg",
-    "WhatsApp Image 2025-12-14 at 2.03.23 PM.jpeg",
-    "imagenes/logo-desafios-locos.webp"
+    "WhatsApp Image 2025-12-14 at 2.03.23 PM.jpeg"
 ],
   videos: [
     { title: "Desafíos Locos en vivo", file: "videos/480.mp4" }
