@@ -158,3 +158,24 @@ body{
 @media(max-width:600px){
   .photo-rollup-set{padding-bottom:12px}
 }
+
+
+/* Mostrar únicamente la fotografía, sin marco ni relleno negro */
+.rollup-photo{
+  width:min(100%,560px);
+  padding:0;
+  background:transparent;
+  border-radius:0;
+  box-shadow:none;
+}
+.rollup-photo img{
+  display:block;
+  width:100%;
+  height:auto;
+  max-height:520px;
+  object-fit:cover;
+  background:transparent;
+  border:0;
+  border-radius:0;
+}
+.rollup-photo figcaption{display:none}
