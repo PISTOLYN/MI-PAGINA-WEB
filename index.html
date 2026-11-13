@@ -13,13 +13,20 @@
 </head>
 <body>
   <div class="announcement" id="announcement">✨ Bienvenido — descubre nuestros productos y novedades</div>
+  <section class="music-player" id="musicPlayer" aria-label="Música de Desafíos Locos">
+    <audio id="siteMusic" src="desafios-locos.mp3" preload="auto" loop></audio>
+    <button type="button" id="musicToggle" class="music-toggle" aria-label="Activar música">▶</button>
+    <div class="music-info"><strong>Música de Desafíos Locos</strong><span id="musicStatus">Preparando música...</span></div>
+    <label class="music-volume" for="musicVolume">Volumen</label>
+    <input id="musicVolume" type="range" min="0" max="1" step="0.05" value="0.35" aria-label="Volumen de la música">
+  </section>
   <header class="site-header">
     <a class="brand" href="#inicio" aria-label="Ir al inicio">
-      <span class="brand-mark">DL</span><span id="brandName">DESAFÍOS LOCOS MONTERREY</span>
+      <img class="brand-logo" src="imagenes/logo-desafios-locos.webp" alt="Logo Desafíos Locos"><span id="brandName">DESAFÍOS LOCOS MONTERREY</span>
     </a>
     <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false">☰</button>
     <nav class="main-nav" id="mainNav">
-      <a href="#inicio">Inicio</a><a href="#productos">Productos</a><a href="#videos">Videos</a><a href="#juegos">Juegos</a><a href="#redes">Redes sociales</a>
+      <a href="#inicio">Inicio</a><a href="#galeria">Fotos</a><a href="#productos">Productos</a><a href="#videos">Videos</a><a href="#juegos">Juegos</a><a href="#redes">Redes sociales</a>
     </nav>
     <a class="header-contact" id="headerWhatsApp" href="#" target="_blank" rel="noopener">Contactar ↗</a>
   </header>
@@ -37,13 +44,7 @@
         <div class="hero-note"><span class="note-icon">✓</span> Premios para los competidores que ganan</div>
       </div>
       <div class="hero-art" aria-label="Desafíos Locos, diversión para toda la familia">
-        <div class="hero-show-card">
-          <span class="show-card-kicker">PRESENTA</span>
-          <div class="show-card-logo">DESAFÍOS<br><strong>LOCOS</strong></div>
-          <div class="show-card-character">🤡</div>
-          <span class="show-card-tag">¡JUEGA, RÍE Y GANA!</span>
-          <span class="show-card-spark spark-a">✦</span><span class="show-card-spark spark-b">★</span>
-        </div>
+        <div class="hero-logo-panel"><img src="imagenes/logo-desafios-locos.webp" alt="Desafíos Locos Monterrey, logo oficial"><span>¡JUEGA, RÍE Y GANA!</span></div>
         <span class="float-bubble bubble-one">★</span><span class="float-bubble bubble-two">✦</span><span class="float-bubble bubble-three">●</span>
       </div>
     </section>
@@ -53,6 +54,14 @@
       <div><span>▶</span><strong>100% interactivo</strong><small>Todos participan</small></div>
       <div><span>◎</span><strong>Premios</strong><small>Para los ganadores</small></div>
       <div><span>☻</span><strong>Una hora completa</strong><small>De música y animación</small></div>
+    </section>
+
+    <section class="photo-gallery section-wrap" id="galeria">
+      <div class="section-heading"><div><span class="eyebrow">ASÍ SE VIVE EL SHOW</span><h2>Momentos <span>reales</span></h2><p>Conoce un poco de la diversión de nuestros eventos.</p></div></div>
+      <div class="photo-grid">
+        <figure><img src="imagenes/evento-desafios-locos-1.webp" alt="Pistolyn animando un evento familiar"><figcaption>Desafíos y diversión en vivo</figcaption></figure>
+        <figure><img src="imagenes/evento-desafios-locos-2.webp" alt="Familias participando en el show"><figcaption>¡Todos participan!</figcaption></figure>
+      </div>
     </section>
 
     <section class="content-section section-wrap" id="productos">
@@ -78,17 +87,11 @@
     </section>
   </main>
 
-  <footer class="site-footer"><a class="brand footer-brand" href="#inicio"><span class="brand-mark">DL</span><span id="footerBrand">DESAFÍOS LOCOS MONTERREY</span></a><p>Gracias por visitarnos. ¡Esperamos verte pronto!</p>
+  <footer class="site-footer"><a class="brand footer-brand" href="#inicio"><img class="brand-logo footer-logo" src="imagenes/logo-desafios-locos.webp" alt="Logo Desafíos Locos"><span id="footerBrand">DESAFÍOS LOCOS MONTERREY</span></a><p>Gracias por visitarnos. ¡Esperamos verte pronto!</p>
     <div class="visitor-counter" id="visitorCounter" aria-label="Contador de visitantes"><span>VISITANTES</span><img data-src="https://api.visitorbadge.io/api/visitors?path=desafioslocosmonterrey.github.io.MI-PAGINA-WEB&label=&countColor=%237657ed&style=flat" alt="Contador de visitantes" loading="lazy"><button type="button" id="excludeMyVisits" class="visitor-optout">No contar mis visitas</button></div><span>© <span id="year"></span> <span id="copyrightBrand">DESAFÍOS LOCOS MONTERREY</span></span></footer>
 
 
-  <section class="music-player" id="musicPlayer" aria-label="Música de Desafíos Locos">
-    <audio id="siteMusic" src="desafios-locos.mp3" preload="auto" loop></audio>
-    <button type="button" id="musicToggle" class="music-toggle" aria-label="Activar música">▶</button>
-    <div class="music-info"><strong>Música de Desafíos Locos</strong><span id="musicStatus">Preparando música...</span></div>
-    <label class="music-volume" for="musicVolume">Volumen</label>
-    <input id="musicVolume" type="range" min="0" max="1" step="0.05" value="0.35" aria-label="Volumen de la música">
-  </section>
+
 
   <a class="whatsapp-float" id="floatingWhatsApp" href="#" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp"><span class="wa-symbol">◔</span><span>WhatsApp</span></a>
   <script src="app.js"></script>
