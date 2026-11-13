@@ -200,15 +200,30 @@ function renderVideos() {
     <button class="video-arrow video-next" type="button" aria-label="Video siguiente">❯</button>`;
   const player = $("#featuredShowVideo");
   const caption = $("#featuredVideoCaption");
-  function showVideo(index) {
+  async function showVideo(index, autoplay = false) {
     current = (index + videos.length) % videos.length;
     player.pause();
     player.src = videos[current].file;
     player.load();
     caption.textContent = videos[current].title;
+    if (autoplay) {
+      try {
+        await player.play();
+      } catch (error) {
+        caption.textContent = videos[current].title + " — presiona reproducir si el navegador lo solicita";
+      }
+    }
   }
-  grid.querySelector(".video-prev").addEventListener("click", () => showVideo(current - 1));
-  grid.querySelector(".video-next").addEventListener("click", () => showVideo(current + 1));
+  grid.querySelector(".video-prev").addEventListener("click", () => showVideo(current - 1, true));
+  grid.querySelector(".video-next").addEventListener("click", () => showVideo(current + 1, true));
+  player.addEventListener("ended", () => {
+    if (current < videos.length - 1) showVideo(current + 1, true);
+    else {
+      player.pause();
+      player.currentTime = player.duration;
+      caption.textContent = videos[current].title + " — fin de los videos";
+    }
+  });
   showVideo(0);
 }
 
