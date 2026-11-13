@@ -13,7 +13,7 @@ const CONFIG = {
   whatsappMessage: "Hola, quiero más información. Vi tu página web.",
   social: [
     { name: "Facebook", url: "https://www.facebook.com/profile.php?id=100064167999650", icon: "f" },
-    { name: "TikTok", url: "", icon: "♪" },
+    { name: "TikTok", url: "https://www.tiktok.com/@desafioslocosmty", icon: "♪" },
     { name: "YouTube", url: "", icon: "▶" },
     { name: "Instagram", url: "", icon: "◎" }
   ],
