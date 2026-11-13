@@ -179,3 +179,42 @@ body{
   border-radius:0;
 }
 .rollup-photo figcaption{display:none}
+
+
+/* En pantallas táctiles el roll-up nunca se pausa al tocarlo */
+@media (hover: hover) and (pointer: fine){
+  .photo-rollup:hover .photo-rollup-track{animation-play-state:paused}
+}
+@media (hover: none), (pointer: coarse){
+  .photo-rollup .photo-rollup-track{
+    animation-play-state:running !important;
+    animation-duration:150s;
+  }
+}
+
+/* Barra social compacta en celulares: conserva iconos claros sin cubrir contenido */
+@media(max-width:760px){
+  .floating-social-bar{
+    left:6px;
+    right:6px;
+    bottom:8px;
+    top:auto;
+    transform:none;
+    width:max-content;
+    max-width:calc(100vw - 12px);
+    margin:0 auto;
+    flex-direction:row;
+    justify-content:center;
+    gap:5px;
+    padding:4px 6px;
+    border-width:1px;
+    border-radius:10px;
+    background:rgba(255,255,255,.82);
+    box-shadow:0 3px 12px rgba(42,18,94,.14);
+  }
+  .floating-social-bar a{
+    width:32px;
+    height:32px;
+    border-radius:7px;
+  }
+}
