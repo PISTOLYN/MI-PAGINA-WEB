@@ -26,8 +26,7 @@ const CONFIG = {
     { name: "Premios para competidores", category: "Shows", description: "Premios para quienes ganan los desafíos y concursos durante el espectáculo.", price: "Incluido en el show", image: "", emoji: "🎁" }
   ],
   videos: [
-    // Agrega videos de YouTube usando su ID. Ejemplo: https://www.youtube.com/watch?v=XXXXXXXXXXX
-    // { title: "Nuestro video", youtubeId: "XXXXXXXXXXX" }
+    { title: "Desafíos Locos en vivo", file: "videos/480.mp4" }
   ]
 };
 
@@ -68,7 +67,7 @@ function renderProducts(category = "Todos") {
 function renderVideos() {
   const videos = CONFIG.videos;
   $("#videoGrid").innerHTML = videos.length ? videos.map(v => `
-    <article class="video-card"><div class="video-frame"><iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(v.youtubeId)}" title="${escapeAttr(v.title)}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div><div class="video-caption">${escapeHTML(v.title)}</div></article>`
+    <article class="video-card"><div class="video-frame">${v.file ? `<video controls playsinline preload="metadata" style="width:100%;height:100%;object-fit:contain" src="${escapeAttr(v.file)}"></video>` : `<iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(v.youtubeId)}" title="${escapeAttr(v.title)}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`}</div><div class="video-caption">${escapeHTML(v.title)}</div></article>`
   ).join("") : '<div class="video-card"><div class="video-placeholder">▶<br><br>Agrega aquí tus videos de YouTube.<br>También puedes compartir enlaces de TikTok y Facebook.</div></div><div class="video-card"><div class="video-placeholder">✦<br><br>Esta sección puede mostrar tus novedades,<br>demostraciones y promociones.</div></div>';
 }
 
