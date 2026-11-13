@@ -147,6 +147,26 @@ $("#memoryBoard").addEventListener("click", e => {
 });
 $("#restartGame").addEventListener("click", startGame);
 
+// Permite excluir este navegador del contador de visitas.
+const visitorOptOutKey = "dl_exclude_my_visits";
+const visitorCounter = document.querySelector("#visitorCounter");
+const visitorImage = visitorCounter?.querySelector("img");
+const visitorOptOutButton = document.querySelector("#excludeMyVisits");
+function updateVisitorCounter() {
+  const excluded = localStorage.getItem(visitorOptOutKey) === "yes";
+  if (visitorImage) {
+    if (excluded) visitorImage.removeAttribute("src");
+    else if (!visitorImage.getAttribute("src")) visitorImage.src = visitorImage.dataset.src;
+  }
+  if (visitorCounter) visitorCounter.classList.toggle("visitor-excluded", excluded);
+  if (visitorOptOutButton) visitorOptOutButton.textContent = excluded ? "Mis visitas excluidas ✓" : "No contar mis visitas";
+}
+visitorOptOutButton?.addEventListener("click", () => {
+  localStorage.setItem(visitorOptOutKey, "yes");
+  updateVisitorCounter();
+});
+updateVisitorCounter();
+
 applyBrand();
 renderProducts();
 renderVideos();
