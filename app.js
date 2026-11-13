@@ -12,7 +12,7 @@ const CONFIG = {
   whatsappNumber: "528110276858", // WhatsApp de Desafíos Locos Monterrey
   whatsappMessage: "Hola, quiero más información. Vi tu página web.",
   social: [
-    { name: "Facebook", url: "https://www.facebook.com/100064167999650", icon: "f" },
+    { name: "Facebook", url: "https://www.facebook.com/profile.php?id=100064167999650", icon: "f" },
     { name: "TikTok", url: "", icon: "♪" },
     { name: "YouTube", url: "", icon: "▶" },
     { name: "Instagram", url: "", icon: "◎" }
