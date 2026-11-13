@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10152b">
+  <meta name="description" content="Conoce nuestros productos, videos, redes sociales y juegos.">
+  <title>Mi página | Productos, videos y juegos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="announcement" id="announcement">✨ Bienvenido — descubre nuestros productos y novedades</div>
+  <header class="site-header">
+    <a class="brand" href="#inicio" aria-label="Ir al inicio">
+      <span class="brand-mark">M</span><span id="brandName">MI MARCA</span>
+    </a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false">☰</button>
+    <nav class="main-nav" id="mainNav">
+      <a href="#inicio">Inicio</a><a href="#productos">Productos</a><a href="#videos">Videos</a><a href="#juegos">Juegos</a><a href="#redes">Redes sociales</a>
+    </nav>
+    <a class="header-contact" id="headerWhatsApp" href="#" target="_blank" rel="noopener">Contactar ↗</a>
+  </header>
+
+  <main>
+    <section class="hero section-wrap" id="inicio">
+      <div class="hero-copy">
+        <span class="eyebrow"><span class="eyebrow-dot"></span> CONOCE TODO LO QUE TENEMOS PARA TI</span>
+        <h1 id="heroTitle">¡Descubre algo <span>extraordinario!</span></h1>
+        <p id="heroText">Explora nuestros productos, mira los videos, síguenos en redes y contáctanos fácilmente.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#productos">Explorar productos <span>→</span></a>
+          <a class="button button-ghost" id="heroWhatsApp" href="#" target="_blank" rel="noopener">Hablar por WhatsApp</a>
+        </div>
+        <div class="hero-note"><span class="note-icon">✓</span> Atención directa y sencilla</div>
+      </div>
+      <div class="hero-art" aria-label="Ilustración decorativa">
+        <div class="art-glow"></div><div class="art-card art-card-back"><span>✦</span></div>
+        <div class="art-card art-card-front"><div class="art-spark">✳</div><div class="art-orbit"></div><div class="art-center">¡HOLA!<small>QUÉ BUENO VERTE</small></div></div>
+        <span class="float-bubble bubble-one">★</span><span class="float-bubble bubble-two">✦</span><span class="float-bubble bubble-three">●</span>
+      </div>
+    </section>
+
+    <section class="benefit-strip section-wrap">
+      <div><span>✦</span><strong>Productos</strong><small>Conoce el catálogo</small></div>
+      <div><span>▶</span><strong>Videos</strong><small>Mira nuestro contenido</small></div>
+      <div><span>◎</span><strong>Comunidad</strong><small>Síguenos en redes</small></div>
+      <div><span>☻</span><strong>Diversión</strong><small>Juega un momento</small></div>
+    </section>
+
+    <section class="content-section section-wrap" id="productos">
+      <div class="section-heading"><div><span class="eyebrow">LO QUE TENEMOS</span><h2>Nuestros <span>productos</span></h2><p>Explora el catálogo y pregúntanos por el que te interese.</p></div><span class="heading-decoration">✳</span></div>
+      <div class="filter-row" id="categoryFilters"><button class="filter-chip active" data-category="Todos">Todos</button></div>
+      <div class="product-grid" id="productGrid"></div>
+    </section>
+
+    <section class="video-section" id="videos">
+      <div class="section-wrap">
+        <div class="section-heading light-heading"><div><span class="eyebrow">MIRA Y DESCUBRE</span><h2>Videos y <span>novedades</span></h2><p>Conoce más a través de nuestros videos.</p></div></div>
+        <div class="video-grid" id="videoGrid"></div>
+      </div>
+    </section>
+
+    <section class="game-section section-wrap" id="juegos">
+      <div class="game-intro"><span class="eyebrow">UN MOMENTO PARA DIVERTIRTE</span><h2>¿Jugamos un <span>ratito?</span></h2><p>Prueba este juego de memoria. Encuentra las parejas y completa el tablero.</p><div class="game-stats"><div><strong id="moves">0</strong><small>Movimientos</small></div><div><strong id="matches">0/6</strong><small>Parejas</small></div></div><button class="button button-primary" id="restartGame">Reiniciar juego ↻</button></div>
+      <div class="memory-board" id="memoryBoard" aria-label="Juego de memoria"></div>
+    </section>
+
+    <section class="social-section" id="redes">
+      <div class="section-wrap social-inner"><div><span class="eyebrow">SIGAMOS EN CONTACTO</span><h2>Encuéntranos en <span>redes</span></h2><p>Sigue nuestras páginas para enterarte de novedades, videos y promociones.</p></div><div class="social-links" id="socialLinks"></div></div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><a class="brand footer-brand" href="#inicio"><span class="brand-mark">M</span><span id="footerBrand">MI MARCA</span></a><p>Gracias por visitarnos. ¡Esperamos verte pronto!</p><span>© <span id="year"></span> <span id="copyrightBrand">Mi marca</span></span></footer>
+
+  <a class="whatsapp-float" id="floatingWhatsApp" href="#" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp"><span class="wa-symbol">◔</span><span>WhatsApp</span></a>
+  <script src="app.js"></script>
+</body>
+</html>
