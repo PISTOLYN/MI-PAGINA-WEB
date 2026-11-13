@@ -99,8 +99,23 @@ const CONFIG = {
     "WhatsApp Image 2025-12-14 at 2.02.31 PM.jpeg",
     "WhatsApp Image 2025-12-14 at 2.03.23 PM.jpeg"
 ],
-  videos: [
-    { title: "Desafíos Locos en vivo", file: "videos/480.mp4" }
+  videos:   [
+      {
+          "title": "Desafíos Locos – Video 1",
+          "file": "FDownloader.Net_AQMCaC_uu5qH_Gbp6URReh-dclf0YkFyw0W9UCLbiyw9wjxnf583TOydqjNzW-3XQiSb2GVaYfxBDhzVpZWi7Wjeo6pn3WVTG94_720p_(HD).mp4"
+      },
+      {
+          "title": "Desafíos Locos – Video 2",
+          "file": "FDownloader.Net_AQMhXkjmMZwrpbQX5o_tC5QxUsb7EvU17RlsdtTEE4GpHwYdseok13j8QaEBSFY0SyGNDYqk6WvhdSTlCp1F7y4OAiLIdQcBLxw_720p_(HD).mp4"
+      },
+      {
+          "title": "Desafíos Locos – Video 3",
+          "file": "FDownloader.Net_AQMq8C4bIvfPtPw7cn5XFZUbZ3S6Q_OxxR5qBYlwGZlNaXBq1B4ArFGWMuL2Q27eNOAjt9zd6RypllndrmH0TxU32ByBIl_hA5A_720p_(HD).mp4"
+      },
+      {
+          "title": "Desafíos Locos – Video 4",
+          "file": "FDownloader.Net_AQOwSZWZgFr5iAbGzyw6DPFdvI2CUTwOnQuhV4MZHDM8RL2oSmGlZQNgLh0r94k2741G-xpaT8tiY6yubzYNG61fKEqtiMekeGA_720p_(HD).mp4"
+      }
   ]
 };
 
@@ -148,10 +163,31 @@ function renderGallery() {
 }
 
 function renderVideos() {
+  const grid = $("#videoGrid");
+  if (!grid) return;
   const videos = CONFIG.videos;
-  $("#videoGrid").innerHTML = videos.length ? videos.map(v => `
-    <article class="video-card"><div class="video-frame">${v.file ? `<video controls playsinline preload="metadata" style="width:100%;height:100%;object-fit:contain" src="${escapeAttr(v.file)}"></video>` : `<iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(v.youtubeId)}" title="${escapeAttr(v.title)}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`}</div><div class="video-caption">${escapeHTML(v.title)}</div></article>`
-  ).join("") : '<div class="video-card"><div class="video-placeholder">▶<br><br>Agrega aquí tus videos de YouTube.<br>También puedes compartir enlaces de TikTok y Facebook.</div></div><div class="video-card"><div class="video-placeholder">✦<br><br>Esta sección puede mostrar tus novedades,<br>demostraciones y promociones.</div></div>';
+  if (!videos.length) { grid.innerHTML = ""; return; }
+  let current = 0;
+  grid.innerHTML = `
+    <button class="video-arrow video-prev" type="button" aria-label="Video anterior">❮</button>
+    <article class="video-card video-featured">
+      <h3 class="video-featured-title">VIDEOS DE NUESTRO SHOW</h3>
+      <div class="video-frame"><video id="featuredShowVideo" controls playsinline preload="metadata"></video></div>
+      <div class="video-caption" id="featuredVideoCaption"></div>
+    </article>
+    <button class="video-arrow video-next" type="button" aria-label="Video siguiente">❯</button>`;
+  const player = $("#featuredShowVideo");
+  const caption = $("#featuredVideoCaption");
+  function showVideo(index) {
+    current = (index + videos.length) % videos.length;
+    player.pause();
+    player.src = videos[current].file;
+    player.load();
+    caption.textContent = videos[current].title;
+  }
+  grid.querySelector(".video-prev").addEventListener("click", () => showVideo(current - 1));
+  grid.querySelector(".video-next").addEventListener("click", () => showVideo(current + 1));
+  showVideo(0);
 }
 
 function renderSocial() {
