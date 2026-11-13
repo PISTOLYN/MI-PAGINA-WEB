@@ -159,31 +159,19 @@ function renderGallery() {
   if (!grid) return;
   const photos = CONFIG.photos;
   if (!photos.length) { grid.innerHTML = ""; return; }
-  let current = 0;
+  const makePhotoSet = (copy = false) => photos.map((photo, index) => `
+    <figure class="rollup-photo">
+      <img src="${encodeURI(photo)}" alt="Fotografía ${index + 1} de un evento de Desafíos Locos" loading="${copy ? "lazy" : "eager"}">
+      <figcaption>Desafíos Locos en vivo</figcaption>
+    </figure>`).join("");
   grid.innerHTML = `
-    <button class="photo-arrow photo-prev" type="button" aria-label="Fotografía anterior">❮</button>
-    <figure class="gallery-photo gallery-featured">
-      <h3 class="gallery-featured-title">GALERÍA DE FOTOS DEL SHOW</h3>
-      <div class="gallery-frame"><img id="featuredShowPhoto" src="" alt="Fotografía de un evento de Desafíos Locos"></div>
-      <figcaption id="featuredPhotoCaption"></figcaption>
-      <div class="gallery-counter" id="galleryCounter"></div>
-    </figure>
-    <button class="photo-arrow photo-next" type="button" aria-label="Fotografía siguiente">❯</button>`;
-  const image = $("#featuredShowPhoto");
-  const caption = $("#featuredPhotoCaption");
-  const counter = $("#galleryCounter");
-  function showPhoto(index) {
-    current = (index + photos.length) % photos.length;
-    image.src = encodeURI(photos[current]);
-    image.alt = `Fotografía ${current + 1} de ${photos.length} de un evento de Desafíos Locos`;
-    caption.textContent = "Desafíos Locos en vivo";
-    counter.textContent = `${current + 1} / ${photos.length}`;
-  }
-  grid.querySelector(".photo-prev").addEventListener("click", () => showPhoto(current - 1));
-  grid.querySelector(".photo-next").addEventListener("click", () => showPhoto(current + 1));
-  showPhoto(0);
+    <div class="photo-rollup" aria-label="Galería de fotografías de Desafíos Locos">
+      <div class="photo-rollup-track">
+        <div class="photo-rollup-set">${makePhotoSet()}</div>
+        <div class="photo-rollup-set" aria-hidden="true">${makePhotoSet(true)}</div>
+      </div>
+    </div>`;
 }
-
 function renderVideos() {
   const grid = $("#videoGrid");
   if (!grid) return;
