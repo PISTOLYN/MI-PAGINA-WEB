@@ -8,7 +8,7 @@ const CONFIG = {
   brandName: "DESAFÍOS LOCOS MONTERREY",
   announcement: "🎉 ¡Diversión, juegos y entretenimiento para chicos y grandes!",
   heroTitle: "¡La diversión llega con <span>DESAFÍOS LOCOS!</span>",
-  heroText: "Show 100% interactivo, dinámico y familiar. Conoce nuestras actividades, mira los videos y aparta tu fecha por WhatsApp.",
+  heroText: "Un show 100% interactivo, dinámico y familiar. Música, desafíos, concursos y premios para chicos y grandes. ¡Haz que tu evento sea inolvidable!",
   whatsappNumber: "528110276858", // WhatsApp de Desafíos Locos Monterrey
   whatsappMessage: "Hola, quiero más información. Vi tu página web.",
   social: [
@@ -18,9 +18,12 @@ const CONFIG = {
     { name: "Instagram", url: "https://www.instagram.com/desafioslocosmty/", icon: "◎" }
   ],
   products: [
-    { name: "Producto de ejemplo 1", category: "Categoría 1", description: "Aquí puedes escribir una breve descripción de tu producto.", price: "Consultar precio", image: "", emoji: "📦" },
-    { name: "Producto de ejemplo 2", category: "Categoría 1", description: "Agrega información útil para que tus clientes lo conozcan.", price: "Consultar precio", image: "", emoji: "🎁" },
-    { name: "Producto de ejemplo 3", category: "Categoría 2", description: "Puedes colocar una fotografía y todos sus detalles.", price: "Consultar precio", image: "", emoji: "✨" }
+    { name: "Show Desafíos Locos", category: "Shows", description: "Una hora completa de música, animación, juegos, desafíos y concursos para chicos y grandes.", price: "Cotiza por WhatsApp", image: "", emoji: "🎤" },
+    { name: "Show para cumpleaños", category: "Celebraciones", description: "Diversión interactiva para celebrar en familia, con participación de niños y adultos.", price: "Cotiza por WhatsApp", image: "", emoji: "🎉" },
+    { name: "Eventos empresariales y escolares", category: "Eventos", description: "Actividades dinámicas, desafíos y premios para convivios, colegios y celebraciones.", price: "Cotiza por WhatsApp", image: "", emoji: "🏆" },
+    { name: "Baby shower", category: "Celebraciones", description: "Juegos, animación y momentos especiales para celebrar la llegada del bebé.", price: "Cotiza por WhatsApp", image: "", emoji: "🍼" },
+    { name: "Música y animación", category: "Shows", description: "Ambiente, conducción y participación para mantener a todos disfrutando.", price: "Incluido en el show", image: "", emoji: "🎶" },
+    { name: "Premios para competidores", category: "Shows", description: "Premios para quienes ganan los desafíos y concursos durante el espectáculo.", price: "Incluido en el show", image: "", emoji: "🎁" }
   ],
   videos: [
     // Agrega videos de YouTube usando su ID. Ejemplo: https://www.youtube.com/watch?v=XXXXXXXXXXX
