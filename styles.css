@@ -56,3 +56,20 @@
 
 /* Controles de lista de reproducción de tres canciones */
 .music-track-button{width:32px;height:32px;flex:0 0 32px;border:1px solid #a99cff;border-radius:9px;background:#302078;color:#fff;font-size:12px;font-weight:800;cursor:pointer}.music-track-button:hover{background:#4934a0}.music-playlist{max-width:165px;min-width:125px;padding:8px 7px;border:1px solid #a99cff;border-radius:9px;background:#21195f;color:#fff;font-size:11px;cursor:pointer}.music-info{min-width:145px}@media(max-width:650px){.music-player{gap:5px;padding:7px 5px}.music-track-button{width:27px;height:30px;flex-basis:27px}.music-toggle{width:34px;height:34px;flex-basis:34px}.music-info{min-width:90px}.music-info strong{font-size:10px}.music-info span{font-size:9px}.music-playlist{max-width:112px;min-width:95px;font-size:9px;padding:7px 3px}.music-player input[type=range]{width:48px}}
+
+
+/* Videos estilo carrusel vertical solicitado */
+.video-section{background:linear-gradient(135deg,#f8eeff,#fff 48%,#f1edff);padding:54px 0 68px;color:#17134a}
+.video-section .light-heading{justify-content:center;text-align:center;margin-bottom:25px}
+.video-section .light-heading h2{color:#30106f}
+.video-section .light-heading h2 span{color:#8a24d6}
+.video-section .light-heading p{color:#6e6680}
+.video-grid{display:flex;align-items:center;justify-content:center;gap:24px;max-width:760px;margin:0 auto}
+.video-featured{width:min(100%,390px);padding:12px;background:#6819c9;border:0;border-radius:3px;box-shadow:0 12px 28px #42107830}
+.video-featured-title{margin:0;padding:4px 8px 13px;text-align:center;color:#fff;font:900 24px Outfit,sans-serif;letter-spacing:.2px}
+.video-featured .video-frame{aspect-ratio:9/16;background:#160d32;border:8px solid #fff;border-radius:2px;overflow:hidden}
+.video-featured .video-frame video{display:block;width:100%;height:100%;object-fit:contain;background:#090611}
+.video-featured .video-caption{color:#fff;text-align:center;padding:10px 4px 2px}
+.video-arrow{width:52px;height:52px;flex:0 0 52px;border:0;border-radius:50%;background:#078fe9;color:#fff;font-size:25px;font-weight:900;cursor:pointer;box-shadow:0 5px 12px #0876c444}
+.video-arrow:hover{background:#0873c5;transform:scale(1.06)}
+@media(max-width:600px){.video-grid{gap:8px}.video-featured{width:min(100%,calc(100% - 88px));padding:8px}.video-featured-title{font-size:17px}.video-arrow{width:38px;height:38px;flex-basis:38px;font-size:18px}.video-featured .video-frame{border-width:5px}}
