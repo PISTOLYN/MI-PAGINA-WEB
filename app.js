@@ -15,7 +15,7 @@ const CONFIG = {
     { name: "Facebook", url: "https://www.facebook.com/profile.php?id=100064167999650", icon: "f" },
     { name: "TikTok", url: "https://www.tiktok.com/@desafioslocosmty", icon: "♪" },
     { name: "YouTube", url: "https://www.youtube.com/@DESAFIOSLOCOS", icon: "▶" },
-    { name: "Instagram", url: "", icon: "◎" }
+    { name: "Instagram", url: "https://www.instagram.com/desafioslocosmty/", icon: "◎" }
   ],
   products: [
     { name: "Producto de ejemplo 1", category: "Categoría 1", description: "Aquí puedes escribir una breve descripción de tu producto.", price: "Consultar precio", image: "", emoji: "📦" },
