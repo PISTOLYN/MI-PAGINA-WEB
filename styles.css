@@ -22,3 +22,8 @@
 .section-heading h2 span,.hero h1 span{background:linear-gradient(100deg,#6847e8,#e54eaa);-webkit-background-clip:text;background-clip:text;color:transparent}
 .whatsapp-float{background:#14b86f}
 @media(max-width:650px){.hero-show-card{height:300px;width:280px}.show-card-character{font-size:80px}.show-card-logo{font-size:43px}}
+
+.visitor-counter{flex-wrap:wrap;justify-content:center}
+.visitor-optout{border:0;background:transparent;color:#6550b5;text-decoration:underline;font:inherit;font-size:11px;cursor:pointer;padding:3px 5px}
+.visitor-counter.visitor-excluded img{display:none}
+.visitor-counter.visitor-excluded:after{content:"Tus visitas están excluidas en este navegador";font-size:10px;font-weight:600;color:#6550b5}
