@@ -27,3 +27,14 @@
 .visitor-optout{border:0;background:transparent;color:#6550b5;text-decoration:underline;font:inherit;font-size:11px;cursor:pointer;padding:3px 5px}
 .visitor-counter.visitor-excluded img{display:none}
 .visitor-counter.visitor-excluded:after{content:"Tus visitas están excluidas en este navegador";font-size:10px;font-weight:600;color:#6550b5}
+
+
+/* Reproductor de música */
+.music-player{position:fixed;left:18px;bottom:18px;z-index:50;display:flex;align-items:center;gap:11px;max-width:calc(100vw - 36px);padding:11px 14px;background:#17134a;color:#fff;border:2px solid #b7ff18;border-radius:18px;box-shadow:0 10px 35px #17134a55}
+.music-toggle{width:40px;height:40px;flex:0 0 40px;border:0;border-radius:50%;background:#c8ff16;color:#17134a;font-size:18px;font-weight:900;cursor:pointer}
+.music-info{display:flex;flex-direction:column;gap:3px;min-width:130px}
+.music-info strong{font-size:12px;line-height:1.2}
+.music-info span{font-size:10px;color:#d8d2ff}
+.music-volume{font-size:10px;font-weight:800;color:#e8e2ff}
+.music-player input[type=range]{width:86px;accent-color:#c8ff16;cursor:pointer}
+@media(max-width:520px){.music-player{left:10px;bottom:10px;gap:8px;padding:9px 10px}.music-info{min-width:105px}.music-volume{display:none}.music-player input[type=range]{width:65px}}
