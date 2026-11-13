@@ -150,3 +150,11 @@ body{
  .photo-rollup-track,.photo-rollup-set{gap:12px}
 }
 @media(prefers-reduced-motion:reduce){.photo-rollup-track{animation:none}}
+
+
+/* Ajuste de ciclo: dos copias idénticas se unen sin salto ni espacio extra */
+.photo-rollup-track{gap:0}
+.photo-rollup-set{padding-bottom:18px}
+@media(max-width:600px){
+  .photo-rollup-set{padding-bottom:12px}
+}
