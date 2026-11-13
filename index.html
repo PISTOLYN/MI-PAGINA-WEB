@@ -13,9 +13,12 @@
 </head>
 <body>
   <section class="music-player" id="musicPlayer" aria-label="Música de Desafíos Locos">
-    <audio id="siteMusic" src="desafios-locos.mp3" preload="auto" loop></audio>
-    <button type="button" id="musicToggle" class="music-toggle" aria-label="Activar música">▶</button>
-    <div class="music-info"><strong>Música de Desafíos Locos</strong><span id="musicStatus">Preparando música...</span></div>
+    <audio id="siteMusic" preload="metadata"></audio>
+    <button type="button" id="musicPrev" class="music-track-button" aria-label="Canción anterior">|◀</button>
+    <button type="button" id="musicToggle" class="music-toggle" aria-label="Reproducir música">▶</button>
+    <button type="button" id="musicNext" class="music-track-button" aria-label="Canción siguiente">▶|</button>
+    <div class="music-info"><strong id="musicTitle">Desafíos Locos</strong><span id="musicStatus">Selecciona una canción</span></div>
+    <select id="musicPlaylist" class="music-playlist" aria-label="Seleccionar canción"><option value="0">Desafíos Locos Chidita</option><option value="1">Tururú Pa-Pa-Pa</option><option value="2">Instrucciones de baile</option></select>
     <label class="music-volume" for="musicVolume">Volumen</label>
     <input id="musicVolume" type="range" min="0" max="1" step="0.05" value="0.35" aria-label="Volumen de la música">
   </section>
@@ -100,33 +103,62 @@
     (() => {
       const audio = document.getElementById("siteMusic");
       const toggle = document.getElementById("musicToggle");
+      const prev = document.getElementById("musicPrev");
+      const next = document.getElementById("musicNext");
+      const playlist = document.getElementById("musicPlaylist");
+      const title = document.getElementById("musicTitle");
       const volume = document.getElementById("musicVolume");
       const status = document.getElementById("musicStatus");
+      const tracks = [
+        { title: "Desafíos Locos Chidita", file: "./Desaf%C3%ADos%20Locoschidita.mp3" },
+        { title: "Tururú Pa-Pa-Pa", file: "./Turur%C3%BA%20Pa-Pa-Pa.mp3" },
+        { title: "Instrucciones de baile", file: "./instrucciones%20de%20baile.mp3" }
+      ];
+      let current = 0;
       const savedVolume = localStorage.getItem("dl_music_volume");
-      audio.volume = savedVolume === null ? 0.35 : Number(savedVolume);
+      audio.volume = savedVolume === null ? 0.35 : Math.min(1, Math.max(0, Number(savedVolume)));
       volume.value = String(audio.volume);
-      const update = () => {
+      function update() {
         const playing = !audio.paused;
         toggle.textContent = playing ? "Ⅱ" : "▶";
-        toggle.setAttribute("aria-label", playing ? "Pausar música" : "Activar música");
-        status.textContent = playing ? "Reproduciendo" : "Música pausada";
-      };
-      const play = async () => {
-        try { await audio.play(); update(); }
-        catch (_) { status.textContent = "Toca ▶ para activar la música"; }
-      };
+        toggle.setAttribute("aria-label", playing ? "Pausar música" : "Reproducir música");
+        status.textContent = playing ? "Reproduciendo" : "En pausa";
+      }
+      async function loadTrack(index, autoplay = true) {
+        current = (index + tracks.length) % tracks.length;
+        const track = tracks[current];
+        audio.pause();
+        audio.src = track.file;
+        audio.load();
+        title.textContent = track.title;
+        playlist.value = String(current);
+        status.textContent = "Cargando canción...";
+        if (autoplay) {
+          try { await audio.play(); update(); }
+          catch (_) { status.textContent = "Toca ▶ para reproducir"; }
+        } else {
+          toggle.textContent = "▶";
+          status.textContent = "Lista para reproducir";
+        }
+      }
       toggle.addEventListener("click", async () => {
-        if (audio.paused) await play();
-        else { audio.pause(); update(); }
+        if (audio.paused) {
+          try { await audio.play(); update(); }
+          catch (_) { status.textContent = "No se pudo reproducir. Revisa tu conexión."; }
+        } else { audio.pause(); update(); }
       });
+      prev.addEventListener("click", () => loadTrack(current - 1));
+      next.addEventListener("click", () => loadTrack(current + 1));
+      playlist.addEventListener("change", () => loadTrack(Number(playlist.value)));
       volume.addEventListener("input", () => {
         audio.volume = Number(volume.value);
         localStorage.setItem("dl_music_volume", volume.value);
       });
       audio.addEventListener("play", update);
       audio.addEventListener("pause", update);
-      audio.addEventListener("error", () => { status.textContent = "Falta subir el archivo de música"; });
-      play();
+      audio.addEventListener("ended", () => loadTrack(current + 1));
+      audio.addEventListener("error", () => { status.textContent = "No se pudo cargar esta canción"; });
+      loadTrack(0, false);
     })();
   </script>
 </body>
