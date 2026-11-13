@@ -25,6 +25,81 @@ const CONFIG = {
     { name: "Música y animación", category: "Shows", description: "Ambiente, conducción y participación para mantener a todos disfrutando.", price: "Incluido en el show", image: "", emoji: "🎶" },
     { name: "Premios para competidores", category: "Shows", description: "Premios para quienes ganan los desafíos y concursos durante el espectáculo.", price: "Incluido en el show", image: "", emoji: "🎁" }
   ],
+  photos: [
+    "IMG-20260503-WA0117.jpg",
+    "IMG-20260503-WA0148.jpg",
+    "IMG-20260503-WA0176.jpg",
+    "IMG-20260503-WA0181.jpg",
+    "IMG-20260503-WA0191.jpg",
+    "IMG-20260503-WA0199.jpg",
+    "IMG-20260503-WA0222.jpg",
+    "IMG-20260503-WA0235.jpg",
+    "IMG-20260503-WA0239.jpg",
+    "IMG-20260503-WA0249.jpg",
+    "IMG-20260503-WA0268.jpg",
+    "IMG-20260503-WA0279.jpg",
+    "IMG-20260503-WA0291.jpg",
+    "IMG-20260503-WA0294.jpg",
+    "IMG-20260503-WA0297.jpg",
+    "IMG-20260503-WA0302.jpg",
+    "IMG-20260503-WA0309.jpg",
+    "IMG-20260503-WA0330.jpg",
+    "IMG-20260503-WA0335.jpg",
+    "IMG-20260503-WA0351.jpg",
+    "IMG-20260503-WA0354.jpg",
+    "IMG-20260503-WA0360.jpg",
+    "IMG-20260503-WA0443.jpg",
+    "IMG-20260503-WA0454.jpg",
+    "IMG-20260503-WA0495.jpg",
+    "IMG-20260503-WA0582.jpg",
+    "IMG-20260830-WA0052.jpg",
+    "IMG-20260920-WA0097.jpg",
+    "IMG-20260920-WA0107.jpg",
+    "IMG-20260920-WA0108.jpg",
+    "IMG-20260920-WA0196.jpg",
+    "IMG-20260921-WA0091.jpg",
+    "IMG-20260921-WA0104.jpg",
+    "IMG-20260923-WA0085.jpg",
+    "IMG-20260923-WA0088.jpg",
+    "IMG-20260923-WA0114.jpg",
+    "IMG-20260923-WA0120.jpg",
+    "IMG-20260923-WA0121.jpg",
+    "IMG-20260923-WA0125.jpg",
+    "IMG-20260923-WA0128.jpg",
+    "IMG-20260923-WA0129.jpg",
+    "IMG-20260927-WA0064.jpg",
+    "IMG-20260927-WA0169.jpg",
+    "IMG-20260927-WA0271.jpg",
+    "IMG-20260927-WA0282.jpg",
+    "IMG-20260927-WA0326.jpg",
+    "IMG-20260927-WA0334.jpg",
+    "IMG-20260927-WA0357.jpg",
+    "IMG-20260927-WA0359.jpg",
+    "IMG-20260927-WA0370.jpg",
+    "WhatsApp Image 2019-04-02 at 9.13.53 AM.jpeg",
+    "WhatsApp Image 2024-08-09 at 5.37.49 PM (1).jpeg",
+    "WhatsApp Image 2024-08-09 at 5.37.53 PM.jpeg",
+    "WhatsApp Image 2024-08-10 at 10.07.41 AM (1).jpeg",
+    "WhatsApp Image 2024-08-10 at 10.07.52 AM (1).jpeg",
+    "WhatsApp Image 2024-08-10 at 10.07.58 AM (1).jpeg",
+    "WhatsApp Image 2024-08-10 at 10.08.00 AM.jpeg",
+    "WhatsApp Image 2024-08-19 at 4.29.47 PM (2).jpeg",
+    "WhatsApp Image 2024-08-19 at 4.29.57 PM.jpeg",
+    "WhatsApp Image 2024-08-19 at 4.30.24 PM (1).jpeg",
+    "WhatsApp Image 2024-08-24 at 8.11.43 PM (2).jpeg",
+    "WhatsApp Image 2024-08-26 at 9.50.00 PM (2).jpeg",
+    "WhatsApp Image 2024-08-26 at 9.50.34 PM.jpeg",
+    "WhatsApp Image 2024-08-26 at 9.50.48 PM.jpeg",
+    "WhatsApp Image 2024-10-27 at 10.50.30 PM.jpeg",
+    "WhatsApp Image 2024-10-30 at 12.26.27 AM (2).jpeg",
+    "WhatsApp Image 2024-11-16 at 11.17.59 PM.jpeg",
+    "WhatsApp Image 2024-12-25 at 11.04.56 PM (4).jpeg",
+    "WhatsApp Image 2024-12-30 at 12.44.47 AM (1).jpeg",
+    "WhatsApp Image 2025-05-01 at 1.07.42 PM.jpeg",
+    "WhatsApp Image 2025-12-14 at 2.02.31 PM.jpeg",
+    "WhatsApp Image 2025-12-14 at 2.03.23 PM.jpeg",
+    "imagenes/logo-desafios-locos.webp"
+],
   videos: [
     { title: "Desafíos Locos en vivo", file: "videos/480.mp4" }
   ]
@@ -62,6 +137,15 @@ function renderProducts(category = "Todos") {
           <button class="product-ask" data-product="${i}">Preguntar ↗</button></div>
       </div>
     </article>`).join("") : '<div class="empty-products">Pronto agregaremos productos a esta categoría.</div>';
+}
+
+
+function renderGallery() {
+  const grid = $("#photoGrid");
+  if (!grid) return;
+  grid.innerHTML = CONFIG.photos.map((file, index) => `
+    <figure class="gallery-photo"><img src="${encodeURI(file)}" alt="Fotografía ${index + 1} de un evento de Desafíos Locos" loading="lazy"><figcaption>Desafíos Locos en vivo</figcaption></figure>
+  `).join("");
 }
 
 function renderVideos() {
@@ -168,6 +252,7 @@ updateVisitorCounter();
 
 applyBrand();
 renderProducts();
+renderGallery();
 renderVideos();
 renderSocial();
 startGame();
