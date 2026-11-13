@@ -2,3 +2,23 @@
 
 /* Contador de visitantes */
 .visitor-counter{display:flex;align-items:center;gap:9px;padding:8px 12px;background:#f4f1ff;border:1px solid #e8e1ff;border-radius:12px;color:#7657ed;font-size:10px;font-weight:800;letter-spacing:1px}.visitor-counter img{display:block;min-height:20px}.site-footer{flex-wrap:wrap}@media(max-width:650px){.visitor-counter{order:4}}
+
+
+/* Identidad visual Desafíos Locos */
+.brand-mark{font-size:0;position:relative;background:linear-gradient(145deg,#1758f5,#7839e8 58%,#ffb900);border:2px solid #b7ff18;box-shadow:0 0 0 3px #5d24c9,0 7px 18px #7657ed45}
+.brand-mark:after{content:"DL";font:900 17px Outfit,sans-serif;color:#fff;text-shadow:1px 2px #28105f}
+.hero{background:radial-gradient(ellipse at 80% 42%,#eee8ff 0,transparent 44%)}
+.hero-show-card{width:min(360px,88%);height:360px;position:relative;overflow:hidden;border-radius:38px;background:radial-gradient(circle at 50% 35%,#2468ff 0,#142c9e 43%,#24105e 100%);border:7px solid #a4ff12;box-shadow:0 0 0 5px #8d24e8,0 24px 60px #1a145044;display:flex;flex-direction:column;align-items:center;justify-content:center;color:white;transform:rotate(2deg)}
+.hero-show-card:before{content:"";position:absolute;inset:13px;border:2px solid #20e7ff;border-radius:27px;opacity:.8}
+.show-card-kicker{font-size:11px;letter-spacing:4px;font-weight:900;color:#c7ff22;z-index:1}
+.show-card-logo{font:900 clamp(38px,5vw,57px)/.9 Outfit,sans-serif;text-align:center;letter-spacing:-2px;text-shadow:3px 4px 0 #17105c,-2px -2px 0 #17105c,2px -2px 0 #17105c,-2px 2px 0 #17105c;z-index:1;margin-top:18px}
+.show-card-logo strong{color:#ffe500;font-size:1.25em}
+.show-card-character{font-size:104px;line-height:1.1;filter:drop-shadow(0 8px 0 #11115a);z-index:1}
+.show-card-tag{z-index:1;background:#c8ff16;color:#17105c;padding:10px 18px;border-radius:30px;font-size:12px;font-weight:1000;letter-spacing:1px;box-shadow:0 4px 0 #5924bc}
+.show-card-spark{position:absolute;color:#ffdc00;font-size:42px;text-shadow:0 3px #6a28be}.spark-a{top:32px;left:30px}.spark-b{right:30px;bottom:35px;color:#ff72bd}
+.benefit-strip>div>span{background:#e9e4ff;color:#643ee2}
+.product-image{background:linear-gradient(140deg,#e9e5ff,#dffaff 55%,#ffe5f0)}
+.product-ask{background:#e6f8ef;color:#07875f}
+.section-heading h2 span,.hero h1 span{background:linear-gradient(100deg,#6847e8,#e54eaa);-webkit-background-clip:text;background-clip:text;color:transparent}
+.whatsapp-float{background:#14b86f}
+@media(max-width:650px){.hero-show-card{height:300px;width:280px}.show-card-character{font-size:80px}.show-card-logo{font-size:43px}}
