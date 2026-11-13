@@ -99,3 +99,24 @@ body{
   body{background-size:auto,175px auto;background-attachment:scroll,scroll}
   .main-nav{background:rgba(255,255,255,.97)}
 }
+
+
+/* Galería de fotografías en carrusel, a juego con el reproductor de videos */
+.photo-gallery{padding-top:55px;padding-bottom:70px}
+.photo-gallery .section-heading{justify-content:center;text-align:center;margin-bottom:25px}
+.photo-carousel{display:flex;align-items:center;justify-content:center;gap:24px;max-width:850px;margin:0 auto}
+.gallery-featured{width:min(100%,430px);padding:12px;background:#1765c5;border:0;border-radius:3px;box-shadow:0 12px 28px #174c9630}
+.gallery-featured-title{margin:0;padding:4px 8px 13px;text-align:center;color:#fff;font:900 23px Outfit,sans-serif}
+.gallery-frame{aspect-ratio:4/5;background:#10152b;border:8px solid #fff;overflow:hidden}
+.gallery-frame img{display:block;width:100%;height:100%;object-fit:contain;background:#10152b}
+.gallery-featured figcaption{padding:10px 4px 3px;text-align:center;color:#fff;font-weight:800}
+.gallery-counter{text-align:center;color:#dceaff;font-size:11px;font-weight:800;padding-top:5px}
+.photo-arrow{width:52px;height:52px;flex:0 0 52px;border:0;border-radius:50%;background:#078fe9;color:#fff;font-size:25px;font-weight:900;cursor:pointer;box-shadow:0 5px 12px #0876c444}
+.photo-arrow:hover{background:#0873c5;transform:scale(1.06)}
+@media(max-width:600px){
+ .photo-carousel{gap:8px}
+ .gallery-featured{width:min(100%,calc(100% - 88px));padding:8px}
+ .gallery-featured-title{font-size:16px}
+ .photo-arrow{width:38px;height:38px;flex-basis:38px;font-size:18px}
+ .gallery-frame{border-width:5px}
+}
