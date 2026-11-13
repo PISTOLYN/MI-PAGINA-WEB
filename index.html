@@ -81,7 +81,49 @@
   <footer class="site-footer"><a class="brand footer-brand" href="#inicio"><span class="brand-mark">DL</span><span id="footerBrand">DESAFÍOS LOCOS MONTERREY</span></a><p>Gracias por visitarnos. ¡Esperamos verte pronto!</p>
     <div class="visitor-counter" id="visitorCounter" aria-label="Contador de visitantes"><span>VISITANTES</span><img data-src="https://api.visitorbadge.io/api/visitors?path=desafioslocosmonterrey.github.io.MI-PAGINA-WEB&label=&countColor=%237657ed&style=flat" alt="Contador de visitantes" loading="lazy"><button type="button" id="excludeMyVisits" class="visitor-optout">No contar mis visitas</button></div><span>© <span id="year"></span> <span id="copyrightBrand">DESAFÍOS LOCOS MONTERREY</span></span></footer>
 
+
+  <section class="music-player" id="musicPlayer" aria-label="Música de Desafíos Locos">
+    <audio id="siteMusic" src="musica/desafios-locos.mp3" preload="auto" loop></audio>
+    <button type="button" id="musicToggle" class="music-toggle" aria-label="Activar música">▶</button>
+    <div class="music-info"><strong>Música de Desafíos Locos</strong><span id="musicStatus">Preparando música...</span></div>
+    <label class="music-volume" for="musicVolume">Volumen</label>
+    <input id="musicVolume" type="range" min="0" max="1" step="0.05" value="0.35" aria-label="Volumen de la música">
+  </section>
+
   <a class="whatsapp-float" id="floatingWhatsApp" href="#" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp"><span class="wa-symbol">◔</span><span>WhatsApp</span></a>
   <script src="app.js"></script>
+  <script>
+    (() => {
+      const audio = document.getElementById("siteMusic");
+      const toggle = document.getElementById("musicToggle");
+      const volume = document.getElementById("musicVolume");
+      const status = document.getElementById("musicStatus");
+      const savedVolume = localStorage.getItem("dl_music_volume");
+      audio.volume = savedVolume === null ? 0.35 : Number(savedVolume);
+      volume.value = String(audio.volume);
+      const update = () => {
+        const playing = !audio.paused;
+        toggle.textContent = playing ? "Ⅱ" : "▶";
+        toggle.setAttribute("aria-label", playing ? "Pausar música" : "Activar música");
+        status.textContent = playing ? "Reproduciendo" : "Música pausada";
+      };
+      const play = async () => {
+        try { await audio.play(); update(); }
+        catch (_) { status.textContent = "Toca ▶ para activar la música"; }
+      };
+      toggle.addEventListener("click", async () => {
+        if (audio.paused) await play();
+        else { audio.pause(); update(); }
+      });
+      volume.addEventListener("input", () => {
+        audio.volume = Number(volume.value);
+        localStorage.setItem("dl_music_volume", volume.value);
+      });
+      audio.addEventListener("play", update);
+      audio.addEventListener("pause", update);
+      audio.addEventListener("error", () => { status.textContent = "Falta subir el archivo de música"; });
+      play();
+    })();
+  </script>
 </body>
 </html>
