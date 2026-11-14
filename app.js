@@ -523,10 +523,10 @@ startGame();
     const c=runner.ctx,w=runner.width,h=runner.height;
     c.clearRect(0,0,w,h);
     drawPhotoBackground();
-    c.fillStyle="rgba(18,25,50,.58)";c.fillRect(14,12,190,27);
-    c.fillStyle="#fff";c.font="900 15px sans-serif";c.textAlign="left";c.fillText("DESAFÍOS LOCOS",25,31);
-    c.fillStyle="rgba(18,25,50,.58)";c.fillRect(574,12,212,27);
-    c.fillStyle="#fff";c.font="bold 12px sans-serif";c.textAlign="right";c.fillText("¡SALTA, CORRE Y COLECCIONA!",776,30);
+    c.fillStyle="rgba(18,25,50,.58)";c.fillRect(14,3,166,21);
+    c.fillStyle="#fff";c.font="900 12px sans-serif";c.textAlign="left";c.fillText("DESAFÍOS LOCOS",22,18);
+    c.fillStyle="rgba(18,25,50,.58)";c.fillRect(590,3,196,21);
+    c.fillStyle="#fff";c.font="bold 10px sans-serif";c.textAlign="right";c.fillText("¡SALTA, CORRE Y COLECCIONA!",778,18);
   }
   function drawRunner(){
     runnerScene();const c=runner.ctx;
@@ -548,7 +548,7 @@ startGame();
       c.drawImage(im,clownX+(clownW-dw)/2,clownY+clownH-dh,dw,dh);
     }
     runnerState.dust.forEach(p=>{c.globalAlpha=Math.max(0,p.life/18);c.fillStyle="#fff";c.beginPath();c.arc(p.x,p.y,p.size,0,Math.PI*2);c.fill();c.globalAlpha=1;});
-    c.fillStyle="rgba(255,255,255,.88)";c.fillRect(14,44,150,30);c.fillStyle="#382078";c.font="bold 10px sans-serif";c.textAlign="left";c.fillText("RÉCORD "+runnerBest+"  |  🪙 "+runnerState.coins,22,63);
+    c.fillStyle="rgba(255,255,255,.88)";c.fillRect(14,28,112,19);c.fillStyle="#382078";c.font="bold 8px sans-serif";c.textAlign="left";c.fillText("RÉCORD "+runnerBest+" | 🪙 "+runnerState.coins,19,41);
     const progress=Math.min(1,runnerState.distance/24000);c.fillStyle="#fff";c.font="bold 10px sans-serif";c.textAlign="center";c.fillText("META "+Math.floor(progress*100)+"%",410,20);c.fillStyle="rgba(255,255,255,.86)";c.fillRect(300,26,220,9);c.fillStyle="#382078";c.fillRect(302,28,216*progress,5);
     if(runnerState.distance>1780){c.fillStyle="#fff";c.font="900 19px sans-serif";c.textAlign="right";c.fillText("🏁 ¡YA CASI LLEGAS!",780,91);}
   }
