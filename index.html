@@ -72,6 +72,24 @@
       <div class="memory-board" id="memoryBoard" aria-label="Juego de memoria"></div>
     </section>
 
+
+    <section class="arcade-section section-wrap" id="mini-juegos">
+      <div class="section-heading"><div><span class="eyebrow">JUEGA CON DESAFÍOS LOCOS</span><h2>¡El payasito en <span>acción!</span></h2><p>Usamos tu personaje del logo oficial. ¡Ayúdalo a superar los obstáculos y atrapar premios!</p></div></div>
+      <article class="arcade-card">
+        <div class="arcade-heading"><div><span class="arcade-kicker">JUEGO 1</span><h3>Corre y brinca</h3><p>Salta los obstáculos y consigue la mayor puntuación.</p></div><div class="arcade-score">Puntos <strong id="runnerScore">0</strong></div></div>
+        <canvas id="runnerCanvas" width="800" height="300" aria-label="Juego del payasito corriendo y brincando obstáculos"></canvas>
+        <div class="arcade-controls"><button type="button" class="button button-primary" id="runnerStart">▶ Jugar</button><button type="button" class="button button-secondary" id="runnerJump">SALTAR</button><button type="button" class="button button-secondary" id="runnerReset">Reiniciar ↻</button></div>
+        <p class="arcade-hint">Computadora: barra espaciadora o flecha arriba. Celular: toca SALTAR.</p>
+        <p class="arcade-message" id="runnerMessage" aria-live="polite">Presiona Jugar para comenzar.</p>
+      </article>
+      <article class="arcade-card arcade-card-second">
+        <div class="arcade-heading"><div><span class="arcade-kicker">JUEGO 2</span><h3>¡Atrapa los premios!</h3><p>Mueve al mismo payasito para atrapar regalos y estrellas. ¡Evita las bombas!</p></div><div class="arcade-score">Puntos <strong id="catchScore">0</strong></div></div>
+        <canvas id="catchCanvas" width="800" height="300" aria-label="Juego para atrapar premios con el payasito oficial"></canvas>
+        <div class="arcade-controls"><button type="button" class="button button-primary" id="catchStart">▶ Jugar</button><button type="button" class="button button-secondary" id="catchLeft">◀</button><button type="button" class="button button-secondary" id="catchRight">▶</button><button type="button" class="button button-secondary" id="catchReset">Reiniciar ↻</button></div>
+        <p class="arcade-hint">Computadora: flechas izquierda/derecha. Celular: mantén presionadas las flechas.</p>
+        <p class="arcade-message" id="catchMessage" aria-live="polite">Presiona Jugar para comenzar.</p>
+      </article>
+    </section>
     </main>
 
   <footer class="site-footer"><a class="brand footer-brand" href="#inicio"><img class="brand-logo footer-logo" src="t.png" alt="Logo Desafíos Locos"><span id="footerBrand">DESAFÍOS LOCOS MONTERREY</span></a><p>Gracias por visitarnos. ¡Esperamos verte pronto!</p>
