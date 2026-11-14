@@ -9,19 +9,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=clean-layout-1">
+  <link rel="stylesheet" href="styles.css?v=top-combined-bar-1">
 </head>
 <body>
-  <section class="music-player" id="musicPlayer" aria-label="Música de Desafíos Locos">
-    <audio id="siteMusic" preload="metadata"></audio>
-    <button type="button" id="musicPrev" class="music-track-button" aria-label="Canción anterior">|◀</button>
-    <button type="button" id="musicToggle" class="music-toggle" aria-label="Reproducir música">▶</button>
-    <button type="button" id="musicNext" class="music-track-button" aria-label="Canción siguiente">▶|</button>
-    <div class="music-info"><strong id="musicTitle">Desafíos Locos</strong><span id="musicStatus">Selecciona una canción</span></div>
-    <select id="musicPlaylist" class="music-playlist" aria-label="Seleccionar canción"><option value="0">Desafíos Locos Chidita</option><option value="1">Tururú Pa-Pa-Pa</option><option value="2">Instrucciones de baile</option></select>
-    <label class="music-volume" for="musicVolume">Volumen</label>
-    <input id="musicVolume" type="range" min="0" max="1" step="0.05" value="0.35" aria-label="Volumen de la música">
-  </section>
+
   <header class="site-header">
     <a class="brand" href="#inicio" aria-label="Ir al inicio">
       <img class="brand-logo" src="t.png" alt="Logo Desafíos Locos"><span id="brandName">DESAFÍOS LOCOS MONTERREY</span>
@@ -30,7 +21,17 @@
     <nav class="main-nav" id="mainNav">
       <a href="#inicio">Inicio</a><a href="#galeria">Fotos</a><a href="#videos">Videos</a><a href="#juegos">Juegos</a>
     </nav>
-    </header>
+      <section class="music-player" id="musicPlayer" aria-label="Música de Desafíos Locos">
+      <audio id="siteMusic" preload="metadata"></audio>
+      <button type="button" id="musicPrev" class="music-track-button" aria-label="Canción anterior">|◀</button>
+      <button type="button" id="musicToggle" class="music-toggle" aria-label="Reproducir música">▶</button>
+      <button type="button" id="musicNext" class="music-track-button" aria-label="Canción siguiente">▶|</button>
+      <div class="music-info"><strong id="musicTitle">Desafíos Locos</strong><span id="musicStatus">Selecciona una canción</span></div>
+      <select id="musicPlaylist" class="music-playlist" aria-label="Seleccionar canción"><option value="0">Desafíos Locos Chidita</option><option value="1">Tururú Pa-Pa-Pa</option><option value="2">Instrucciones de baile</option></select>
+      <label class="music-volume" for="musicVolume">Volumen</label>
+      <input id="musicVolume" type="range" min="0" max="1" step="0.05" value="0.35" aria-label="Volumen de la música">
+    </section>
+  </header>
 
 
   <aside class="floating-social-bar" aria-label="Redes sociales y contacto">
