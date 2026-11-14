@@ -478,10 +478,16 @@ startGame();
   updateRunnerSoundButton();
   let runnerState={y:0,vy:0,obstacles:[],rewards:[],spawn:0,rewardSpawn:55,speed:5,frame:0,over:false,dust:[]};
 
+  // Desplazamiento horizontal del escenario: crea sensación de carrera.
+  let runnerBackgroundOffset=0;
   function drawPhotoBackground(){
     const c=runner.ctx,w=runner.width,h=runner.height;
-    if(runnerBackgroundReady)c.drawImage(runnerBackgroundCache,0,0);
-    else{c.fillStyle="#b9e5ff";c.fillRect(0,0,w,h);}
+    if(runnerBackgroundReady){
+      const offset=runnerBackgroundOffset%w;
+      // Dos copias consecutivas mantienen el escenario cubierto al desplazarse.
+      c.drawImage(runnerBackgroundCache,-offset,0);
+      c.drawImage(runnerBackgroundCache,w-offset,0);
+    }else{c.fillStyle="#b9e5ff";c.fillRect(0,0,w,h);}
   }
   function drawGroundArt(key,x,ground,maxW,maxH){
     const c=runner.ctx,im=runnerArt[key];
@@ -548,6 +554,8 @@ startGame();
     const elapsed=runner.last?Math.min(2,(t-runner.last)/16.67||1):1;
     runner.last=t;runnerLastPaint=t;
     const dt=elapsed;
+    // El fondo se mueve más lento que los obstáculos para dar profundidad.
+    runnerBackgroundOffset=(runnerBackgroundOffset+(runnerState.speed*.34*dt))%runner.width;
     runnerState.frame+=dt;runnerState.spawn-=dt;runnerState.rewardSpawn-=dt;
     if(runnerState.spawn<=0){spawnObstacle();runnerState.spawn=Math.max(42,72-Math.floor(runner.score/12))+Math.random()*28;}
     if(runnerState.rewardSpawn<=0){const type=Math.random()<.18?"ticket":Math.random()<.55?"coin":"star";runnerState.rewards.push({type,x:830,y:145+Math.random()*48});runnerState.rewardSpawn=42+Math.random()*38;}
@@ -574,6 +582,7 @@ startGame();
   function resetRunner(){
     cancelAnimationFrame(runner.raf);runner.running=false;runner.score=0;runner.scoreEl.textContent="0";
     runnerState={y:0,vy:0,obstacles:[],rewards:[],spawn:35,rewardSpawn:40,speed:5,frame:0,over:false,dust:[]};
+    runnerBackgroundOffset=0;
     runner.message.textContent="¡Prepárate! Salta los obstáculos y recoge monedas, estrellas y boletos.";
     document.getElementById("runnerStart").textContent="▶ Jugar";drawRunner();
   }
