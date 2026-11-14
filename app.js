@@ -335,3 +335,116 @@ applyBrand();
 renderGallery();
 renderVideos();
 startGame();
+
+// Minijuegos nuevos: ambos utilizan el personaje del logo oficial t.png.
+(() => {
+  const character = new Image();
+  character.src = "t.png";
+  const makeGame = (canvasId, scoreId, messageId) => {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return null;
+    const ctx = canvas.getContext("2d");
+    return { canvas, ctx, scoreEl: document.getElementById(scoreId), message: document.getElementById(messageId),
+      width: canvas.width, height: canvas.height, raf: 0, last: 0, score: 0, running: false };
+  };
+  const runner = makeGame("runnerCanvas", "runnerScore", "runnerMessage");
+  const catcher = makeGame("catchCanvas", "catchScore", "catchMessage");
+  if (!runner || !catcher) return;
+
+  function drawCharacter(ctx, x, y, w, h) {
+    if (character.complete && character.naturalWidth) {
+      ctx.drawImage(character, x, y, w, h);
+    } else {
+      ctx.fillStyle = "#7b2bd1"; ctx.beginPath(); ctx.arc(x+w/2,y+h/2,Math.min(w,h)/2,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle="#fff"; ctx.font="bold 13px sans-serif"; ctx.textAlign="center"; ctx.fillText("DL",x+w/2,y+h/2+5);
+    }
+  }
+  function scene(g, ground=250) {
+    const c=g.ctx,w=g.width,h=g.height;
+    c.clearRect(0,0,w,h);
+    const sky=c.createLinearGradient(0,0,0,h);sky.addColorStop(0,"#eaf6ff");sky.addColorStop(1,"#fff5dc");
+    c.fillStyle=sky;c.fillRect(0,0,w,h);
+    c.fillStyle="#d8f2a4";c.fillRect(0,ground,w,h-ground);
+    c.fillStyle="#78bb42";c.fillRect(0,ground,w,7);
+    c.fillStyle="#fff";c.font="bold 15px sans-serif";c.textAlign="left";c.fillText("¡DESAFÍOS LOCOS!",18,26);
+  }
+
+  // Juego 1: correr y brincar obstáculos.
+  let runnerState={y:0,vy:0,obstacles:[],spawn:0,speed:5,frame:0,over:false};
+  function drawRunner(){
+    const g=runner;scene(g);const c=g.ctx;
+    runnerState.obstacles.forEach(o=>{c.fillStyle="#e94e42";c.fillRect(o.x,218,o.w,32);c.fillStyle="#ffbd45";c.fillRect(o.x+5,213,o.w-10,7)});
+    drawCharacter(c,70,174+runnerState.y,66,66);
+    c.fillStyle="#20234a";c.font="bold 15px sans-serif";c.textAlign="right";c.fillText("Salta los obstáculos",780,28);
+  }
+  function runnerTick(t){
+    if(!runner.running)return;
+    const dt=Math.min(2,(t-runner.last)/16.67||1);runner.last=t;
+    runnerState.frame+=dt;runnerState.spawn-=dt;
+    if(runnerState.spawn<=0){runnerState.obstacles.push({x:820,w:24+Math.random()*18});runnerState.spawn=62+Math.random()*42}
+    runnerState.y+=runnerState.vy*dt;runnerState.vy+=0.72*dt;
+    if(runnerState.y>0){runnerState.y=0;runnerState.vy=0}
+    runnerState.obstacles.forEach(o=>o.x-=runnerState.speed*dt);
+    runnerState.obstacles=runnerState.obstacles.filter(o=>o.x+o.w>0);
+    const hit=runnerState.obstacles.some(o=>o.x<125&&o.x+o.w>85&&runnerState.y>-25);
+    if(hit){runner.running=false;runnerState.over=true;runner.message.textContent="¡Uy! Te alcanzó un obstáculo. Presiona Reiniciar para intentarlo otra vez.";document.getElementById("runnerStart").textContent="▶ Volver a jugar";drawRunner();return}
+    runner.score=Math.floor(runnerState.frame/3);runner.scoreEl.textContent=runner.score;
+    runnerState.speed=Math.min(9,5+runner.score/180);
+    drawRunner();runner.raf=requestAnimationFrame(runnerTick);
+  }
+  function resetRunner(){
+    cancelAnimationFrame(runner.raf);runner.running=false;runner.score=0;runner.scoreEl.textContent="0";
+    runnerState={y:0,vy:0,obstacles:[],spawn:35,speed:5,frame:0,over:false};
+    runner.message.textContent="Presiona Jugar. ¡No dejes que te atrapen los obstáculos!";
+    document.getElementById("runnerStart").textContent="▶ Jugar";drawRunner();
+  }
+  function jump(){if(!runner.running)return;if(runnerState.y===0){runnerState.vy=-12}}
+  document.getElementById("runnerStart").addEventListener("click",()=>{if(runnerState.over)resetRunner();runner.running=true;runner.last=performance.now();runner.message.textContent="¡Vamos!";runner.raf=requestAnimationFrame(runnerTick);document.getElementById("runnerStart").textContent="Jugando…"});
+  document.getElementById("runnerJump").addEventListener("click",jump);
+  document.getElementById("runnerReset").addEventListener("click",resetRunner);
+  runner.canvas.addEventListener("pointerdown",jump);
+
+  // Juego 2: atrapar regalos/estrellas y esquivar bombas con el mismo personaje.
+  let catchState={x:365,items:[],spawn:0,keys:{left:false,right:false},over:false};
+  function drawCatch(){
+    const g=catcher;scene(g,250);const c=g.ctx;
+    catchState.items.forEach(o=>{c.font="30px sans-serif";c.textAlign="center";c.fillText(o.type==="bomb"?"💣":o.type==="star"?"⭐":"🎁",o.x,o.y)});
+    drawCharacter(c,catchState.x,184,66,66);
+    c.fillStyle="#20234a";c.font="bold 15px sans-serif";c.textAlign="right";c.fillText("Atrapa premios, evita bombas",780,28);
+  }
+  function catcherTick(t){
+    if(!catcher.running)return;
+    const dt=Math.min(2,(t-catcher.last)/16.67||1);catcher.last=t;
+    if(catchState.keys.left)catchState.x-=6*dt;if(catchState.keys.right)catchState.x+=6*dt;
+    catchState.x=Math.max(0,Math.min(734,catchState.x));
+    catchState.spawn-=dt;
+    if(catchState.spawn<=0){const r=Math.random();catchState.items.push({x:25+Math.random()*750,y:-25,type:r<.18?"bomb":r<.48?"star":"gift"});catchState.spawn=34+Math.random()*24}
+    for(const o of catchState.items)o.y+=3.1*dt;
+    catchState.items=catchState.items.filter(o=>{
+      if(o.y>180&&o.y<248&&o.x>catchState.x-5&&o.x<catchState.x+72){
+        if(o.type==="bomb"){catcher.running=false;catchState.over=true;catcher.message.textContent="¡Cuidado con la bomba! Presiona Reiniciar para jugar otra vez.";document.getElementById("catchStart").textContent="▶ Volver a jugar";return false}
+        catcher.score+=o.type==="star"?3:1;catcher.scoreEl.textContent=catcher.score;return false;
+      }
+      return o.y<330;
+    });
+    drawCatch();
+    if(catcher.running)catcher.raf=requestAnimationFrame(catcherTick);
+  }
+  function resetCatch(){
+    cancelAnimationFrame(catcher.raf);catcher.running=false;catcher.score=0;catcher.scoreEl.textContent="0";
+    catchState={x:365,items:[],spawn:20,keys:{left:false,right:false},over:false};
+    catcher.message.textContent="Presiona Jugar y atrapa los premios. ¡Evita las bombas!";
+    document.getElementById("catchStart").textContent="▶ Jugar";drawCatch();
+  }
+  document.getElementById("catchStart").addEventListener("click",()=>{if(catchState.over)resetCatch();catcher.running=true;catcher.last=performance.now();catcher.message.textContent="¡A juntar premios!";catcher.raf=requestAnimationFrame(catcherTick);document.getElementById("catchStart").textContent="Jugando…"});
+  document.getElementById("catchReset").addEventListener("click",resetCatch);
+  function holdButton(id,key){const b=document.getElementById(id);b.addEventListener("pointerdown",e=>{e.preventDefault();catchState.keys[key]=true;b.setPointerCapture(e.pointerId)});["pointerup","pointercancel","lostpointercapture"].forEach(ev=>b.addEventListener(ev,()=>catchState.keys[key]=false))}
+  holdButton("catchLeft","left");holdButton("catchRight","right");
+  window.addEventListener("keydown",e=>{
+    if(["ArrowUp"," "].includes(e.key)&&runner.running){e.preventDefault();jump()}
+    if(e.key==="ArrowLeft")catchState.keys.left=true;
+    if(e.key==="ArrowRight")catchState.keys.right=true;
+  });
+  window.addEventListener("keyup",e=>{if(e.key==="ArrowLeft")catchState.keys.left=false;if(e.key==="ArrowRight")catchState.keys.right=false});
+  resetRunner();resetCatch();
+})();
