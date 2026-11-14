@@ -369,7 +369,7 @@ startGame();
     c.fillStyle="#fff";c.font="bold 15px sans-serif";c.textAlign="left";c.fillText("¡DESAFÍOS LOCOS!",18,26);
   }
 
-  // Juego 1: arcade Corre y Brinca con las imágenes que Daniel subió al repositorio.
+  // Juego 1: Corre y Brinca con el fondo fotográfico del repositorio.
   const runnerArt = {};
   const runnerAssets = {
     clown: "PAYASO%20CORRIENDO.png",
@@ -385,57 +385,92 @@ startGame();
     gifts: "PILA%20DE%20REGALOS.png"
   };
   Object.entries(runnerAssets).forEach(([key,src])=>{const im=new Image();im.src=src;runnerArt[key]=im;});
+  const runnerBackground=new Image();
+  runnerBackground.src="FONDO.jpg";
   const bestKey="dl_runner_best";
   let runnerBest=Number(localStorage.getItem(bestKey)||0);
   const bestLabel=document.getElementById("runnerBest");
   if(bestLabel)bestLabel.textContent=runnerBest;
-  let runnerState={y:0,vy:0,obstacles:[],rewards:[],spawn:0,rewardSpawn:55,speed:5,frame:0,over:false,clouds:[{x:80,y:65,s:1},{x:360,y:42,s:.75},{x:650,y:82,s:1.1}],dust:[]};
-  function art(key,x,y,w,h,ctx=runner.ctx){
+  const RUN_GROUND=246;
+  let runnerState={y:0,vy:0,obstacles:[],rewards:[],spawn:0,rewardSpawn:55,speed:5,frame:0,over:false,dust:[]};
+
+  function drawPhotoBackground(){
+    const c=runner.ctx,w=runner.width,h=runner.height;
+    if(runnerBackground.complete&&runnerBackground.naturalWidth){
+      const scale=Math.max(w/runnerBackground.naturalWidth,h/runnerBackground.naturalHeight);
+      const sw=w/scale,sh=h/scale;
+      const sx=(runnerBackground.naturalWidth-sw)/2,sy=(runnerBackground.naturalHeight-sh)/2;
+      c.drawImage(runnerBackground,sx,sy,sw,sh,0,0,w,h);
+    }else{
+      c.fillStyle="#b9e5ff";c.fillRect(0,0,w,h);
+    }
+    // Sombra suave para integrar los elementos al piso de la fotografía.
+    c.fillStyle="rgba(25,35,25,.20)";
+    c.fillRect(0,RUN_GROUND,w,runner.height-RUN_GROUND);
+    c.fillStyle="rgba(30,45,25,.30)";
+    c.fillRect(0,RUN_GROUND,w,4);
+  }
+  function drawGroundArt(key,x,ground,maxW,maxH){
+    const c=runner.ctx,im=runnerArt[key];
+    if(!im||!im.complete||!im.naturalWidth)return false;
+    const scale=Math.min(maxW/im.naturalWidth,maxH/im.naturalHeight);
+    const w=im.naturalWidth*scale,h=im.naturalHeight*scale;
+    // Sombra al nivel del suelo: evita que los obstáculos parezcan suspendidos.
+    c.save();c.fillStyle="rgba(0,0,0,.24)";c.beginPath();
+    c.ellipse(x+w/2,ground+2,Math.max(9,w*.38),Math.max(2,w*.075),0,0,Math.PI*2);c.fill();c.restore();
+    c.drawImage(im,x,ground-h,w,h);
+    return true;
+  }
+  function drawRunnerArt(key,x,y,w,h){
     const im=runnerArt[key];
-    if(im&&im.complete&&im.naturalWidth){ctx.drawImage(im,x,y,w,h);return true;}
+    if(im&&im.complete&&im.naturalWidth){
+      const scale=Math.min(w/im.naturalWidth,h/im.naturalHeight);
+      const dw=im.naturalWidth*scale,dh=im.naturalHeight*scale;
+      runner.ctx.drawImage(im,x-dw/2,y-dh/2,dw,dh);return true;
+    }
     return false;
   }
   function runnerScene(){
     const c=runner.ctx,w=runner.width,h=runner.height;
-    const sky=c.createLinearGradient(0,0,0,h);sky.addColorStop(0,"#62c7ff");sky.addColorStop(.62,"#c9f2ff");sky.addColorStop(1,"#fff0bb");
-    c.fillStyle=sky;c.fillRect(0,0,w,h);
-    c.fillStyle="rgba(255,255,255,.25)";c.beginPath();c.arc(690,70,35,0,Math.PI*2);c.fill();
-    runnerState.clouds.forEach(cl=>{c.fillStyle="rgba(255,255,255,.88)";c.beginPath();c.arc(cl.x,cl.y,17*cl.s,0,Math.PI*2);c.arc(cl.x+18*cl.s,cl.y-7*cl.s,22*cl.s,0,Math.PI*2);c.arc(cl.x+39*cl.s,cl.y,16*cl.s,0,Math.PI*2);c.fill();});
-    c.fillStyle="#8ddc91";c.beginPath();c.moveTo(0,205);c.quadraticCurveTo(170,130,330,205);c.quadraticCurveTo(520,130,800,190);c.lineTo(800,250);c.lineTo(0,250);c.fill();
-    c.fillStyle="#4dbd68";c.fillRect(0,246,800,54);
-    c.fillStyle="#2d994f";c.fillRect(0,246,800,7);
-    c.fillStyle="rgba(255,255,255,.35)";
-    for(let i=0;i<18;i++){let x=((i*67-runnerState.frame*runnerState.speed*1.5)%850+850)%850;c.fillRect(x,266+(i%3)*9,25,3);}
-    c.fillStyle="#fff";c.font="900 15px sans-serif";c.textAlign="left";c.fillText("DESAFÍOS LOCOS",18,25);
-    c.fillStyle="rgba(24,48,94,.75)";c.font="bold 12px sans-serif";c.textAlign="right";c.fillText("¡SALTA, CORRE Y COLECCIONA!",780,25);
+    c.clearRect(0,0,w,h);
+    drawPhotoBackground();
+    c.fillStyle="rgba(18,25,50,.58)";c.fillRect(14,12,190,27);
+    c.fillStyle="#fff";c.font="900 15px sans-serif";c.textAlign="left";c.fillText("DESAFÍOS LOCOS",25,31);
+    c.fillStyle="rgba(18,25,50,.58)";c.fillRect(574,12,212,27);
+    c.fillStyle="#fff";c.font="bold 12px sans-serif";c.textAlign="right";c.fillText("¡SALTA, CORRE Y COLECCIONA!",776,30);
   }
   function drawRunner(){
     runnerScene();const c=runner.ctx;
-    runnerState.rewards.forEach(o=>{const size=o.type==="coin"?30:o.type==="star"?34:36;art(o.type,o.x-size/2,o.y-size/2,size,size);});
+    runnerState.rewards.forEach(o=>{const size=o.type==="coin"?30:o.type==="star"?34:36;drawRunnerArt(o.type,o.x,o.y,size,size);});
     runnerState.obstacles.forEach(o=>{
-      if(!art(o.type,o.x,o.y,o.w,o.h)){
-        c.fillStyle="#ed4c43";c.fillRect(o.x,o.y,o.w,o.h);c.fillStyle="#ffcf52";c.fillRect(o.x+4,o.y+4,o.w-8,6);
+      if(!drawGroundArt(o.type,o.x,RUN_GROUND,o.w,o.h)){
+        c.fillStyle="#ed4c43";c.fillRect(o.x,RUN_GROUND-o.h,o.w,o.h);
       }
     });
-    const py=178+runnerState.y;
-    if(!art("clown",64,py,92,72)){
-      c.fillStyle="#792bd0";c.beginPath();c.arc(108,py+34,30,0,Math.PI*2);c.fill();c.fillStyle="#fff";c.font="bold 13px sans-serif";c.textAlign="center";c.fillText("DL",108,py+39);
+    const clownW=92,clownH=82,clownX=64;
+    const clownY=RUN_GROUND-clownH+runnerState.y;
+    c.fillStyle="rgba(0,0,0,.22)";c.beginPath();c.ellipse(clownX+clownW/2,RUN_GROUND+2,27,5,0,0,Math.PI*2);c.fill();
+    if(!runnerArt.clown.complete||!runnerArt.clown.naturalWidth){
+      c.fillStyle="#792bd0";c.beginPath();c.arc(clownX+clownW/2,clownY+clownH/2,30,0,Math.PI*2);c.fill();
+    }else{
+      const im=runnerArt.clown,scale=Math.min(clownW/im.naturalWidth,clownH/im.naturalHeight);
+      const dw=im.naturalWidth*scale,dh=im.naturalHeight*scale;
+      c.drawImage(im,clownX+(clownW-dw)/2,clownY+clownH-dh,dw,dh);
     }
     runnerState.dust.forEach(p=>{c.globalAlpha=Math.max(0,p.life/18);c.fillStyle="#fff";c.beginPath();c.arc(p.x,p.y,p.size,0,Math.PI*2);c.fill();c.globalAlpha=1;});
-    c.fillStyle="rgba(255,255,255,.92)";c.fillRect(16,39,125,31);c.fillStyle="#382078";c.font="bold 13px sans-serif";c.textAlign="left";c.fillText("RÉCORD: "+runnerBest,26,59);
+    c.fillStyle="rgba(255,255,255,.92)";c.fillRect(16,45,125,31);c.fillStyle="#382078";c.font="bold 13px sans-serif";c.textAlign="left";c.fillText("RÉCORD: "+runnerBest,26,65);
   }
   function spawnObstacle(){
     const types=["cone","wood","fire","hydrant","spring","boxes"];
-    const type=types[Math.floor(Math.random()*types.length)];
     const sizes={cone:[48,55],wood:[66,48],fire:[58,62],hydrant:[48,55],spring:[52,58],boxes:[62,58]};
+    const type=types[Math.floor(Math.random()*types.length)];
     const [w,h]=sizes[type];
-    runnerState.obstacles.push({type,x:830,y:246-h,w,h});
+    runnerState.obstacles.push({type,x:830,y:RUN_GROUND-h,w,h});
   }
   function runnerTick(t){
     if(!runner.running)return;
     const dt=Math.min(2,(t-runner.last)/16.67||1);runner.last=t;
     runnerState.frame+=dt;runnerState.spawn-=dt;runnerState.rewardSpawn-=dt;
-    runnerState.clouds.forEach(cl=>{cl.x-=.35*dt;if(cl.x<-60)cl.x=850;});
     if(runnerState.spawn<=0){spawnObstacle();runnerState.spawn=Math.max(42,72-Math.floor(runner.score/12))+Math.random()*28;}
     if(runnerState.rewardSpawn<=0){const type=Math.random()<.18?"ticket":Math.random()<.55?"coin":"star";runnerState.rewards.push({type,x:830,y:145+Math.random()*48});runnerState.rewardSpawn=42+Math.random()*38;}
     runnerState.y+=runnerState.vy*dt;runnerState.vy+=.72*dt;
@@ -444,8 +479,8 @@ startGame();
     runnerState.rewards.forEach(o=>o.x-=runnerState.speed*dt);
     runnerState.dust.forEach(p=>{p.x-=2*dt;p.life-=dt;});
     runnerState.dust=runnerState.dust.filter(p=>p.life>0);
-    const px=83,py=178+runnerState.y,pw=58,ph=62;
-    const hit=runnerState.obstacles.some(o=>px+pw-8>o.x+8&&px+8<o.x+o.w-8&&py+ph-8>o.y+8&&py+8<o.y+o.h-5);
+    const px=83,py=RUN_GROUND-82+runnerState.y+10,pw=58,ph=65;
+    const hit=runnerState.obstacles.some(o=>px+pw-8>o.x+8&&px+8<o.x+o.w-8&&py+ph-8>RUN_GROUND-o.h+8&&py+8<RUN_GROUND-5);
     if(hit){runner.running=false;runnerState.over=true;runner.message.textContent="¡CHOCASTE! 😵 Presiona Volver a jugar para intentarlo otra vez.";document.getElementById("runnerStart").textContent="▶ Volver a jugar";drawRunner();return;}
     runnerState.rewards=runnerState.rewards.filter(o=>{
       if(o.x>70&&o.x<170&&o.y>py-8&&o.y<py+ph+8){runner.score+=o.type==="ticket"?5:o.type==="star"?3:1;runner.scoreEl.textContent=runner.score;return false;}
@@ -455,16 +490,16 @@ startGame();
     runner.score=Math.max(runner.score,Math.floor(runnerState.frame/4));runner.scoreEl.textContent=runner.score;
     if(runner.score>runnerBest){runnerBest=runner.score;localStorage.setItem(bestKey,String(runnerBest));if(bestLabel)bestLabel.textContent=runnerBest;}
     runnerState.speed=Math.min(10,5+runner.score/150);
-    if(runnerState.y===0&&Math.random()<.32)runnerState.dust.push({x:90,y:246,size:2+Math.random()*3,life:18});
+    if(runnerState.y===0&&Math.random()<.32)runnerState.dust.push({x:90,y:RUN_GROUND,size:2+Math.random()*3,life:18});
     drawRunner();runner.raf=requestAnimationFrame(runnerTick);
   }
   function resetRunner(){
     cancelAnimationFrame(runner.raf);runner.running=false;runner.score=0;runner.scoreEl.textContent="0";
-    runnerState={y:0,vy:0,obstacles:[],rewards:[],spawn:35,rewardSpawn:40,speed:5,frame:0,over:false,clouds:[{x:80,y:65,s:1},{x:360,y:42,s:.75},{x:650,y:82,s:1.1}],dust:[]};
+    runnerState={y:0,vy:0,obstacles:[],rewards:[],spawn:35,rewardSpawn:40,speed:5,frame:0,over:false,dust:[]};
     runner.message.textContent="¡Prepárate! Salta los obstáculos y recoge monedas, estrellas y boletos.";
     document.getElementById("runnerStart").textContent="▶ Jugar";drawRunner();
   }
-  function jump(){if(!runner.running)return;if(runnerState.y===0){runnerState.vy=-13;for(let i=0;i<5;i++)runnerState.dust.push({x:95+Math.random()*18,y:246,size:2+Math.random()*3,life:18});}}
+  function jump(){if(!runner.running)return;if(runnerState.y===0){runnerState.vy=-13;for(let i=0;i<5;i++)runnerState.dust.push({x:95+Math.random()*18,y:RUN_GROUND,size:2+Math.random()*3,life:18});}}
   document.getElementById("runnerStart").addEventListener("click",()=>{if(runnerState.over)resetRunner();runner.running=true;runner.last=performance.now();runner.message.textContent="¡Eso! ¡A romper el récord!";runner.raf=requestAnimationFrame(runnerTick);document.getElementById("runnerStart").textContent="¡EN JUEGO!";});
   document.getElementById("runnerJump").addEventListener("click",jump);
   document.getElementById("runnerReset").addEventListener("click",resetRunner);
