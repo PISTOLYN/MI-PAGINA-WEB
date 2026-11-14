@@ -129,11 +129,9 @@ function applyBrand() {
   $("#brandName").textContent = CONFIG.brandName;
   $("#footerBrand").textContent = CONFIG.brandName;
   $("#copyrightBrand").textContent = CONFIG.brandName;
-  $("#announcement").textContent = CONFIG.announcement;
   $("#heroTitle").innerHTML = CONFIG.heroTitle.replace(/(extraordinario|divertido|especial)/i, '<span>$1</span>');
   $("#heroText").textContent = CONFIG.heroText;
   $("#year").textContent = new Date().getFullYear();
-  ["#headerWhatsApp", "#heroWhatsApp", "#floatingWhatsApp"].forEach(sel => $(sel).href = waUrl());
 }
 
 function renderProducts(category = "Todos") {
@@ -216,6 +214,7 @@ function renderVideos() {
 }
 
 function renderSocial() {
+  if (!$("#socialLinks")) return;
   $("#socialLinks").innerHTML = CONFIG.social.map(s =>
     `<a class="social-link" href="${s.url ? escapeAttr(s.url) : "#redes"}" ${s.url ? 'target="_blank" rel="noopener"' : 'aria-disabled="true"'}><span>${escapeHTML(s.icon)}</span> ${escapeHTML(s.name)} ↗</a>`
   ).join("");
@@ -226,11 +225,11 @@ function escapeHTML(value = "") {
 }
 function escapeAttr(value = "") { return escapeHTML(value); }
 
-$("#categoryFilters").addEventListener("click", e => {
+$("#categoryFilters")?.addEventListener("click", e => {
   const button = e.target.closest("[data-category]");
   if (button) renderProducts(button.dataset.category);
 });
-$("#productGrid").addEventListener("click", e => {
+$("#productGrid")?.addEventListener("click", e => {
   const button = e.target.closest("[data-product]");
   if (!button) return;
   const p = CONFIG.products[Number(button.dataset.product)];
@@ -311,8 +310,6 @@ visitorOptOutButton?.addEventListener("click", () => {
 updateVisitorCounter();
 
 applyBrand();
-renderProducts();
 renderGallery();
 renderVideos();
-renderSocial();
 startGame();
