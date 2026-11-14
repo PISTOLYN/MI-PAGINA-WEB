@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Fredoka:wght@500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=payaso-hola-3">
+  <link rel="stylesheet" href="styles.css?v=quienes-4">
 </head>
 <body>
 
@@ -19,7 +19,7 @@
     </a>
     <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false">☰</button>
     <nav class="main-nav" id="mainNav">
-      <a href="#inicio">Inicio</a><a href="#galeria">Fotos</a><a href="#videos">Videos</a><a href="#juegos">Juegos</a>
+      <a href="#inicio">Inicio</a><a href="#quienes-somos" id="openAbout">¿Quiénes somos?</a><a href="#galeria">Fotos</a><a href="#videos">Videos</a><a href="#juegos">Juegos</a>
     </nav>
       <section class="music-player" id="musicPlayer" aria-label="Música de Desafíos Locos">
       <audio id="siteMusic" preload="metadata"></audio>
@@ -68,7 +68,7 @@
 
 
     <section class="arcade-section section-wrap" id="mini-juegos">
-      <div class="section-heading"><div><span class="eyebrow">JUEGA CON DESAFÍOS LOCOS</span><h2>¡El payasito en <span>acción!</span></h2><p>Usamos tu personaje del logo oficial. ¡Ayúdalo a superar los obstáculos y atrapar premios!</p></div></div>
+      <div class="section-heading"><div><span class="eyebrow">JUEGA CON DESAFÍOS LOCOS</span><h2>¡Pistolyn en <span>acción!</span></h2><p>¡Ayúdalo a superar los obstáculos y atrapar premios!</p></div></div>
       <article class="arcade-card">
         <div class="arcade-heading"><div><span class="arcade-kicker">JUEGO 1</span><h3>Corre y brinca</h3><p>Salta los obstáculos y consigue la mayor puntuación.</p></div><div class="arcade-score">Puntos <strong id="runnerScore">0</strong><small>Récord <b id="runnerBest">0</b></small></div></div>
         <canvas id="runnerCanvas" width="800" height="300" aria-label="Juego del payasito corriendo y brincando obstáculos"></canvas>
@@ -92,7 +92,19 @@
 
 
 
-<script src="app.js?v=marco-fuentes-2"></script>
+    <div class="about-overlay" id="aboutOverlay" role="dialog" aria-modal="true" aria-labelledby="aboutTitle" hidden>
+    <button class="about-close" id="aboutClose" aria-label="Cerrar">✕</button>
+    <div class="about-box">
+      <img class="about-logo" src="t.png" alt="Logo Desafíos Locos">
+      <h2 id="aboutTitle">¿Quiénes somos?</h2>
+      <p>En Desafíos Locos somos un equipo dedicado al entretenimiento y la animación de eventos, creando experiencias llenas de diversión, energía y participación para chicos y grandes.</p>
+      <p>Ofrecemos un show 100% familiar, interactivo y dinámico, con música, juegos, concursos y desafíos al estilo de los programas de televisión, donde los invitados se convierten en los protagonistas de la diversión.</p>
+      <p>Nuestro objetivo es brindar momentos inolvidables, fomentar la convivencia y hacer que todos disfruten de una experiencia diferente, con premios para los competidores ganadores.</p>
+      <p>Participamos en eventos sociales, empresariales, escolares y celebraciones privadas.</p>
+      <p class="about-slogan">Desafíos Locos: ¡Juega, ríe y gana!</p>
+    </div>
+  </div>
+<script src="app.js?v=quienes-4"></script>
   <script>
     (() => {
       const audio = document.getElementById("siteMusic");
