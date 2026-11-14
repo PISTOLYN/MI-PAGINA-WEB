@@ -537,7 +537,7 @@ startGame();
         c.fillStyle="#ed4c43";c.fillRect(o.x,RUN_GROUND-o.h,o.w,o.h);
       }
     });
-    const clownW=isMobileRunner?145:108,clownH=isMobileRunner?130:96,clownX=isMobileRunner?38:58;
+    const clownW=isMobileRunner?175:145,clownH=isMobileRunner?155:130,clownX=isMobileRunner?28:42;
     const clownY=RUN_GROUND-clownH+runnerState.y;
     if(!isMobileRunner){c.fillStyle="rgba(0,0,0,.18)";c.beginPath();c.ellipse(clownX+clownW/2,RUN_GROUND+2,27,5,0,0,Math.PI*2);c.fill();}
     if(!runnerArt.clown.complete||!runnerArt.clown.naturalWidth){
@@ -576,7 +576,7 @@ startGame();
     runnerState.rewards.forEach(o=>o.x-=runnerState.speed*dt);
     runnerState.dust.forEach(p=>{p.x-=2*dt;p.life-=dt;});
     runnerState.dust=runnerState.dust.filter(p=>p.life>0);
-    const px=78,py=RUN_GROUND-(isMobileRunner?130:96)+runnerState.y+(isMobileRunner?16:10),pw=isMobileRunner?86:68,ph=isMobileRunner?94:76;
+    const px=(isMobileRunner?28:42)+20,py=RUN_GROUND-(isMobileRunner?155:130)+runnerState.y+18,pw=(isMobileRunner?175:145)-40,ph=(isMobileRunner?155:130)-28;
     const hit=runnerState.obstacles.some(o=>{const oy=o.air?o.y:RUN_GROUND-o.h-(o.bounce||0);return runnerState.powerFrames>0?false:px+pw-8>o.x+8&&px+8<o.x+o.w-8&&py+ph-8>oy+8&&py+8<oy+o.h-5;});
     if(hit){runner.running=false;runnerMusic.pause();runnerState.over=true;runnerSound("crash");runner.message.textContent="¡Uy! 😄 ¡Casi lo logras! Presiona Volver a jugar y sigue coleccionando premios.";document.getElementById("runnerStart").textContent="▶ Volver a jugar";drawRunner();return;}
     runnerState.rewards=runnerState.rewards.filter(o=>{
