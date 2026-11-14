@@ -248,8 +248,8 @@ $("#mainNav").addEventListener("click", e => {
   }
 });
 
-// Juego de memoria
-const symbols = ["🎈", "⭐", "🍀", "🎁", "🦄", "🎉"];
+// Juego de memoria con los seis payasitos del repositorio
+const clownImages = ["1.png", "2.png", "3.png", "4.png", "5.png", "6.png"];
 let deck = [], firstCard = null, lockBoard = false, moveCount = 0, matchCount = 0;
 function shuffle(items) {
   const result = [...items];
@@ -259,11 +259,19 @@ function shuffle(items) {
   }
   return result;
 }
+function revealClown(card, image) {
+  card.innerHTML = `<img src="${image}" alt="Payasito del memorama" draggable="false">`;
+  card.classList.add("revealed");
+}
+function hideClown(card) {
+  card.textContent = "?";
+  card.classList.remove("revealed");
+}
 function startGame() {
-  deck = shuffle([...symbols, ...symbols]);
+  deck = shuffle([...clownImages, ...clownImages]);
   firstCard = null; lockBoard = false; moveCount = 0; matchCount = 0;
   $("#moves").textContent = "0"; $("#matches").textContent = "0/6";
-  $("#memoryBoard").innerHTML = deck.map((symbol, i) =>
+  $("#memoryBoard").innerHTML = deck.map((image, i) =>
     `<button class="memory-card" data-index="${i}" aria-label="Carta ${i + 1}">?</button>`
   ).join("");
 }
@@ -271,20 +279,19 @@ $("#memoryBoard").addEventListener("click", e => {
   const card = e.target.closest(".memory-card");
   if (!card || lockBoard || card.classList.contains("revealed") || card.classList.contains("matched")) return;
   const index = Number(card.dataset.index);
-  card.textContent = deck[index]; card.classList.add("revealed");
+  revealClown(card, deck[index]);
   if (!firstCard) { firstCard = card; return; }
   moveCount++; $("#moves").textContent = moveCount;
   const firstIndex = Number(firstCard.dataset.index);
   if (deck[firstIndex] === deck[index]) {
     firstCard.classList.add("matched"); card.classList.add("matched");
     firstCard = null; matchCount++; $("#matches").textContent = `${matchCount}/6`;
-    if (matchCount === 6) setTimeout(() => alert(`¡Lo lograste! Encontraste todas las parejas en ${moveCount} movimientos.`), 250);
+    if (matchCount === 6) setTimeout(() => alert(`¡Lo lograste! Encontraste todos los payasitos en ${moveCount} movimientos.`), 250);
   } else {
     lockBoard = true;
     const previous = firstCard; firstCard = null;
     setTimeout(() => {
-      previous.textContent = "?"; card.textContent = "?";
-      previous.classList.remove("revealed"); card.classList.remove("revealed");
+      hideClown(previous); hideClown(card);
       lockBoard = false;
     }, 850);
   }
