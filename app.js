@@ -387,6 +387,30 @@ startGame();
   Object.entries(runnerAssets).forEach(([key,src])=>{const im=new Image();im.src=src;runnerArt[key]=im;});
   const runnerBackground=new Image();
   runnerBackground.src="FONDO.jpg";
+  // El fondo se prepara una sola vez; no se vuelve a escalar la foto en cada cuadro.
+  const runnerBackgroundCache=document.createElement("canvas");
+  runnerBackgroundCache.width=runner.width;
+  runnerBackgroundCache.height=runner.height;
+  const runnerBackgroundCtx=runnerBackgroundCache.getContext("2d");
+  let runnerBackgroundReady=false;
+  function prepareRunnerBackground(){
+    const w=runner.width,h=runner.height;
+    if(!runnerBackground.naturalWidth)return;
+    const scale=Math.max(w/runnerBackground.naturalWidth,h/runnerBackground.naturalHeight);
+    const sw=w/scale,sh=h/scale;
+    const sx=(runnerBackground.naturalWidth-sw)/2,sy=(runnerBackground.naturalHeight-sh)/2;
+    runnerBackgroundCtx.drawImage(runnerBackground,sx,sy,sw,sh,0,0,w,h);
+    runnerBackgroundCtx.fillStyle="rgba(25,35,25,.20)";
+    runnerBackgroundCtx.fillRect(0,246,w,h-246);
+    runnerBackgroundCtx.fillStyle="rgba(30,45,25,.30)";
+    runnerBackgroundCtx.fillRect(0,246,w,4);
+    runnerBackgroundReady=true;
+  }
+  runnerBackground.onload=prepareRunnerBackground;
+  if(runnerBackground.complete&&runnerBackground.naturalWidth)prepareRunnerBackground();
+  const isMobileRunner=window.matchMedia("(max-width: 700px), (pointer: coarse)").matches;
+  const runnerFrameInterval=isMobileRunner?1000/30:1000/60;
+  let runnerLastPaint=0;
   const bestKey="dl_runner_best";
   let runnerBest=Number(localStorage.getItem(bestKey)||0);
   const bestLabel=document.getElementById("runnerBest");
@@ -396,19 +420,8 @@ startGame();
 
   function drawPhotoBackground(){
     const c=runner.ctx,w=runner.width,h=runner.height;
-    if(runnerBackground.complete&&runnerBackground.naturalWidth){
-      const scale=Math.max(w/runnerBackground.naturalWidth,h/runnerBackground.naturalHeight);
-      const sw=w/scale,sh=h/scale;
-      const sx=(runnerBackground.naturalWidth-sw)/2,sy=(runnerBackground.naturalHeight-sh)/2;
-      c.drawImage(runnerBackground,sx,sy,sw,sh,0,0,w,h);
-    }else{
-      c.fillStyle="#b9e5ff";c.fillRect(0,0,w,h);
-    }
-    // Sombra suave para integrar los elementos al piso de la fotografía.
-    c.fillStyle="rgba(25,35,25,.20)";
-    c.fillRect(0,RUN_GROUND,w,runner.height-RUN_GROUND);
-    c.fillStyle="rgba(30,45,25,.30)";
-    c.fillRect(0,RUN_GROUND,w,4);
+    if(runnerBackgroundReady)c.drawImage(runnerBackgroundCache,0,0);
+    else{c.fillStyle="#b9e5ff";c.fillRect(0,0,w,h);}
   }
   function drawGroundArt(key,x,ground,maxW,maxH){
     const c=runner.ctx,im=runnerArt[key];
@@ -416,8 +429,10 @@ startGame();
     const scale=Math.min(maxW/im.naturalWidth,maxH/im.naturalHeight);
     const w=im.naturalWidth*scale,h=im.naturalHeight*scale;
     // Sombra al nivel del suelo: evita que los obstáculos parezcan suspendidos.
-    c.save();c.fillStyle="rgba(0,0,0,.24)";c.beginPath();
-    c.ellipse(x+w/2,ground+2,Math.max(9,w*.38),Math.max(2,w*.075),0,0,Math.PI*2);c.fill();c.restore();
+    if(!isMobileRunner){
+      c.save();c.fillStyle="rgba(0,0,0,.20)";c.beginPath();
+      c.ellipse(x+w/2,ground+2,Math.max(9,w*.38),Math.max(2,w*.075),0,0,Math.PI*2);c.fill();c.restore();
+    }
     c.drawImage(im,x,ground-h,w,h);
     return true;
   }
@@ -449,7 +464,7 @@ startGame();
     });
     const clownW=92,clownH=82,clownX=64;
     const clownY=RUN_GROUND-clownH+runnerState.y;
-    c.fillStyle="rgba(0,0,0,.22)";c.beginPath();c.ellipse(clownX+clownW/2,RUN_GROUND+2,27,5,0,0,Math.PI*2);c.fill();
+    if(!isMobileRunner){c.fillStyle="rgba(0,0,0,.18)";c.beginPath();c.ellipse(clownX+clownW/2,RUN_GROUND+2,27,5,0,0,Math.PI*2);c.fill();}
     if(!runnerArt.clown.complete||!runnerArt.clown.naturalWidth){
       c.fillStyle="#792bd0";c.beginPath();c.arc(clownX+clownW/2,clownY+clownH/2,30,0,Math.PI*2);c.fill();
     }else{
@@ -469,7 +484,10 @@ startGame();
   }
   function runnerTick(t){
     if(!runner.running)return;
-    const dt=Math.min(2,(t-runner.last)/16.67||1);runner.last=t;
+    if(t-runnerLastPaint<runnerFrameInterval){runner.raf=requestAnimationFrame(runnerTick);return;}
+    const elapsed=runner.last?Math.min(2,(t-runner.last)/16.67||1):1;
+    runner.last=t;runnerLastPaint=t;
+    const dt=elapsed;
     runnerState.frame+=dt;runnerState.spawn-=dt;runnerState.rewardSpawn-=dt;
     if(runnerState.spawn<=0){spawnObstacle();runnerState.spawn=Math.max(42,72-Math.floor(runner.score/12))+Math.random()*28;}
     if(runnerState.rewardSpawn<=0){const type=Math.random()<.18?"ticket":Math.random()<.55?"coin":"star";runnerState.rewards.push({type,x:830,y:145+Math.random()*48});runnerState.rewardSpawn=42+Math.random()*38;}
@@ -490,7 +508,7 @@ startGame();
     runner.score=Math.max(runner.score,Math.floor(runnerState.frame/4));runner.scoreEl.textContent=runner.score;
     if(runner.score>runnerBest){runnerBest=runner.score;localStorage.setItem(bestKey,String(runnerBest));if(bestLabel)bestLabel.textContent=runnerBest;}
     runnerState.speed=Math.min(10,5+runner.score/150);
-    if(runnerState.y===0&&Math.random()<.32)runnerState.dust.push({x:90,y:RUN_GROUND,size:2+Math.random()*3,life:18});
+    if(!isMobileRunner&&runnerState.y===0&&Math.random()<.18)runnerState.dust.push({x:90,y:RUN_GROUND,size:2+Math.random()*3,life:18});
     drawRunner();runner.raf=requestAnimationFrame(runnerTick);
   }
   function resetRunner(){
@@ -499,8 +517,8 @@ startGame();
     runner.message.textContent="¡Prepárate! Salta los obstáculos y recoge monedas, estrellas y boletos.";
     document.getElementById("runnerStart").textContent="▶ Jugar";drawRunner();
   }
-  function jump(){if(!runner.running)return;if(runnerState.y===0){runnerState.vy=-13;for(let i=0;i<5;i++)runnerState.dust.push({x:95+Math.random()*18,y:RUN_GROUND,size:2+Math.random()*3,life:18});}}
-  document.getElementById("runnerStart").addEventListener("click",()=>{if(runnerState.over)resetRunner();runner.running=true;runner.last=performance.now();runner.message.textContent="¡Eso! ¡A romper el récord!";runner.raf=requestAnimationFrame(runnerTick);document.getElementById("runnerStart").textContent="¡EN JUEGO!";});
+  function jump(){if(!runner.running)return;if(runnerState.y===0){runnerState.vy=-13;if(!isMobileRunner)for(let i=0;i<3;i++)runnerState.dust.push({x:95+Math.random()*18,y:RUN_GROUND,size:2+Math.random()*3,life:18});}}
+  document.getElementById("runnerStart").addEventListener("click",()=>{if(runnerState.over)resetRunner();runner.running=true;runner.last=0;runnerLastPaint=0;runner.message.textContent="¡Eso! ¡A romper el récord!";runner.raf=requestAnimationFrame(runnerTick);document.getElementById("runnerStart").textContent="¡EN JUEGO!";});
   document.getElementById("runnerJump").addEventListener("click",jump);
   document.getElementById("runnerReset").addEventListener("click",resetRunner);
   runner.canvas.addEventListener("pointerdown",jump);
