@@ -444,3 +444,16 @@ body{padding-top:82px !important}
 .arcade-card:first-of-type .arcade-score strong{color:#e27a00}
 .arcade-card:first-of-type .arcade-hint{font-weight:700;color:#56417e}
 @media(max-width:600px){.arcade-card:first-of-type canvas{aspect-ratio:8/4;border-radius:11px}}
+
+
+/* Mejor tamaño y controles táctiles en celulares para Corre y brinca */
+@media(max-width:600px){
+  .arcade-section{padding-left:5px;padding-right:5px}
+  .arcade-card:first-of-type{width:100%;max-width:none;padding:8px;margin-left:0;margin-right:0}
+  .arcade-card:first-of-type canvas{width:100%;height:auto;aspect-ratio:8/4.6;min-height:170px;max-height:none;object-fit:fill}
+  .arcade-card:first-of-type .arcade-heading{gap:6px}
+  .arcade-card:first-of-type .arcade-heading h3{font-size:23px}
+  .arcade-card:first-of-type .arcade-controls{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .arcade-card:first-of-type .arcade-controls .button{width:100%;min-height:46px;font-size:14px}
+  .arcade-card:first-of-type #runnerJump{grid-column:1/-1;grid-row:1;min-height:56px;font-size:18px}
+}
