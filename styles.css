@@ -318,3 +318,26 @@ body{padding-top:82px !important}
  .site-header .music-player input[type=range]{width:42px !important}
  body{padding-top:112px !important}
 }
+
+
+/* Video ampliado al ancho de las fotos, sin fondo negro ni marco exterior */
+.video-section{background:#fff !important;color:#171b35;padding:48px 0 64px}
+.video-section .light-heading h2{color:#30106f}
+.video-section .light-heading p{color:#6e6680}
+.video-grid{display:flex;justify-content:center;align-items:center;max-width:100%;margin:0 auto;position:relative}
+.video-featured{position:relative;width:min(100%,560px);padding:0;background:transparent;border:0;border-radius:0;box-shadow:none;overflow:visible}
+.video-featured-title{padding:0 8px 14px;color:#30106f;font-size:23px}
+.video-featured .video-frame{position:relative;width:100%;aspect-ratio:9/16;max-height:78vh;background:transparent;border:0;border-radius:0;overflow:hidden;display:block}
+.video-featured .video-frame video{display:block;width:100%;height:100%;object-fit:cover;background:transparent}
+.video-featured .video-caption{padding:10px 4px 0;color:#51476a;text-align:center}
+.video-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:5;width:46px;height:46px;flex:0 0 46px;border:2px solid rgba(255,255,255,.9);border-radius:50%;background:rgba(25,18,65,.58);color:#fff;font-size:22px;box-shadow:0 3px 12px rgba(0,0,0,.2);backdrop-filter:blur(4px)}
+.video-arrow:hover{background:rgba(25,18,65,.85);transform:translateY(-50%) scale(1.06)}
+.video-prev{left:12px}
+.video-next{right:12px}
+@media(max-width:600px){
+ .video-featured{width:min(100%,560px)}
+ .video-featured-title{font-size:18px}
+ .video-featured .video-frame{max-height:72vh}
+ .video-arrow{width:38px;height:38px;flex-basis:38px;font-size:18px}
+ .video-prev{left:8px}.video-next{right:8px}
+}
