@@ -384,7 +384,24 @@ startGame();
     ticket: "BOLETO%20DORADO.png",
     gifts: "PILA%20DE%20REGALOS.png"
   };
-  Object.entries(runnerAssets).forEach(([key,src])=>{const im=new Image();im.src=src;runnerArt[key]=im;});
+  const runnerArtBounds={};
+  Object.entries(runnerAssets).forEach(([key,src])=>{
+    const im=new Image();runnerArt[key]=im;
+    im.onload=()=>{
+      if(key==="clown")return;
+      try{
+        const scan=document.createElement("canvas");scan.width=im.naturalWidth;scan.height=im.naturalHeight;
+        const cx=scan.getContext("2d",{willReadFrequently:true});cx.drawImage(im,0,0);
+        const pixels=cx.getImageData(0,0,scan.width,scan.height).data;
+        let minX=scan.width,minY=scan.height,maxX=-1,maxY=-1;
+        for(let y=0;y<scan.height;y++)for(let x=0;x<scan.width;x++){
+          if(pixels[(y*scan.width+x)*4+3]>18){if(x<minX)minX=x;if(x>maxX)maxX=x;if(y<minY)minY=y;if(y>maxY)maxY=y;}
+        }
+        if(maxX>=minX&&maxY>=minY)runnerArtBounds[key]={x:minX,y:minY,w:maxX-minX+1,h:maxY-minY+1};
+      }catch(e){}
+    };
+    im.src=src;
+  });
   const runnerBackground=new Image();
   runnerBackground.src="FONDO.jpg";
   // El fondo se prepara una sola vez; no se vuelve a escalar la foto en cada cuadro.
@@ -419,13 +436,18 @@ startGame();
   // Efectos de sonido ligeros generados con Web Audio (sin descargar archivos).
   let runnerSoundEnabled=localStorage.getItem("dl_runner_sound")!=="off";
   let runnerAudio=null;
-  function runnerTone(freq,duration,type="sine",volume=.055,slide=0){
-    if(!runnerSoundEnabled)return;
+  function unlockRunnerAudio(){
     try{
       const AudioCtx=window.AudioContext||window.webkitAudioContext;
-      if(!AudioCtx)return;
+      if(!AudioCtx)return false;
       if(!runnerAudio)runnerAudio=new AudioCtx();
       if(runnerAudio.state==="suspended")runnerAudio.resume();
+      return true;
+    }catch(e){return false;}
+  }
+  function runnerTone(freq,duration,type="sine",volume=.09,slide=0){
+    if(!runnerSoundEnabled||!unlockRunnerAudio())return;
+    try{
       const osc=runnerAudio.createOscillator(),gain=runnerAudio.createGain();
       const now=runnerAudio.currentTime;
       osc.type=type;osc.frequency.setValueAtTime(freq,now);
@@ -451,7 +473,7 @@ startGame();
     runnerSoundEnabled=!runnerSoundEnabled;
     localStorage.setItem("dl_runner_sound",runnerSoundEnabled?"on":"off");
     updateRunnerSoundButton();
-    if(runnerSoundEnabled)runnerSound("start");
+    if(runnerSoundEnabled){unlockRunnerAudio();runnerSound("start");}
   });
   updateRunnerSoundButton();
   let runnerState={y:0,vy:0,obstacles:[],rewards:[],spawn:0,rewardSpawn:55,speed:5,frame:0,over:false,dust:[]};
@@ -464,14 +486,13 @@ startGame();
   function drawGroundArt(key,x,ground,maxW,maxH){
     const c=runner.ctx,im=runnerArt[key];
     if(!im||!im.complete||!im.naturalWidth)return false;
-    const scale=Math.min(maxW/im.naturalWidth,maxH/im.naturalHeight);
-    const w=im.naturalWidth*scale,h=im.naturalHeight*scale;
-    // Sombra al nivel del suelo: evita que los obstáculos parezcan suspendidos.
-    if(!isMobileRunner){
-      c.save();c.fillStyle="rgba(0,0,0,.20)";c.beginPath();
-      c.ellipse(x+w/2,ground+2,Math.max(9,w*.38),Math.max(2,w*.075),0,0,Math.PI*2);c.fill();c.restore();
-    }
-    c.drawImage(im,x,ground-h,w,h);
+    const b=runnerArtBounds[key]||{x:0,y:0,w:im.naturalWidth,h:im.naturalHeight};
+    const scale=Math.min(maxW/b.w,maxH/b.h);
+    const w=b.w*scale,h=b.h*scale;
+    c.save();c.fillStyle="rgba(0,0,0,.30)";c.beginPath();
+    c.ellipse(x+w/2,ground+1,Math.max(11,w*.43),Math.max(3,w*.09),0,0,Math.PI*2);c.fill();c.restore();
+    // Se recorta el margen transparente y se pega el borde inferior al suelo.
+    c.drawImage(im,b.x,b.y,b.w,b.h,x,ground-h,w,h);
     return true;
   }
   function drawRunnerArt(key,x,y,w,h){
@@ -500,7 +521,7 @@ startGame();
         c.fillStyle="#ed4c43";c.fillRect(o.x,RUN_GROUND-o.h,o.w,o.h);
       }
     });
-    const clownW=92,clownH=82,clownX=64;
+    const clownW=isMobileRunner?132:92,clownH=isMobileRunner?118:82,clownX=isMobileRunner?42:64;
     const clownY=RUN_GROUND-clownH+runnerState.y;
     if(!isMobileRunner){c.fillStyle="rgba(0,0,0,.18)";c.beginPath();c.ellipse(clownX+clownW/2,RUN_GROUND+2,27,5,0,0,Math.PI*2);c.fill();}
     if(!runnerArt.clown.complete||!runnerArt.clown.naturalWidth){
@@ -515,7 +536,8 @@ startGame();
   }
   function spawnObstacle(){
     const types=["cone","wood","fire","hydrant","spring","boxes"];
-    const sizes={cone:[48,55],wood:[66,48],fire:[58,62],hydrant:[48,55],spring:[52,58],boxes:[62,58]};
+    const factor=isMobileRunner?1.28:1;
+    const sizes={cone:[48*factor,55*factor],wood:[66*factor,48*factor],fire:[58*factor,62*factor],hydrant:[48*factor,55*factor],spring:[52*factor,58*factor],boxes:[62*factor,58*factor]};
     const type=types[Math.floor(Math.random()*types.length)];
     const [w,h]=sizes[type];
     runnerState.obstacles.push({type,x:830,y:RUN_GROUND-h,w,h});
@@ -555,8 +577,8 @@ startGame();
     runner.message.textContent="¡Prepárate! Salta los obstáculos y recoge monedas, estrellas y boletos.";
     document.getElementById("runnerStart").textContent="▶ Jugar";drawRunner();
   }
-  function jump(){if(!runner.running)return;if(runnerState.y===0){runnerSound("jump");runnerState.vy=-13;if(!isMobileRunner)for(let i=0;i<3;i++)runnerState.dust.push({x:95+Math.random()*18,y:RUN_GROUND,size:2+Math.random()*3,life:18});}}
-  document.getElementById("runnerStart").addEventListener("click",()=>{if(runnerState.over)resetRunner();runner.running=true;runner.last=0;runnerLastPaint=0;runner.message.textContent="¡Eso! ¡A romper el récord!";runnerSound("start");runner.raf=requestAnimationFrame(runnerTick);document.getElementById("runnerStart").textContent="¡EN JUEGO!";});
+  function jump(){if(!runner.running)return;unlockRunnerAudio();if(runnerState.y===0){runnerSound("jump");runnerState.vy=-13;if(!isMobileRunner)for(let i=0;i<3;i++)runnerState.dust.push({x:95+Math.random()*18,y:RUN_GROUND,size:2+Math.random()*3,life:18});}}
+  document.getElementById("runnerStart").addEventListener("click",()=>{if(runnerState.over)resetRunner();unlockRunnerAudio();runner.running=true;runner.last=0;runnerLastPaint=0;runner.message.textContent="¡Eso! ¡A romper el récord!";runnerSound("start");runner.raf=requestAnimationFrame(runnerTick);document.getElementById("runnerStart").textContent="¡EN JUEGO!";});
   document.getElementById("runnerJump").addEventListener("click",jump);
   document.getElementById("runnerReset").addEventListener("click",resetRunner);
   runner.canvas.addEventListener("pointerdown",jump);
