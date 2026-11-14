@@ -418,9 +418,9 @@ startGame();
     const sx=(runnerBackground.naturalWidth-sw)/2,sy=(runnerBackground.naturalHeight-sh)/2;
     runnerBackgroundCtx.drawImage(runnerBackground,sx,sy,sw,sh,0,0,w,h);
     runnerBackgroundCtx.fillStyle="rgba(25,35,25,.20)";
-    runnerBackgroundCtx.fillRect(0,246,w,h-246);
+    runnerBackgroundCtx.fillRect(0,RUN_GROUND,w,h-RUN_GROUND);
     runnerBackgroundCtx.fillStyle="rgba(30,45,25,.30)";
-    runnerBackgroundCtx.fillRect(0,246,w,4);
+    runnerBackgroundCtx.fillRect(0,RUN_GROUND,w,4);
     runnerBackgroundReady=true;
   }
   runnerBackground.onload=prepareRunnerBackground;
@@ -432,7 +432,7 @@ startGame();
   let runnerBest=Number(localStorage.getItem(bestKey)||0);
   const bestLabel=document.getElementById("runnerBest");
   if(bestLabel)bestLabel.textContent=runnerBest;
-  const RUN_GROUND=246;
+  const RUN_GROUND=278;
   // Efectos de sonido ligeros generados con Web Audio (sin descargar archivos).
   let runnerSoundEnabled=localStorage.getItem("dl_runner_sound")!=="off";
   let runnerAudio=null;
@@ -476,7 +476,7 @@ startGame();
     if(runnerSoundEnabled){unlockRunnerAudio();runnerSound("start");}
   });
   updateRunnerSoundButton();
-  let runnerState={y:0,vy:0,obstacles:[],rewards:[],spawn:0,rewardSpawn:55,speed:5,frame:0,over:false,dust:[]};
+  let runnerState={y:0,vy:0,obstacles:[],rewards:[],spawn:0,rewardSpawn:55,speed:3.8,frame:0,over:false,dust:[]};
 
   // Desplazamiento horizontal del escenario: crea sensación de carrera.
   let runnerBackgroundOffset=0;
@@ -557,17 +557,17 @@ startGame();
     // El fondo se mueve más lento que los obstáculos para dar profundidad.
     runnerBackgroundOffset=(runnerBackgroundOffset+(runnerState.speed*.34*dt))%runner.width;
     runnerState.frame+=dt;runnerState.spawn-=dt;runnerState.rewardSpawn-=dt;
-    if(runnerState.spawn<=0){spawnObstacle();runnerState.spawn=Math.max(42,72-Math.floor(runner.score/12))+Math.random()*28;}
+    if(runnerState.spawn<=0){spawnObstacle();runnerState.spawn=Math.max(78,112-Math.floor(runner.score/35))+Math.random()*32;}
     if(runnerState.rewardSpawn<=0){const type=Math.random()<.18?"ticket":Math.random()<.55?"coin":"star";runnerState.rewards.push({type,x:830,y:145+Math.random()*48});runnerState.rewardSpawn=42+Math.random()*38;}
-    runnerState.y+=runnerState.vy*dt;runnerState.vy+=.72*dt;
+    runnerState.y+=runnerState.vy*dt;runnerState.vy+=.62*dt;
     if(runnerState.y>0){runnerState.y=0;runnerState.vy=0;}
     runnerState.obstacles.forEach(o=>o.x-=runnerState.speed*dt);
     runnerState.rewards.forEach(o=>o.x-=runnerState.speed*dt);
     runnerState.dust.forEach(p=>{p.x-=2*dt;p.life-=dt;});
     runnerState.dust=runnerState.dust.filter(p=>p.life>0);
-    const px=83,py=RUN_GROUND-82+runnerState.y+10,pw=58,ph=65;
+    const px=83,py=RUN_GROUND-(isMobileRunner?118:82)+runnerState.y+(isMobileRunner?16:10),pw=isMobileRunner?76:58,ph=isMobileRunner?86:65;
     const hit=runnerState.obstacles.some(o=>px+pw-8>o.x+8&&px+8<o.x+o.w-8&&py+ph-8>RUN_GROUND-o.h+8&&py+8<RUN_GROUND-5);
-    if(hit){runner.running=false;runnerState.over=true;runnerSound("crash");runner.message.textContent="¡CHOCASTE! 😵 Presiona Volver a jugar para intentarlo otra vez.";document.getElementById("runnerStart").textContent="▶ Volver a jugar";drawRunner();return;}
+    if(hit){runner.running=false;runnerState.over=true;runnerSound("crash");runner.message.textContent="¡Uy! 😄 ¡Casi lo logras! Presiona Volver a jugar y sigue coleccionando premios.";document.getElementById("runnerStart").textContent="▶ Volver a jugar";drawRunner();return;}
     runnerState.rewards=runnerState.rewards.filter(o=>{
       if(o.x>70&&o.x<170&&o.y>py-8&&o.y<py+ph+8){runner.score+=o.type==="ticket"?5:o.type==="star"?3:1;runner.scoreEl.textContent=runner.score;runnerSound(o.type);return false;}
       return o.x>-50;
@@ -575,18 +575,18 @@ startGame();
     runnerState.obstacles=runnerState.obstacles.filter(o=>o.x+o.w>-20);
     runner.score=Math.max(runner.score,Math.floor(runnerState.frame/4));runner.scoreEl.textContent=runner.score;
     if(runner.score>runnerBest){runnerBest=runner.score;localStorage.setItem(bestKey,String(runnerBest));if(bestLabel)bestLabel.textContent=runnerBest;}
-    runnerState.speed=Math.min(10,5+runner.score/150);
+    runnerState.speed=Math.min(6.4,3.8+runner.score/260);
     if(!isMobileRunner&&runnerState.y===0&&Math.random()<.18)runnerState.dust.push({x:90,y:RUN_GROUND,size:2+Math.random()*3,life:18});
     drawRunner();runner.raf=requestAnimationFrame(runnerTick);
   }
   function resetRunner(){
     cancelAnimationFrame(runner.raf);runner.running=false;runner.score=0;runner.scoreEl.textContent="0";
-    runnerState={y:0,vy:0,obstacles:[],rewards:[],spawn:35,rewardSpawn:40,speed:5,frame:0,over:false,dust:[]};
+    runnerState={y:0,vy:0,obstacles:[],rewards:[],spawn:95,rewardSpawn:48,speed:3.8,frame:0,over:false,dust:[]};
     runnerBackgroundOffset=0;
     runner.message.textContent="¡Prepárate! Salta los obstáculos y recoge monedas, estrellas y boletos.";
     document.getElementById("runnerStart").textContent="▶ Jugar";drawRunner();
   }
-  function jump(){if(!runner.running)return;unlockRunnerAudio();if(runnerState.y===0){runnerSound("jump");runnerState.vy=-13;if(!isMobileRunner)for(let i=0;i<3;i++)runnerState.dust.push({x:95+Math.random()*18,y:RUN_GROUND,size:2+Math.random()*3,life:18});}}
+  function jump(){if(!runner.running)return;unlockRunnerAudio();if(runnerState.y===0){runnerSound("jump");runnerState.vy=-12.2;if(!isMobileRunner)for(let i=0;i<3;i++)runnerState.dust.push({x:95+Math.random()*18,y:RUN_GROUND,size:2+Math.random()*3,life:18});}}
   document.getElementById("runnerStart").addEventListener("click",()=>{if(runnerState.over)resetRunner();unlockRunnerAudio();runner.running=true;runner.last=0;runnerLastPaint=0;runner.message.textContent="¡Eso! ¡A romper el récord!";runnerSound("start");runner.raf=requestAnimationFrame(runnerTick);document.getElementById("runnerStart").textContent="¡EN JUEGO!";});
   document.getElementById("runnerJump").addEventListener("click",jump);
   document.getElementById("runnerReset").addEventListener("click",resetRunner);
