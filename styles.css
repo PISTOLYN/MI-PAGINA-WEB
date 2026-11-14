@@ -269,3 +269,52 @@ body{padding-bottom:68px}
  .music-info{min-width:70px !important;max-width:85px}
  .music-playlist{max-width:95px}
 }
+
+
+/* Barra superior integrada: navegación + reproductor siempre visibles */
+.site-header{
+ position:fixed !important;top:0;left:0;right:0;z-index:200;
+ min-height:76px;height:auto;padding:8px clamp(10px,2.2vw,30px);
+ display:flex;align-items:center;gap:clamp(8px,1.4vw,22px);
+ background:rgba(12,16,38,.94) !important;color:#fff;
+ border-bottom:1px solid rgba(255,255,255,.16);
+ box-shadow:0 5px 22px rgba(0,0,0,.22);
+ backdrop-filter:blur(12px)
+}
+.site-header .brand{flex:0 0 auto;color:#fff;font-size:clamp(10px,1vw,14px);gap:7px}
+.site-header .brand-logo{width:42px;height:42px;object-fit:contain}
+.site-header .main-nav{flex:1 1 auto;justify-content:center;gap:clamp(10px,2vw,28px);color:#fff;font-size:13px;white-space:nowrap}
+.site-header .main-nav a{color:#fff}
+.site-header .main-nav a:hover{color:#c8ff16}
+.site-header .music-player{
+ position:static !important;flex:0 1 auto;width:auto;max-width:none;
+ margin:0;padding:3px 7px !important;min-height:34px !important;
+ gap:5px !important;background:rgba(255,255,255,.10);
+ border:1px solid rgba(255,255,255,.22);border-radius:10px !important;
+ box-shadow:none !important;white-space:nowrap
+}
+.site-header .music-info{min-width:82px !important}
+.site-header .music-info strong{color:#fff;font-size:9px !important}
+.site-header .music-info span{font-size:8px !important}
+.site-header .music-playlist{max-width:112px;height:24px;font-size:9px}
+.site-header .music-volume{font-size:8px}
+.site-header .music-player input[type=range]{width:42px !important}
+body{padding-top:82px !important}
+@media(max-width:900px){
+ .site-header{flex-wrap:wrap;justify-content:space-between;gap:5px 10px;padding:6px 10px}
+ .site-header .brand{order:1}
+ .site-header .menu-toggle{display:block;order:2;margin-left:auto;background:rgba(255,255,255,.14);color:#fff}
+ .site-header .main-nav{order:3;flex:1 0 100%;justify-content:center;gap:clamp(12px,4vw,28px);font-size:12px;padding:2px 0}
+ .site-header .music-player{order:4;flex:1 0 100%;justify-content:center;width:100%;max-width:100%;margin:0 auto}
+ body{padding-top:116px !important}
+}
+@media(max-width:520px){
+ .site-header .brand-logo{width:34px;height:34px}
+ .site-header .brand{font-size:10px}
+ .site-header .main-nav{gap:clamp(9px,3.5vw,18px);font-size:11px}
+ .site-header .music-info{min-width:65px !important;max-width:78px;overflow:hidden}
+ .site-header .music-playlist{max-width:92px}
+ .site-header .music-volume{display:none}
+ .site-header .music-player input[type=range]{width:42px !important}
+ body{padding-top:112px !important}
+}
