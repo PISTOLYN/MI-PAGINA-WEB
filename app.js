@@ -247,16 +247,18 @@ $("#mainNav").addEventListener("click", e => {
   }
 });
 
-// Ventana "¿Quiénes somos?" a pantalla completa
-(() => {
-  const overlay = $("#aboutOverlay"), openBtn = $("#openAbout"), closeBtn = $("#aboutClose");
+// Ventanas a pantalla completa: "¿Quiénes somos?" y "¿Qué incluye?"
+function setupOverlay(overlayId, openId, closeId) {
+  const overlay = $(overlayId), openBtn = $(openId), closeBtn = $(closeId);
   const open = e => { if (e) e.preventDefault(); overlay.hidden = false; document.body.classList.add("about-open"); closeBtn.focus(); };
   const close = () => { overlay.hidden = true; document.body.classList.remove("about-open"); openBtn.focus(); };
   openBtn.addEventListener("click", open);
   closeBtn.addEventListener("click", close);
   overlay.addEventListener("click", e => { if (e.target === overlay) close(); });
   document.addEventListener("keydown", e => { if (e.key === "Escape" && !overlay.hidden) close(); });
-})();
+}
+setupOverlay("#aboutOverlay", "#openAbout", "#aboutClose");
+setupOverlay("#incOverlay", "#openInc", "#incClose");
 
 // Juego de memoria con los seis payasitos del repositorio
 const clownImages = ["1.png", "2.png", "3.png", "4.png", "5.png", "6.png"];

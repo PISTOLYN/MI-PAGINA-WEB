@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Fredoka:wght@500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=quienes-4">
+  <link rel="stylesheet" href="styles.css?v=incluye-5">
 </head>
 <body>
 
@@ -47,6 +47,7 @@
       <h1 class="banner-title"><span class="banner-lead">¡La diversión llega con</span><span class="banner-name">DESAFÍOS LOCOS MTY</span></h1>
       <ul class="banner-chips" aria-label="Características del show"><li>Show 100 % familiar</li><li>Dinámico</li><li>Interactivo</li></ul>
       <p class="banner-sub">Música, desafíos, concursos y premios para chicos y grandes. ¡Haz que tu evento sea inolvidable!</p>
+      <button class="glow-btn" id="openInc" type="button"><span>✨ ¿Qué incluye? ✨</span></button>
     </section>
 
     <section class="video-section" id="videos">
@@ -104,7 +105,20 @@
       <p class="about-slogan">Desafíos Locos: ¡Juega, ríe y gana!</p>
     </div>
   </div>
-<script src="app.js?v=quienes-4"></script>
+    <div class="about-overlay inc-overlay" id="incOverlay" role="dialog" aria-modal="true" aria-labelledby="incTitle" hidden>
+      <button class="about-close" id="incClose" aria-label="Cerrar">✕</button>
+      <div class="inc-card">
+        <div class="inc-clown"><img src="payaso-incluye.png" alt="Payasito de Desafíos Locos" width="478" height="700"></div>
+        <div class="inc-body">
+          <span class="inc-eyebrow">SHOW FAMILIAR</span>
+          <h2 id="incTitle">¿Qué incluye?</h2>
+          <ul class="inc-list"><li><i aria-hidden="true">🔊</i><span>Equipo de sonido profesional</span></li><li><i aria-hidden="true">⏱️</i><span>1 hora completa de show, música y animación</span></li><li><i aria-hidden="true">🎮</i><span>Juegos, dinámicas y concursos interactivos</span></li><li><i aria-hidden="true">🎯</i><span>Desafíos para chicos y grandes</span></li><li><i aria-hidden="true">🎁</i><span>Premios para los competidores ganadores</span></li><li><i aria-hidden="true">🏐</i><span>Pelotas gigantes para las dinámicas</span></li><li><i aria-hidden="true">🫧</i><span>Lluvia de burbujas</span></li><li><i aria-hidden="true">🎂</i><span>Participación especial en el momento del pastel</span></li><li><i aria-hidden="true">🎶</i><span>Canto de Las Mañanitas al festejado</span></li><li><i aria-hidden="true">🎉</i><span>Animación y participación de los invitados</span></li></ul>
+          <p class="inc-closing">¡Una hora llena de diversión, música y entretenimiento para toda la familia!</p>
+          <p class="inc-brand">DESAFÍOS LOCOS – JUEGA, RÍE Y GANA.</p>
+        </div>
+      </div>
+    </div>
+<script src="app.js?v=incluye-5"></script>
   <script>
     (() => {
       const audio = document.getElementById("siteMusic");
