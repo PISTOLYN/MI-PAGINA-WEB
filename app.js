@@ -590,6 +590,29 @@ startGame();
   document.getElementById("runnerStart").addEventListener("click",()=>{if(runnerState.over)resetRunner();unlockRunnerAudio();runner.running=true;runner.last=0;runnerLastPaint=0;runner.message.textContent="¡Eso! ¡A romper el récord!";runnerSound("start");runner.raf=requestAnimationFrame(runnerTick);document.getElementById("runnerStart").textContent="¡EN JUEGO!";});
   document.getElementById("runnerJump").addEventListener("click",jump);
   document.getElementById("runnerReset").addEventListener("click",resetRunner);
+  // Modo de juego en pantalla completa; en móviles solicita orientación horizontal.
+  const runnerLandscapeToggle=document.getElementById("runnerLandscape");
+  const runnerCard=document.querySelector("#runnerCanvas")?.closest(".arcade-card");
+  runnerLandscapeToggle?.addEventListener("change",async()=>{
+    if(runnerLandscapeToggle.checked){
+      try{
+        if(runnerCard?.requestFullscreen)await runnerCard.requestFullscreen();
+        if(screen.orientation?.lock)await screen.orientation.lock("landscape");
+        runnerCard?.classList.add("runner-landscape-active");
+      }catch(error){
+        runnerCard?.classList.add("runner-landscape-active");
+        runner.message.textContent="Gira tu celular de lado para disfrutar el juego en pantalla completa.";
+      }
+    }else{
+      runnerCard?.classList.remove("runner-landscape-active");
+      try{if(screen.orientation?.unlock)screen.orientation.unlock();}catch(error){}
+      try{if(document.fullscreenElement)await document.exitFullscreen();}catch(error){}
+    }
+  });
+  document.addEventListener("fullscreenchange",()=>{
+    if(!document.fullscreenElement&&runnerLandscapeToggle)runnerLandscapeToggle.checked=false;
+    runnerCard?.classList.toggle("runner-landscape-active",!!document.fullscreenElement);
+  });
   runner.canvas.addEventListener("pointerdown",jump);
   window.addEventListener("keydown",e=>{if(["ArrowUp"," "].includes(e.key)&&runner.running){e.preventDefault();jump();}});
   // Juego 2: atrapar regalos/estrellas y esquivar bombas con el mismo personaje.
