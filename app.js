@@ -259,6 +259,7 @@ function setupOverlay(overlayId, openId, closeId) {
 }
 setupOverlay("#aboutOverlay", "#openAbout", "#aboutClose");
 setupOverlay("#incOverlay", "#openInc", "#incClose");
+$("#quoteWa").href = waUrl("Hola, quiero cotizar mi evento con Desafíos Locos MTY.\n\nTipo de evento:\nFecha:\nLugar:\nNúmero aproximado de invitados:\n\n¡Gracias!");
 
 // Juego de memoria con los seis payasitos del repositorio
 const clownImages = ["1.png", "2.png", "3.png", "4.png", "5.png", "6.png"];
