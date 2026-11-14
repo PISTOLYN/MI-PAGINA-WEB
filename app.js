@@ -259,6 +259,8 @@ function setupOverlay(overlayId, openId, closeId) {
 }
 setupOverlay("#aboutOverlay", "#openAbout", "#aboutClose");
 setupOverlay("#incOverlay", "#openInc", "#incClose");
+setupOverlay("#babyOverlay", "#openBaby", "#babyClose");
+$("#quoteBabyWa").href = waUrl("Hola, quiero cotizar mi Baby Shower con Desafíos Locos MTY.\n\nFecha:\nLugar:\nNúmero aproximado de invitados:\n\n¡Gracias!");
 $("#quoteWa").href = waUrl("Hola, quiero cotizar mi evento con Desafíos Locos MTY.\n\nTipo de evento:\nFecha:\nLugar:\nNúmero aproximado de invitados:\n\n¡Gracias!");
 
 // Juego de memoria con los seis payasitos del repositorio

@@ -555,3 +555,16 @@ body.about-open{overflow:hidden}
 .wa-quote{display:inline-flex;align-items:center;gap:10px;margin-top:16px;padding:13px 28px;border-radius:999px;background:linear-gradient(180deg,#2fe07a,#17b957);color:#fff;text-decoration:none;font:700 clamp(16px,1.8vw,20px) "Fredoka","Outfit",sans-serif;box-shadow:0 8px 20px rgba(23,185,87,.4);transition:transform .2s,box-shadow .2s}
 .wa-quote:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 12px 26px rgba(23,185,87,.5)}
 @media(max-width:820px){.wa-quote{justify-content:center}}
+
+/* Show Baby Shower */
+.glow-stack{display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:20px}
+.glow-stack .glow-btn{margin:0}
+.glow-baby{background:linear-gradient(100deg,#3f9bff,#8f7cf5 50%,#ff7fbf);animation-name:glow-pulso-baby}
+@keyframes glow-pulso-baby{0%,100%{box-shadow:0 0 0 0 rgba(255,127,191,.5),0 0 18px rgba(63,155,255,.4),0 8px 22px rgba(63,155,255,.3)}50%{box-shadow:0 0 0 14px rgba(255,127,191,0),0 0 34px rgba(255,170,215,.7),0 8px 22px rgba(63,155,255,.3)}}
+.inc-baby{background:radial-gradient(circle at 12% 18%,rgba(255,255,255,.45) 0,transparent 30%),radial-gradient(circle at 88% 22%,rgba(255,170,215,.55) 0,transparent 36%),radial-gradient(circle at 80% 90%,rgba(140,200,255,.5) 0,transparent 38%),linear-gradient(160deg,#4d8df0,#7d6ae0 60%,#c46bd0)}
+.inc-baby .inc-card{box-shadow:0 0 0 4px #bfe0ff,0 0 0 8px rgba(255,150,205,.7),0 24px 60px rgba(0,0,0,.35)}
+.inc-baby .inc-body h2{background:linear-gradient(100deg,#2f7fe8,#8a6af0 55%,#ff6fb5);-webkit-background-clip:text;background-clip:text;color:transparent}
+.inc-baby .inc-body h2 span{background:none;-webkit-text-fill-color:#3a2a7a;color:#3a2a7a}
+.inc-baby .inc-list li{background:#eaf4ff}
+.inc-baby .inc-list li:nth-child(4n+2),.inc-baby .inc-list li:nth-child(4n+3){background:#ffeef7}
+.inc-note{margin:6px 0 4px;font:600 clamp(14px,1.5vw,17px) "DM Sans",sans-serif;color:#2f7fe8}
