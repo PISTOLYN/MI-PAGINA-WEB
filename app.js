@@ -433,6 +433,10 @@ startGame();
   const bestLabel=document.getElementById("runnerBest");
   if(bestLabel)bestLabel.textContent=runnerBest;
   const RUN_GROUND=278;
+  // Música exclusiva del juego 1; no modifica el reproductor general de la página.
+  const runnerMusic=new Audio("./CORRE%20CORRE%20CORRE.MP3");
+  runnerMusic.loop=true;
+  runnerMusic.volume=0.28;
   // Efectos de sonido ligeros generados con Web Audio (sin descargar archivos).
   let runnerSoundEnabled=localStorage.getItem("dl_runner_sound")!=="off";
   let runnerAudio=null;
@@ -567,7 +571,7 @@ startGame();
     runnerState.dust=runnerState.dust.filter(p=>p.life>0);
     const px=83,py=RUN_GROUND-(isMobileRunner?118:82)+runnerState.y+(isMobileRunner?16:10),pw=isMobileRunner?76:58,ph=isMobileRunner?86:65;
     const hit=runnerState.obstacles.some(o=>px+pw-8>o.x+8&&px+8<o.x+o.w-8&&py+ph-8>RUN_GROUND-o.h+8&&py+8<RUN_GROUND-5);
-    if(hit){runner.running=false;runnerState.over=true;runnerSound("crash");runner.message.textContent="¡Uy! 😄 ¡Casi lo logras! Presiona Volver a jugar y sigue coleccionando premios.";document.getElementById("runnerStart").textContent="▶ Volver a jugar";drawRunner();return;}
+    if(hit){runner.running=false;runnerMusic.pause();runnerState.over=true;runnerSound("crash");runner.message.textContent="¡Uy! 😄 ¡Casi lo logras! Presiona Volver a jugar y sigue coleccionando premios.";document.getElementById("runnerStart").textContent="▶ Volver a jugar";drawRunner();return;}
     runnerState.rewards=runnerState.rewards.filter(o=>{
       if(o.x>70&&o.x<170&&o.y>py-8&&o.y<py+ph+8){runner.score+=o.type==="ticket"?5:o.type==="star"?3:1;runner.scoreEl.textContent=runner.score;runnerSound(o.type);return false;}
       return o.x>-50;
@@ -580,14 +584,14 @@ startGame();
     drawRunner();runner.raf=requestAnimationFrame(runnerTick);
   }
   function resetRunner(){
-    cancelAnimationFrame(runner.raf);runner.running=false;runner.score=0;runner.scoreEl.textContent="0";
+    cancelAnimationFrame(runner.raf);runner.running=false;runnerMusic.pause();runnerMusic.currentTime=0;runner.score=0;runner.scoreEl.textContent="0";
     runnerState={y:0,vy:0,obstacles:[],rewards:[],spawn:95,rewardSpawn:48,speed:3.8,frame:0,over:false,dust:[]};
     runnerBackgroundOffset=0;
     runner.message.textContent="¡Prepárate! Salta los obstáculos y recoge monedas, estrellas y boletos.";
     document.getElementById("runnerStart").textContent="▶ Jugar";drawRunner();
   }
   function jump(){if(!runner.running)return;unlockRunnerAudio();if(runnerState.y===0){runnerSound("jump");runnerState.vy=-12.2;if(!isMobileRunner)for(let i=0;i<3;i++)runnerState.dust.push({x:95+Math.random()*18,y:RUN_GROUND,size:2+Math.random()*3,life:18});}}
-  document.getElementById("runnerStart").addEventListener("click",()=>{if(runnerState.over)resetRunner();unlockRunnerAudio();runner.running=true;runner.last=0;runnerLastPaint=0;runner.message.textContent="¡Eso! ¡A romper el récord!";runnerSound("start");runner.raf=requestAnimationFrame(runnerTick);document.getElementById("runnerStart").textContent="¡EN JUEGO!";});
+  document.getElementById("runnerStart").addEventListener("click",()=>{if(runnerState.over)resetRunner();unlockRunnerAudio();runnerMusic.play().catch(()=>{});runner.running=true;runner.last=0;runnerLastPaint=0;runner.message.textContent="¡Eso! ¡A romper el récord!";runnerSound("start");runner.raf=requestAnimationFrame(runnerTick);document.getElementById("runnerStart").textContent="¡EN JUEGO!";});
   document.getElementById("runnerJump").addEventListener("click",jump);
   document.getElementById("runnerReset").addEventListener("click",resetRunner);
   // Modo de juego en pantalla completa; en móviles solicita orientación horizontal.
