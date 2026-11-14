@@ -402,3 +402,33 @@ body{padding-top:82px !important}
 @media(max-width:900px){
   .site-header .brand-logo{transform:translateY(-2px)}
 }
+
+
+/* Zona de minijuegos: diseño adaptable y controles táctiles */
+.arcade-section{padding-top:55px;padding-bottom:70px}
+.arcade-section>.section-heading{text-align:center;justify-content:center;margin-bottom:28px}
+.arcade-card{max-width:860px;margin:0 auto 28px;padding:22px;border:2px solid #e4d9ff;border-radius:22px;background:rgba(255,255,255,.96);box-shadow:0 12px 32px rgba(49,22,105,.10)}
+.arcade-card-second{border-color:#d8eaff}
+.arcade-heading{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:14px}
+.arcade-kicker{font-size:11px;font-weight:900;letter-spacing:1.5px;color:#8127c9}
+.arcade-heading h3{margin:4px 0;color:#24145d;font:800 25px Outfit,sans-serif}
+.arcade-heading p{margin:0;color:#655d79;font-size:14px}
+.arcade-score{flex:0 0 auto;padding:9px 14px;border-radius:14px;background:#f0e9ff;color:#382078;font-weight:700;text-align:center}
+.arcade-score strong{display:block;font-size:24px;color:#782bd0}
+.arcade-card canvas{display:block;width:100%;height:auto;aspect-ratio:8/3;border:2px solid #e4e1f2;border-radius:14px;background:#eaf6ff;touch-action:manipulation}
+.arcade-controls{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:10px;margin-top:15px}
+.arcade-controls .button{min-width:112px;cursor:pointer}
+.arcade-controls .button-secondary{border:2px solid #7a35c5;background:#fff;color:#54208f}
+.arcade-hint,.arcade-message{text-align:center;margin:10px 0 0;color:#6b6480;font-size:13px}
+.arcade-message{font-weight:800;color:#51218f;min-height:20px}
+@media(max-width:600px){
+ .arcade-card{padding:13px;border-radius:16px}
+ .arcade-heading{align-items:flex-start}
+ .arcade-heading h3{font-size:21px}
+ .arcade-heading p{font-size:12px}
+ .arcade-score{padding:7px 10px;font-size:12px}
+ .arcade-score strong{font-size:20px}
+ .arcade-controls{gap:7px}
+ .arcade-controls .button{min-width:90px;padding:10px 12px;font-size:12px}
+ .arcade-hint{font-size:11px}
+}
