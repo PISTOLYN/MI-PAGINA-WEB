@@ -530,7 +530,7 @@ startGame();
   }
   function drawRunner(){
     runnerScene();const c=runner.ctx;
-    runnerState.rewards.forEach(o=>{const size=o.type==="coin"?30:o.type==="star"?34:o.type==="ticket"?38:o.type==="dogBalloon"?42:36;drawRunnerArt(o.type,o.x,o.y,size,size);});
+    runnerState.rewards.forEach(o=>{const size=o.type==="coin"?52:o.type==="star"?62:o.type==="ticket"?66:o.type==="dogBalloon"?68:o.type==="hat"?64:o.type==="popcorn"?60:54;drawRunnerArt(o.type,o.x,o.y,size,size);});
     runnerState.obstacles.forEach(o=>{
       if(o.air){drawRunnerArt(o.type,o.x+o.w/2,o.y+o.h/2,o.w,o.h);}
       else if(!drawGroundArt(o.type,o.x,RUN_GROUND,o.w,o.h)){
@@ -549,11 +549,11 @@ startGame();
     }
     runnerState.dust.forEach(p=>{c.globalAlpha=Math.max(0,p.life/18);c.fillStyle="#fff";c.beginPath();c.arc(p.x,p.y,p.size,0,Math.PI*2);c.fill();c.globalAlpha=1;});
     c.fillStyle="rgba(255,255,255,.94)";c.fillRect(14,45,230,48);c.fillStyle="#382078";c.font="bold 12px sans-serif";c.textAlign="left";c.fillText("RÉCORD: "+runnerBest,24,63);c.fillText("🪙 "+runnerState.coins+" MONEDAS",24,82);
-    const progress=Math.min(1,runnerState.distance/2200);c.fillStyle="rgba(255,255,255,.9)";c.fillRect(280,48,260,18);c.fillStyle="#382078";c.fillRect(282,50,256*progress,14);c.fillStyle="#fff";c.font="bold 11px sans-serif";c.textAlign="center";c.fillText("META "+Math.floor(progress*100)+"%",410,61);
+    const progress=Math.min(1,runnerState.distance/14500);c.fillStyle="rgba(255,255,255,.9)";c.fillRect(280,48,260,18);c.fillStyle="#382078";c.fillRect(282,50,256*progress,14);c.fillStyle="#fff";c.font="bold 11px sans-serif";c.textAlign="center";c.fillText("META "+Math.floor(progress*100)+"%",410,61);
     if(runnerState.distance>1780){c.fillStyle="#fff";c.font="900 19px sans-serif";c.textAlign="right";c.fillText("🏁 ¡YA CASI LLEGAS!",780,91);}
   }
   function spawnObstacle(){
-    const factor=isMobileRunner?1.18:1;
+    const factor=isMobileRunner?1.55:1.38;
     const types=["cone","wood","fire","hydrant","spring","boxes","ball","balloons"];
     const sizes={cone:[48*factor,55*factor],wood:[66*factor,48*factor],fire:[58*factor,62*factor],hydrant:[48*factor,55*factor],spring:[52*factor,58*factor],boxes:[62*factor,58*factor],ball:[48*factor,48*factor],balloons:[65*factor,72*factor]};
     const type=types[Math.floor(Math.random()*types.length)];const [w,h]=sizes[type];const air=type==="balloons";
@@ -569,7 +569,7 @@ startGame();
     runnerBackgroundOffset=(runnerBackgroundOffset+(runnerState.speed*.34*dt))%runner.width;
     runnerState.frame+=dt;runnerState.distance+=runnerState.speed*dt;runnerState.spawn-=dt;runnerState.rewardSpawn-=dt;
     if(runnerState.spawn<=0){spawnObstacle();runnerState.spawn=Math.max(78,112-Math.floor(runner.score/35))+Math.random()*32;}
-    if(runnerState.rewardSpawn<=0){const r=Math.random();const type=r<.10?"ticket":r<.18?"dogBalloon":r<.27?"hat":r<.36?"popcorn":r<.68?"coin":"star";runnerState.rewards.push({type,x:830,y:135+Math.random()*65});runnerState.rewardSpawn=34+Math.random()*28;}
+    if(runnerState.rewardSpawn<=0){const r=Math.random();const type=r<.10?"ticket":r<.18?"dogBalloon":r<.27?"hat":r<.36?"popcorn":r<.68?"coin":"star";runnerState.rewards.push({type,x:830,y:125+Math.random()*78});runnerState.rewardSpawn=29+Math.random()*22;}
     runnerState.y+=runnerState.vy*dt;runnerState.vy+=.62*dt;
     if(runnerState.y>0){runnerState.y=0;runnerState.vy=0;}
     runnerState.obstacles.forEach(o=>o.x-=runnerState.speed*dt);
@@ -584,10 +584,10 @@ startGame();
       return o.x>-50;
     });
     runnerState.obstacles=runnerState.obstacles.filter(o=>o.x+o.w>-20);
-    if(runnerState.distance>=2200){runner.running=false;runnerMusic.pause();runnerState.over=true;runnerState.won=true;const reward=runnerState.coins>=15?"¡DESBLOQUEASTE EL GRAN PREMIO! 🎁":runnerState.coins>=8?"¡GANASTE UN BOLETO DORADO! 🎟️":"¡LLEGASTE A LA META! 🏁";runner.message.textContent=reward+" Juntaste "+runnerState.coins+" monedas y "+runner.score+" puntos. ¡Felicidades!";document.getElementById("runnerStart").textContent="▶ Jugar otra vez";runnerSound("ticket");drawRunner();const c=runner.ctx;c.fillStyle="rgba(20,12,55,.78)";c.fillRect(175,105,480,105);drawRunnerArt("gifts",415,150,95,85);c.fillStyle="#fff";c.textAlign="center";c.font="900 23px sans-serif";c.fillText("¡META ALCANZADA!",415,125);c.font="bold 14px sans-serif";c.fillText(reward,415,198);return;}
+    if(runnerState.distance>=14500){runner.running=false;runnerMusic.pause();runnerState.over=true;runnerState.won=true;const reward=runnerState.coins>=15?"¡DESBLOQUEASTE EL GRAN PREMIO! 🎁":runnerState.coins>=8?"¡GANASTE UN BOLETO DORADO! 🎟️":"¡LLEGASTE A LA META! 🏁";runner.message.textContent=reward+" Juntaste "+runnerState.coins+" monedas y "+runner.score+" puntos. ¡Felicidades!";document.getElementById("runnerStart").textContent="▶ Jugar otra vez";runnerSound("ticket");drawRunner();const c=runner.ctx;c.fillStyle="rgba(20,12,55,.78)";c.fillRect(175,105,480,105);drawRunnerArt("gifts",415,150,95,85);c.fillStyle="#fff";c.textAlign="center";c.font="900 23px sans-serif";c.fillText("¡META ALCANZADA!",415,125);c.font="bold 14px sans-serif";c.fillText(reward,415,198);return;}
     runner.score=Math.max(runner.score,Math.floor(runnerState.frame/4));runner.scoreEl.textContent=runner.score;
     if(runner.score>runnerBest){runnerBest=runner.score;localStorage.setItem(bestKey,String(runnerBest));if(bestLabel)bestLabel.textContent=runnerBest;}
-    runnerState.speed=Math.min(6.4,3.8+runner.score/260);
+    runnerState.speed=Math.min(6.0,3.5+runner.score/520);
     if(!isMobileRunner&&runnerState.y===0&&Math.random()<.18)runnerState.dust.push({x:90,y:RUN_GROUND,size:2+Math.random()*3,life:18});
     drawRunner();runner.raf=requestAnimationFrame(runnerTick);
   }
@@ -595,11 +595,11 @@ startGame();
     cancelAnimationFrame(runner.raf);runner.running=false;runnerMusic.pause();runnerMusic.currentTime=0;runner.score=0;runner.scoreEl.textContent="0";
     runnerState={y:0,vy:0,obstacles:[],rewards:[],spawn:95,rewardSpawn:48,speed:3.8,frame:0,over:false,dust:[],distance:0,coins:0,won:false};
     runnerBackgroundOffset=0;
-    runner.message.textContent="¡Llega a la meta! Junta monedas, estrellas y boletos. ¡Hay premios esperándote!";
+    runner.message.textContent="¡La carrera es larga! Junta monedas, estrellas y premios grandes hasta llegar a la meta.";
     document.getElementById("runnerStart").textContent="▶ Jugar";drawRunner();
   }
   function jump(){if(!runner.running)return;unlockRunnerAudio();if(runnerState.y===0){runnerSound("jump");runnerState.vy=-12.2;if(!isMobileRunner)for(let i=0;i<3;i++)runnerState.dust.push({x:95+Math.random()*18,y:RUN_GROUND,size:2+Math.random()*3,life:18});}}
-  document.getElementById("runnerStart").addEventListener("click",()=>{if(runnerState.over)resetRunner();unlockRunnerAudio();runnerMusic.play().catch(()=>{});runner.running=true;runner.last=0;runnerLastPaint=0;runner.message.textContent="¡Corre, brinca y junta todas las monedas para llegar a la meta!";runnerSound("start");runner.raf=requestAnimationFrame(runnerTick);document.getElementById("runnerStart").textContent="¡EN JUEGO!";});
+  document.getElementById("runnerStart").addEventListener("click",()=>{if(runnerState.over)resetRunner();unlockRunnerAudio();runnerMusic.play().catch(()=>{});runner.running=true;runner.last=0;runnerLastPaint=0;runner.message.textContent="¡Prepárate para una gran carrera! Salta los obstáculos y junta monedas, estrellas y premios.";runnerSound("start");runner.raf=requestAnimationFrame(runnerTick);document.getElementById("runnerStart").textContent="¡EN JUEGO!";});
   document.getElementById("runnerJump").addEventListener("click",jump);
   document.getElementById("runnerReset").addEventListener("click",resetRunner);
   // Modo de juego en pantalla completa; en móviles solicita orientación horizontal.
