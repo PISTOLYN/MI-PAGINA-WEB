@@ -533,7 +533,7 @@ startGame();
     runnerState.rewards.forEach(o=>{const size=o.type==="coin"?52:o.type==="star"?62:o.type==="ticket"?66:o.type==="dogBalloon"?68:o.type==="hat"?64:o.type==="popcorn"?60:o.type==="cake"?62:54;if(o.type==="cake"){c.save();c.font="54px sans-serif";c.textAlign="center";c.fillText("🎂",o.x,o.y+18);c.restore();}else drawRunnerArt(o.type,o.x,o.y,size,size);});
     runnerState.obstacles.forEach(o=>{
       if(o.air){drawRunnerArt(o.type,o.x+o.w/2,o.y+o.h/2,o.w,o.h);}
-      else if(!drawGroundArt(o.type,o.x,RUN_GROUND,o.w,o.h)){
+      else if(!drawGroundArt(o.type,o.x,RUN_GROUND-(o.bounce||0),o.w,o.h)){
         c.fillStyle="#ed4c43";c.fillRect(o.x,RUN_GROUND-o.h,o.w,o.h);
       }
     });
