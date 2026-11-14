@@ -635,6 +635,19 @@ startGame();
     const g=catcher;scene(g,250);const c=g.ctx;
     catchState.items.forEach(o=>{c.font="30px sans-serif";c.textAlign="center";c.fillText(o.type==="bomb"?"💣":o.type==="star"?"⭐":"🎁",o.x,o.y)});
     drawCharacter(c,catchState.x,184,66,66);
+    if(catchState.exploded){
+      const cx=catchState.x+33,cy=216;
+      c.save();c.translate(cx,cy);
+      c.fillStyle="rgba(255,75,20,.88)";c.beginPath();
+      for(let i=0;i<20;i++){const a=i*Math.PI/10,r=i%2===0?66:39;c.lineTo(Math.cos(a)*r,Math.sin(a)*r)}
+      c.closePath();c.fill();
+      c.fillStyle="#ffd447";c.beginPath();c.arc(0,0,31,0,Math.PI*2);c.fill();
+      c.font="bold 23px sans-serif";c.textAlign="center";c.textBaseline="middle";c.fillText("💥",0,1);
+      c.restore();
+      c.fillStyle="rgba(25,15,45,.78)";c.fillRect(235,65,330,62);
+      c.fillStyle="#fff";c.textAlign="center";c.textBaseline="middle";c.font="900 26px sans-serif";c.fillText("¡PAYASO EXPLOTADO!",400,88);
+      c.font="bold 17px sans-serif";c.fillText("¡PERDISTE! 💣",400,111);
+    }
     c.fillStyle="#20234a";c.font="bold 15px sans-serif";c.textAlign="right";c.fillText("Atrapa premios, evita bombas",780,28);
   }
   function catcherTick(t){
@@ -647,7 +660,7 @@ startGame();
     for(const o of catchState.items)o.y+=3.1*dt;
     catchState.items=catchState.items.filter(o=>{
       if(o.y>180&&o.y<248&&o.x>catchState.x-5&&o.x<catchState.x+72){
-        if(o.type==="bomb"){catcher.running=false;catchState.over=true;catcher.message.textContent="¡Cuidado con la bomba! Presiona Reiniciar para jugar otra vez.";document.getElementById("catchStart").textContent="▶ Volver a jugar";return false}
+        if(o.type==="bomb"){catcher.running=false;catchState.over=true;catchState.exploded=true;catcher.message.textContent="¡BOOM! El payasito explotó. ¡Perdiste! Presiona Volver a jugar para intentarlo otra vez.";document.getElementById("catchStart").textContent="▶ Volver a jugar";return false}
         catcher.score+=o.type==="star"?3:1;catcher.scoreEl.textContent=catcher.score;return false;
       }
       return o.y<330;
