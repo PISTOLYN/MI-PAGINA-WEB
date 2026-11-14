@@ -260,6 +260,8 @@ function setupOverlay(overlayId, openId, closeId) {
 setupOverlay("#aboutOverlay", "#openAbout", "#aboutClose");
 setupOverlay("#incOverlay", "#openInc", "#incClose");
 setupOverlay("#babyOverlay", "#openBaby", "#babyClose");
+setupOverlay("#schoolOverlay", "#openSchool", "#schoolClose");
+$("#quoteSchoolWa").href = waUrl("Hola, quiero cotizar un show para mi escuela/colegio con Desafíos Locos MTY.\n\nNombre de la escuela:\nFecha:\nNúmero aproximado de alumnos:\n\n¡Gracias!");
 $("#quoteBabyWa").href = waUrl("Hola, quiero cotizar mi Baby Shower con Desafíos Locos MTY.\n\nFecha:\nLugar:\nNúmero aproximado de invitados:\n\n¡Gracias!");
 $("#quoteWa").href = waUrl("Hola, quiero cotizar mi evento con Desafíos Locos MTY.\n\nTipo de evento:\nFecha:\nLugar:\nNúmero aproximado de invitados:\n\n¡Gracias!");
 

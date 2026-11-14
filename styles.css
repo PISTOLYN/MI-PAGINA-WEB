@@ -568,3 +568,15 @@ body.about-open{overflow:hidden}
 .inc-baby .inc-list li{background:#eaf4ff}
 .inc-baby .inc-list li:nth-child(4n+2),.inc-baby .inc-list li:nth-child(4n+3){background:#ffeef7}
 .inc-note{margin:6px 0 4px;font:600 clamp(14px,1.5vw,17px) "DM Sans",sans-serif;color:#2f7fe8}
+
+/* Show para Escuelas y Colegios */
+.glow-school{background:linear-gradient(100deg,#0fb5a6,#3dbb6a 55%,#f5a623);animation-name:glow-pulso-school}
+@keyframes glow-pulso-school{0%,100%{box-shadow:0 0 0 0 rgba(61,187,106,.5),0 0 18px rgba(245,166,35,.35),0 8px 22px rgba(15,181,166,.3)}50%{box-shadow:0 0 0 14px rgba(61,187,106,0),0 0 34px rgba(255,215,90,.7),0 8px 22px rgba(15,181,166,.3)}}
+.glow-stack .glow-btn{max-width:100%}
+.inc-school{background:radial-gradient(circle at 12% 18%,rgba(255,230,120,.45) 0,transparent 32%),radial-gradient(circle at 88% 22%,rgba(255,150,80,.4) 0,transparent 34%),radial-gradient(circle at 80% 90%,rgba(120,230,170,.4) 0,transparent 36%),linear-gradient(160deg,#0f8f86,#1d5fa8 65%,#26307a)}
+.inc-school .inc-card{box-shadow:0 0 0 4px #ffd44a,0 0 0 8px rgba(61,187,106,.7),0 24px 60px rgba(0,0,0,.4)}
+.inc-school .inc-body h2{font-size:clamp(26px,4vw,44px);background:linear-gradient(100deg,#0f8f86,#2a7bd6);-webkit-background-clip:text;background-clip:text;color:transparent}
+.inc-school .inc-body h2 span{background:none;-webkit-text-fill-color:#3a2a7a;color:#3a2a7a}
+.inc-school .inc-list li{background:#e8f8f1}
+.inc-school .inc-list li:nth-child(4n+2),.inc-school .inc-list li:nth-child(4n+3){background:#fff4e1}
+.inc-school .inc-brand{color:#e0701a}
