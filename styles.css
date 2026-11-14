@@ -384,3 +384,21 @@ body{padding-top:82px !important}
 .memory-card img{display:block;width:100%;height:100%;object-fit:contain;border-radius:12px;pointer-events:none}
 .memory-card.revealed,.memory-card.matched{background:#fff}
 .memory-card.matched{outline:3px solid #36c59a;outline-offset:-3px}
+
+
+/* Centrar verticalmente el logo circular del payasito en la barra superior */
+.site-header .brand{
+  align-items:center !important;
+  align-self:center;
+}
+.site-header .brand-logo{
+  display:block;
+  align-self:center;
+  margin-block:auto;
+  object-fit:contain;
+  object-position:center center;
+  transform:translateY(-3px);
+}
+@media(max-width:900px){
+  .site-header .brand-logo{transform:translateY(-2px)}
+}
