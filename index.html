@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=video-autoplay-icons-2">
+  <link rel="stylesheet" href="styles.css?v=clean-layout-1">
 </head>
 <body>
   <section class="music-player" id="musicPlayer" aria-label="Música de Desafíos Locos">
@@ -22,18 +22,15 @@
     <label class="music-volume" for="musicVolume">Volumen</label>
     <input id="musicVolume" type="range" min="0" max="1" step="0.05" value="0.35" aria-label="Volumen de la música">
   </section>
-  <div class="announcement" id="announcement">✨ Bienvenido — descubre nuestros productos y novedades</div>
-
   <header class="site-header">
     <a class="brand" href="#inicio" aria-label="Ir al inicio">
       <img class="brand-logo" src="t.png" alt="Logo Desafíos Locos"><span id="brandName">DESAFÍOS LOCOS MONTERREY</span>
     </a>
     <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false">☰</button>
     <nav class="main-nav" id="mainNav">
-      <a href="#inicio">Inicio</a><a href="#galeria">Fotos</a><a href="#productos">Productos</a><a href="#videos">Videos</a><a href="#juegos">Juegos</a><a href="#redes">Redes sociales</a>
+      <a href="#inicio">Inicio</a><a href="#galeria">Fotos</a><a href="#videos">Videos</a><a href="#juegos">Juegos</a>
     </nav>
-    <a class="header-contact" id="headerWhatsApp" href="#" target="_blank" rel="noopener">Contactar ↗</a>
-  </header>
+    </header>
 
 
   <aside class="floating-social-bar" aria-label="Redes sociales y contacto">
@@ -49,11 +46,7 @@
         <span class="eyebrow"><span class="eyebrow-dot"></span> SHOW 100% INTERACTIVO, DINÁMICO Y FAMILIAR</span>
         <h1 id="heroTitle">¡La diversión llega con <span>DESAFÍOS LOCOS!</span></h1>
         <p id="heroText">Show 100% interactivo, dinámico y familiar. Conoce nuestras actividades, mira los videos y aparta tu fecha por WhatsApp.</p>
-        <div class="hero-actions">
-          <a class="button button-primary" href="#productos">Conocer el show <span>→</span></a>
-          <a class="button button-ghost" id="heroWhatsApp" href="#" target="_blank" rel="noopener">Hablar por WhatsApp</a>
-        </div>
-        <div class="hero-note"><span class="note-icon">✓</span> Premios para los competidores que ganan</div>
+<div class="hero-note"><span class="note-icon">✓</span> Premios para los competidores que ganan</div>
       </div>
       <div class="hero-art" aria-label="Desafíos Locos, diversión para toda la familia">
         <div class="hero-logo-panel"><img src="t.png" alt="Desafíos Locos Monterrey, logo oficial"><span>¡JUEGA, RÍE Y GANA!</span></div>
@@ -61,16 +54,7 @@
       </div>
     </section>
 
-    <section class="benefit-strip section-wrap">
-      <div><span>✦</span><strong>Show familiar</strong><small>Para chicos y grandes</small></div>
-      <div><span>▶</span><strong>100% interactivo</strong><small>Todos participan</small></div>
-      <div><span>◎</span><strong>Premios</strong><small>Para los ganadores</small></div>
-      <div><span>☻</span><strong>Una hora completa</strong><small>De música y animación</small></div>
-    </section>
-
-    
-
-<section class="video-section" id="videos">
+    <section class="video-section" id="videos">
       <div class="section-wrap">
         <div class="section-heading light-heading"><div><span class="eyebrow">ASÍ SE VIVE LA DIVERSIÓN</span><h2>Momentos <span>inolvidables</span></h2><p>Muy pronto podrás disfrutar aquí nuestros videos de eventos y presentaciones.</p></div></div>
         <div class="video-grid" id="videoGrid"></div>
@@ -82,23 +66,12 @@
       <div class="photo-carousel" id="photoGrid"></div>
     </section>
 
-    <section class="content-section section-wrap" id="productos">
-      <div class="section-heading"><div><span class="eyebrow">DIVERSIÓN PARA TU EVENTO</span><h2>Conoce nuestro <span>show</span></h2><p>Una experiencia llena de música, dinámicas, desafíos y premios para compartir en familia.</p></div><span class="heading-decoration">✳</span></div>
-      <div class="filter-row" id="categoryFilters"><button class="filter-chip active" data-category="Todos">Todos</button></div>
-      <div class="product-grid" id="productGrid"></div>
-    </section>
-
-    
-
     <section class="game-section section-wrap" id="juegos">
       <div class="game-intro"><span class="eyebrow">UN MOMENTO PARA DIVERTIRTE</span><h2>¿Jugamos un <span>ratito?</span></h2><p>Prueba este juego de memoria. Encuentra las parejas y completa el tablero.</p><div class="game-stats"><div><strong id="moves">0</strong><small>Movimientos</small></div><div><strong id="matches">0/6</strong><small>Parejas</small></div></div><button class="button button-primary" id="restartGame">Reiniciar juego ↻</button></div>
       <div class="memory-board" id="memoryBoard" aria-label="Juego de memoria"></div>
     </section>
 
-    <section class="social-section" id="redes">
-      <div class="section-wrap social-inner"><div><span class="eyebrow">DESAFÍOS LOCOS MONTERREY</span><h2>¡Síguenos y vive la <span>diversión!</span></h2><p>Encuentra videos, fotografías, novedades y más momentos de nuestros eventos.</p></div><div class="social-links" id="socialLinks"></div></div>
-    </section>
-  </main>
+    </main>
 
   <footer class="site-footer"><a class="brand footer-brand" href="#inicio"><img class="brand-logo footer-logo" src="t.png" alt="Logo Desafíos Locos"><span id="footerBrand">DESAFÍOS LOCOS MONTERREY</span></a><p>Gracias por visitarnos. ¡Esperamos verte pronto!</p>
     <div class="visitor-counter" id="visitorCounter" aria-label="Contador de visitantes"><span>VISITANTES</span><img data-src="https://api.visitorbadge.io/api/visitors?path=desafioslocosmonterrey.github.io.MI-PAGINA-WEB&label=&countColor=%237657ed&style=flat" alt="Contador de visitantes" loading="lazy"><button type="button" id="excludeMyVisits" class="visitor-optout">No contar mis visitas</button></div><span>© <span id="year"></span> <span id="copyrightBrand">DESAFÍOS LOCOS MONTERREY</span></span></footer>
@@ -106,8 +79,7 @@
 
 
 
-  <a class="whatsapp-float" id="floatingWhatsApp" href="#" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp"><span class="wa-symbol">◔</span><span>WhatsApp</span></a>
-  <script src="app.js"></script>
+<script src="app.js"></script>
   <script>
     (() => {
       const audio = document.getElementById("siteMusic");
