@@ -177,13 +177,15 @@ function renderVideos() {
   if (!videos.length) { grid.innerHTML = ""; return; }
   let current = 0;
   grid.innerHTML = `
-    <button class="video-arrow video-prev" type="button" aria-label="Video anterior">❮</button>
     <article class="video-card video-featured">
       <h3 class="video-featured-title">VIDEOS DE NUESTRO SHOW</h3>
-      <div class="video-frame"><video id="featuredShowVideo" controls playsinline preload="metadata"></video></div>
+      <div class="video-frame">
+        <video id="featuredShowVideo" controls playsinline preload="metadata"></video>
+        <button class="video-arrow video-prev" type="button" aria-label="Video anterior">❮</button>
+        <button class="video-arrow video-next" type="button" aria-label="Video siguiente">❯</button>
+      </div>
       <div class="video-caption" id="featuredVideoCaption"></div>
-    </article>
-    <button class="video-arrow video-next" type="button" aria-label="Video siguiente">❯</button>`;
+    </article>`;
   const player = $("#featuredShowVideo");
   const caption = $("#featuredVideoCaption");
   async function showVideo(index, autoplay = false) {
