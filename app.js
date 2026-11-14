@@ -485,7 +485,7 @@ startGame();
     if(runnerSoundEnabled){unlockRunnerAudio();runnerSound("start");}
   });
   updateRunnerSoundButton();
-  let runnerState={y:0,vy:0,obstacles:[],rewards:[],spawn:0,rewardSpawn:55,speed:3.8,frame:0,over:false,dust:[],distance:0,coins:0};
+  let runnerState={y:0,vy:0,obstacles:[],rewards:[],spawn:0,rewardSpawn:55,speed:3.2,frame:0,over:false,dust:[],distance:0,coins:0,powerFrames:0};
 
   // Desplazamiento horizontal del escenario: crea sensación de carrera.
   let runnerBackgroundOffset=0;
@@ -530,14 +530,14 @@ startGame();
   }
   function drawRunner(){
     runnerScene();const c=runner.ctx;
-    runnerState.rewards.forEach(o=>{const size=o.type==="coin"?52:o.type==="star"?62:o.type==="ticket"?66:o.type==="dogBalloon"?68:o.type==="hat"?64:o.type==="popcorn"?60:54;drawRunnerArt(o.type,o.x,o.y,size,size);});
+    runnerState.rewards.forEach(o=>{const size=o.type==="coin"?52:o.type==="star"?62:o.type==="ticket"?66:o.type==="dogBalloon"?68:o.type==="hat"?64:o.type==="popcorn"?60:o.type==="cake"?62:54;if(o.type==="cake"){c.save();c.font="54px sans-serif";c.textAlign="center";c.fillText("🎂",o.x,o.y+18);c.restore();}else drawRunnerArt(o.type,o.x,o.y,size,size);});
     runnerState.obstacles.forEach(o=>{
       if(o.air){drawRunnerArt(o.type,o.x+o.w/2,o.y+o.h/2,o.w,o.h);}
       else if(!drawGroundArt(o.type,o.x,RUN_GROUND,o.w,o.h)){
         c.fillStyle="#ed4c43";c.fillRect(o.x,RUN_GROUND-o.h,o.w,o.h);
       }
     });
-    const clownW=isMobileRunner?132:92,clownH=isMobileRunner?118:82,clownX=isMobileRunner?42:64;
+    const clownW=isMobileRunner?145:108,clownH=isMobileRunner?130:96,clownX=isMobileRunner?38:58;
     const clownY=RUN_GROUND-clownH+runnerState.y;
     if(!isMobileRunner){c.fillStyle="rgba(0,0,0,.18)";c.beginPath();c.ellipse(clownX+clownW/2,RUN_GROUND+2,27,5,0,0,Math.PI*2);c.fill();}
     if(!runnerArt.clown.complete||!runnerArt.clown.naturalWidth){
@@ -548,8 +548,8 @@ startGame();
       c.drawImage(im,clownX+(clownW-dw)/2,clownY+clownH-dh,dw,dh);
     }
     runnerState.dust.forEach(p=>{c.globalAlpha=Math.max(0,p.life/18);c.fillStyle="#fff";c.beginPath();c.arc(p.x,p.y,p.size,0,Math.PI*2);c.fill();c.globalAlpha=1;});
-    c.fillStyle="rgba(255,255,255,.94)";c.fillRect(14,45,230,48);c.fillStyle="#382078";c.font="bold 12px sans-serif";c.textAlign="left";c.fillText("RÉCORD: "+runnerBest,24,63);c.fillText("🪙 "+runnerState.coins+" MONEDAS",24,82);
-    const progress=Math.min(1,runnerState.distance/14500);c.fillStyle="rgba(255,255,255,.9)";c.fillRect(280,48,260,18);c.fillStyle="#382078";c.fillRect(282,50,256*progress,14);c.fillStyle="#fff";c.font="bold 11px sans-serif";c.textAlign="center";c.fillText("META "+Math.floor(progress*100)+"%",410,61);
+    c.fillStyle="rgba(255,255,255,.88)";c.fillRect(14,44,150,30);c.fillStyle="#382078";c.font="bold 10px sans-serif";c.textAlign="left";c.fillText("RÉCORD "+runnerBest+"  |  🪙 "+runnerState.coins,22,63);
+    const progress=Math.min(1,runnerState.distance/24000);c.fillStyle="#fff";c.font="bold 10px sans-serif";c.textAlign="center";c.fillText("META "+Math.floor(progress*100)+"%",410,20);c.fillStyle="rgba(255,255,255,.86)";c.fillRect(300,26,220,9);c.fillStyle="#382078";c.fillRect(302,28,216*progress,5);
     if(runnerState.distance>1780){c.fillStyle="#fff";c.font="900 19px sans-serif";c.textAlign="right";c.fillText("🏁 ¡YA CASI LLEGAS!",780,91);}
   }
   function spawnObstacle(){
@@ -557,7 +557,7 @@ startGame();
     const types=["cone","wood","fire","hydrant","spring","boxes","ball","balloons"];
     const sizes={cone:[48*factor,55*factor],wood:[66*factor,48*factor],fire:[58*factor,62*factor],hydrant:[48*factor,55*factor],spring:[52*factor,58*factor],boxes:[62*factor,58*factor],ball:[48*factor,48*factor],balloons:[65*factor,72*factor]};
     const type=types[Math.floor(Math.random()*types.length)];const [w,h]=sizes[type];const air=type==="balloons";
-    runnerState.obstacles.push({type,x:830,y:air?RUN_GROUND-142:RUN_GROUND-h,w,h,air});
+    runnerState.obstacles.push({type,x:830,y:air?RUN_GROUND-142:RUN_GROUND-h,w,h,air,bounce:type==="ball"?0:undefined,phase:Math.random()*Math.PI*2});
   }
   function runnerTick(t){
     if(!runner.running)return;
@@ -567,39 +567,39 @@ startGame();
     const dt=elapsed;
     // El fondo se mueve más lento que los obstáculos para dar profundidad.
     runnerBackgroundOffset=(runnerBackgroundOffset+(runnerState.speed*.34*dt))%runner.width;
-    runnerState.frame+=dt;runnerState.distance+=runnerState.speed*dt;runnerState.spawn-=dt;runnerState.rewardSpawn-=dt;
+    runnerState.frame+=dt;if(runnerState.powerFrames>0)runnerState.powerFrames=Math.max(0,runnerState.powerFrames-dt);runnerState.distance+=runnerState.speed*(runnerState.powerFrames>0?1.22:1)*dt;runnerState.spawn-=dt;runnerState.rewardSpawn-=dt;
     if(runnerState.spawn<=0){spawnObstacle();runnerState.spawn=Math.max(78,112-Math.floor(runner.score/35))+Math.random()*32;}
-    if(runnerState.rewardSpawn<=0){const r=Math.random();const type=r<.10?"ticket":r<.18?"dogBalloon":r<.27?"hat":r<.36?"popcorn":r<.68?"coin":"star";runnerState.rewards.push({type,x:830,y:125+Math.random()*78});runnerState.rewardSpawn=29+Math.random()*22;}
+    if(runnerState.rewardSpawn<=0){const r=Math.random();const type=r<.07?"cake":r<.13?"ticket":r<.20?"dogBalloon":r<.28?"hat":r<.36?"popcorn":r<.68?"coin":"star";runnerState.rewards.push({type,x:830,y:125+Math.random()*78});runnerState.rewardSpawn=27+Math.random()*20;}
     runnerState.y+=runnerState.vy*dt;runnerState.vy+=.62*dt;
     if(runnerState.y>0){runnerState.y=0;runnerState.vy=0;}
-    runnerState.obstacles.forEach(o=>o.x-=runnerState.speed*dt);
+    runnerState.obstacles.forEach(o=>{o.x-=runnerState.speed*dt;if(o.type==="ball"){o.phase+=.12*dt;o.bounce=18+Math.abs(Math.sin(o.phase))*48;}});
     runnerState.rewards.forEach(o=>o.x-=runnerState.speed*dt);
     runnerState.dust.forEach(p=>{p.x-=2*dt;p.life-=dt;});
     runnerState.dust=runnerState.dust.filter(p=>p.life>0);
-    const px=83,py=RUN_GROUND-(isMobileRunner?118:82)+runnerState.y+(isMobileRunner?16:10),pw=isMobileRunner?76:58,ph=isMobileRunner?86:65;
-    const hit=runnerState.obstacles.some(o=>{const oy=o.air?o.y:RUN_GROUND-o.h;return px+pw-8>o.x+8&&px+8<o.x+o.w-8&&py+ph-8>oy+8&&py+8<oy+o.h-5;});
+    const px=78,py=RUN_GROUND-(isMobileRunner?130:96)+runnerState.y+(isMobileRunner?16:10),pw=isMobileRunner?86:68,ph=isMobileRunner?94:76;
+    const hit=runnerState.obstacles.some(o=>{const oy=o.air?o.y:RUN_GROUND-o.h-(o.bounce||0);return runnerState.powerFrames>0?false:px+pw-8>o.x+8&&px+8<o.x+o.w-8&&py+ph-8>oy+8&&py+8<oy+o.h-5;});
     if(hit){runner.running=false;runnerMusic.pause();runnerState.over=true;runnerSound("crash");runner.message.textContent="¡Uy! 😄 ¡Casi lo logras! Presiona Volver a jugar y sigue coleccionando premios.";document.getElementById("runnerStart").textContent="▶ Volver a jugar";drawRunner();return;}
     runnerState.rewards=runnerState.rewards.filter(o=>{
-      if(o.x>70&&o.x<170&&o.y>py-8&&o.y<py+ph+8){const points=o.type==="ticket"?5:o.type==="star"?3:o.type==="dogBalloon"?4:o.type==="hat"?5:o.type==="popcorn"?2:1;runner.score+=points;if(o.type==="coin")runnerState.coins++;runner.scoreEl.textContent=runner.score;runnerSound(o.type==="dogBalloon"?"star":o.type);return false;}
+      if(o.x>55&&o.x<190&&o.y>py-32&&o.y<py+ph+32){const points=o.type==="ticket"?5:o.type==="star"?3:o.type==="dogBalloon"?4:o.type==="hat"?5:o.type==="popcorn"?2:o.type==="cake"?8:1;runner.score+=points;if(o.type==="coin")runnerState.coins++;if(o.type==="cake"){runnerState.powerFrames=420;runner.message.textContent="¡SÚPER PODER! 🎂 ¡Velocidad extra y protección por 7 segundos!";runnerSound("ticket");}else runnerSound(o.type==="dogBalloon"?"star":o.type);runner.scoreEl.textContent=runner.score;return false;}
       return o.x>-50;
     });
     runnerState.obstacles=runnerState.obstacles.filter(o=>o.x+o.w>-20);
-    if(runnerState.distance>=14500){runner.running=false;runnerMusic.pause();runnerState.over=true;runnerState.won=true;const reward=runnerState.coins>=15?"¡DESBLOQUEASTE EL GRAN PREMIO! 🎁":runnerState.coins>=8?"¡GANASTE UN BOLETO DORADO! 🎟️":"¡LLEGASTE A LA META! 🏁";runner.message.textContent=reward+" Juntaste "+runnerState.coins+" monedas y "+runner.score+" puntos. ¡Felicidades!";document.getElementById("runnerStart").textContent="▶ Jugar otra vez";runnerSound("ticket");drawRunner();const c=runner.ctx;c.fillStyle="rgba(20,12,55,.78)";c.fillRect(175,105,480,105);drawRunnerArt("gifts",415,150,95,85);c.fillStyle="#fff";c.textAlign="center";c.font="900 23px sans-serif";c.fillText("¡META ALCANZADA!",415,125);c.font="bold 14px sans-serif";c.fillText(reward,415,198);return;}
+    if(runnerState.distance>=24000){runner.running=false;runnerMusic.pause();runnerState.over=true;runnerState.won=true;const reward=runnerState.coins>=15?"¡DESBLOQUEASTE EL GRAN PREMIO! 🎁":runnerState.coins>=8?"¡GANASTE UN BOLETO DORADO! 🎟️":"¡LLEGASTE A LA META! 🏁";runner.message.textContent=reward+" Juntaste "+runnerState.coins+" monedas y "+runner.score+" puntos. ¡Felicidades!";document.getElementById("runnerStart").textContent="▶ Jugar otra vez";runnerSound("ticket");drawRunner();const c=runner.ctx;c.fillStyle="rgba(20,12,55,.78)";c.fillRect(175,105,480,105);drawRunnerArt("gifts",415,150,95,85);c.fillStyle="#fff";c.textAlign="center";c.font="900 23px sans-serif";c.fillText("¡META ALCANZADA!",415,125);c.font="bold 14px sans-serif";c.fillText(reward,415,198);return;}
     runner.score=Math.max(runner.score,Math.floor(runnerState.frame/4));runner.scoreEl.textContent=runner.score;
     if(runner.score>runnerBest){runnerBest=runner.score;localStorage.setItem(bestKey,String(runnerBest));if(bestLabel)bestLabel.textContent=runnerBest;}
-    runnerState.speed=Math.min(6.0,3.5+runner.score/520);
+    runnerState.speed=Math.min(5.8,3.2+runner.score/850);
     if(!isMobileRunner&&runnerState.y===0&&Math.random()<.18)runnerState.dust.push({x:90,y:RUN_GROUND,size:2+Math.random()*3,life:18});
     drawRunner();runner.raf=requestAnimationFrame(runnerTick);
   }
   function resetRunner(){
     cancelAnimationFrame(runner.raf);runner.running=false;runnerMusic.pause();runnerMusic.currentTime=0;runner.score=0;runner.scoreEl.textContent="0";
-    runnerState={y:0,vy:0,obstacles:[],rewards:[],spawn:95,rewardSpawn:48,speed:3.8,frame:0,over:false,dust:[],distance:0,coins:0,won:false};
+    runnerState={y:0,vy:0,obstacles:[],rewards:[],spawn:95,rewardSpawn:48,speed:3.2,frame:0,over:false,dust:[],distance:0,coins:0,won:false,powerFrames:0};
     runnerBackgroundOffset=0;
-    runner.message.textContent="¡La carrera es larga! Junta monedas, estrellas y premios grandes hasta llegar a la meta.";
+    runner.message.textContent="¡Llega hasta la meta! Junta monedas, estrellas y pasteles para conseguir súper poderes.";
     document.getElementById("runnerStart").textContent="▶ Jugar";drawRunner();
   }
   function jump(){if(!runner.running)return;unlockRunnerAudio();if(runnerState.y===0){runnerSound("jump");runnerState.vy=-12.2;if(!isMobileRunner)for(let i=0;i<3;i++)runnerState.dust.push({x:95+Math.random()*18,y:RUN_GROUND,size:2+Math.random()*3,life:18});}}
-  document.getElementById("runnerStart").addEventListener("click",()=>{if(runnerState.over)resetRunner();unlockRunnerAudio();runnerMusic.play().catch(()=>{});runner.running=true;runner.last=0;runnerLastPaint=0;runner.message.textContent="¡Prepárate para una gran carrera! Salta los obstáculos y junta monedas, estrellas y premios.";runnerSound("start");runner.raf=requestAnimationFrame(runnerTick);document.getElementById("runnerStart").textContent="¡EN JUEGO!";});
+  document.getElementById("runnerStart").addEventListener("click",()=>{if(runnerState.over)resetRunner();unlockRunnerAudio();runnerMusic.play().catch(()=>{});runner.running=true;runner.last=0;runnerLastPaint=0;runner.message.textContent="¡Prepárate para una carrera larga! Brinca los obstáculos, recoge monedas y encuentra el pastel de súper poder.";runnerSound("start");runner.raf=requestAnimationFrame(runnerTick);document.getElementById("runnerStart").textContent="¡EN JUEGO!";});
   document.getElementById("runnerJump").addEventListener("click",jump);
   document.getElementById("runnerReset").addEventListener("click",resetRunner);
   // Modo de juego en pantalla completa; en móviles solicita orientación horizontal.
