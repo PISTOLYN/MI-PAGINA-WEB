@@ -471,3 +471,21 @@ body{padding-top:82px !important}
  .arcade-card.runner-landscape-active:fullscreen{width:100vh;height:100vw;position:fixed;inset:0;transform:rotate(90deg) translateY(-100%);transform-origin:top left}
  .arcade-card.runner-landscape-active:fullscreen canvas{max-height:62vh}
 }
+
+
+/* ===== Nueva interfaz: banner de título + videos primero ===== */
+body{background-image:linear-gradient(rgba(255,255,255,.88),rgba(255,255,255,.88)),url("t.png")}
+.hero-banner{width:min(1500px,96%);margin:0 auto;padding:18px 0 4px;text-align:center}
+.banner-title{margin:0;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px 16px;font:400 clamp(26px,4.2vw,58px)/1.05 "Lilita One","Outfit",sans-serif;letter-spacing:.5px;color:#fff;-webkit-text-stroke:clamp(5px,.7vw,9px) #24145d;paint-order:stroke fill;text-shadow:0 4px 0 #24145d}
+.banner-name b{color:#ff3da6;font-weight:400}
+.banner-dot{width:.8em;height:.8em;border-radius:50%;background:#e01616;border:3px solid #24145d;box-shadow:0 3px 0 #24145d;flex:0 0 auto}
+.banner-tag{font-size:.62em}
+.banner-sub{margin:12px auto 0;max-width:1400px;font:400 clamp(13px,1.75vw,25px)/1.25 "Lilita One","Outfit",sans-serif;letter-spacing:.4px;color:#ffe600;-webkit-text-stroke:clamp(4px,.45vw,6px) #24145d;paint-order:stroke fill;text-shadow:0 3px 0 #24145d}
+@media(max-width:600px){.banner-dot{display:none}.banner-tag{flex-basis:100%}}
+
+/* Videos: dejan ver el fondo con logos y el video va sobre negro */
+.video-section,.video-section .section-wrap,.video-section .video-grid,.video-section .video-featured,.video-section .video-frame{background:transparent !important;background-color:transparent !important}
+.video-section .video-frame video{background:#000 !important}
+.video-section{padding-top:14px !important}
+.video-section .section-heading{margin-bottom:10px}
+.video-section .light-heading h2{margin:6px 0}

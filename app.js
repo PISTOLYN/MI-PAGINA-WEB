@@ -129,8 +129,6 @@ function applyBrand() {
   $("#brandName").textContent = CONFIG.brandName;
   $("#footerBrand").textContent = CONFIG.brandName;
   $("#copyrightBrand").textContent = CONFIG.brandName;
-  $("#heroTitle").innerHTML = CONFIG.heroTitle.replace(/(extraordinario|divertido|especial)/i, '<span>$1</span>');
-  $("#heroText").textContent = CONFIG.heroText;
   $("#year").textContent = new Date().getFullYear();
 }
 
@@ -180,7 +178,7 @@ function renderVideos() {
     <article class="video-card video-featured">
       <h3 class="video-featured-title">VIDEOS DE NUESTRO SHOW</h3>
       <div class="video-frame">
-        <video id="featuredShowVideo" controls playsinline preload="metadata"></video>
+        <video id="featuredShowVideo" controls playsinline autoplay preload="auto"></video>
         <button class="video-arrow video-prev" type="button" aria-label="Video anterior">❮</button>
         <button class="video-arrow video-next" type="button" aria-label="Video siguiente">❯</button>
       </div>
@@ -188,30 +186,31 @@ function renderVideos() {
     </article>`;
   const player = $("#featuredShowVideo");
   const caption = $("#featuredVideoCaption");
-  async function showVideo(index, autoplay = false) {
+  let autoMuted = false;
+  async function showVideo(index, autoplay = true) {
     current = (index + videos.length) % videos.length;
     player.pause();
     player.src = videos[current].file;
     player.load();
     caption.textContent = videos[current].title;
-    if (autoplay) {
-      try {
-        await player.play();
-      } catch (error) {
-        caption.textContent = videos[current].title + " — presiona reproducir si el navegador lo solicita";
-      }
+    if (!autoplay) return;
+    try {
+      await player.play();            // con sonido, si el navegador lo permite
+    } catch (error) {
+      player.muted = true;            // si no, arranca sin sonido (permitido siempre)
+      autoMuted = true;
+      try { await player.play(); } catch (e) {}
     }
   }
-  grid.querySelector(".video-prev").addEventListener("click", () => showVideo(current - 1, true));
-  grid.querySelector(".video-next").addEventListener("click", () => showVideo(current + 1, true));
-  player.addEventListener("ended", () => {
-    if (current < videos.length - 1) showVideo(current + 1, true);
-    else {
-      player.pause();
-      player.currentTime = player.duration;
-      caption.textContent = videos[current].title + " — fin de los videos";
-    }
-  });
+  // Si arrancó sin sonido, se activa en cuanto la persona toque o presione algo
+  const unmuteOnce = () => {
+    if (autoMuted) { player.muted = false; autoMuted = false; }
+    ["pointerdown", "keydown", "touchstart"].forEach(t => window.removeEventListener(t, unmuteOnce));
+  };
+  ["pointerdown", "keydown", "touchstart"].forEach(t => window.addEventListener(t, unmuteOnce, { passive: true }));
+  grid.querySelector(".video-prev").addEventListener("click", () => showVideo(current - 1));
+  grid.querySelector(".video-next").addEventListener("click", () => showVideo(current + 1));
+  player.addEventListener("ended", () => showVideo(current + 1)); // pasa al siguiente y vuelve al primero
   showVideo(0);
 }
 
