@@ -457,3 +457,17 @@ body{padding-top:82px !important}
   .arcade-card:first-of-type .arcade-controls .button{width:100%;min-height:46px;font-size:14px}
   .arcade-card:first-of-type #runnerJump{grid-column:1/-1;grid-row:1;min-height:56px;font-size:18px}
 }
+
+
+/* Control para jugar Corre y brinca en pantalla completa horizontal */
+.runner-landscape-option{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 13px;border:2px solid #6d35bd;border-radius:12px;background:#fff;color:#39206f;font-size:13px;font-weight:800;cursor:pointer}
+.runner-landscape-option input{width:19px;height:19px;accent-color:#762bd0}
+.arcade-card.runner-landscape-active:fullscreen{width:100vw;height:100vh;max-width:none;margin:0;padding:12px;border:0;border-radius:0;display:flex;flex-direction:column;justify-content:center;background:linear-gradient(145deg,#fff,#f4f0ff);overflow:auto}
+.arcade-card.runner-landscape-active:fullscreen .arcade-heading{margin:0 auto 8px;width:min(100%,1100px)}
+.arcade-card.runner-landscape-active:fullscreen canvas{width:min(100%,calc(100vh * 2.5));max-height:68vh;aspect-ratio:8/3;margin:0 auto}
+.arcade-card.runner-landscape-active:fullscreen .arcade-controls{margin:8px auto;gap:8px}
+.arcade-card.runner-landscape-active:fullscreen .arcade-hint,.arcade-card.runner-landscape-active:fullscreen .arcade-message{margin:4px auto}
+@media(orientation:portrait) and (max-width:900px){
+ .arcade-card.runner-landscape-active:fullscreen{width:100vh;height:100vw;position:fixed;inset:0;transform:rotate(90deg) translateY(-100%);transform-origin:top left}
+ .arcade-card.runner-landscape-active:fullscreen canvas{max-height:62vh}
+}
