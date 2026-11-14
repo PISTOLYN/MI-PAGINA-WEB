@@ -473,19 +473,41 @@ body{padding-top:82px !important}
 }
 
 
-/* ===== Nueva interfaz: banner de título + videos primero ===== */
+/* ===== Nueva interfaz: banner + videos primero ===== */
 body{background-image:linear-gradient(rgba(255,255,255,.88),rgba(255,255,255,.88)),url("t.png")}
-.hero-banner{width:min(1500px,96%);margin:0 auto;padding:18px 0 4px;text-align:center}
-.banner-title{margin:0;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px 16px;font:400 clamp(26px,4.2vw,58px)/1.05 "Lilita One","Outfit",sans-serif;letter-spacing:.5px;color:#fff;-webkit-text-stroke:clamp(5px,.7vw,9px) #24145d;paint-order:stroke fill;text-shadow:0 4px 0 #24145d}
-.banner-name b{color:#ff3da6;font-weight:400}
-.banner-dot{width:.8em;height:.8em;border-radius:50%;background:#e01616;border:3px solid #24145d;box-shadow:0 3px 0 #24145d;flex:0 0 auto}
-.banner-tag{font-size:.62em}
-.banner-sub{margin:12px auto 0;max-width:1400px;font:400 clamp(13px,1.75vw,25px)/1.25 "Lilita One","Outfit",sans-serif;letter-spacing:.4px;color:#ffe600;-webkit-text-stroke:clamp(4px,.45vw,6px) #24145d;paint-order:stroke fill;text-shadow:0 3px 0 #24145d}
-@media(max-width:600px){.banner-dot{display:none}.banner-tag{flex-basis:100%}}
+.hero-banner{width:min(1100px,92%);margin:0 auto;padding:26px 0 6px;text-align:center}
+.banner-title{margin:0;display:flex;flex-direction:column;align-items:center;gap:0;font-family:"Fredoka","Outfit",sans-serif;letter-spacing:0}
+.banner-lead{font-weight:600;font-size:clamp(20px,2.6vw,34px);color:#3a2a7a}
+.banner-name{font-weight:700;font-size:clamp(32px,6.6vw,86px);line-height:1.02;letter-spacing:.5px;background:linear-gradient(100deg,#5b3de0 0%,#b43fd4 55%,#ff5c97 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 3px 0 rgba(36,20,93,.14))}
+.banner-chips{list-style:none;margin:14px 0 0;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:9px}
+.banner-chips li{font:600 clamp(13px,1.5vw,17px) "Fredoka","DM Sans",sans-serif;padding:7px 16px;border-radius:999px;color:#2f2068;background:#efe9ff;border:1px solid #d9ccff}
+.banner-chips li:nth-child(2){background:#ffe8f1;border-color:#ffc9de}
+.banner-chips li:nth-child(3){background:#fff3bd;border-color:#f6df7a}
+.banner-sub{margin:14px auto 0;max-width:640px;font:500 clamp(15px,1.7vw,19px)/1.5 "DM Sans",sans-serif;color:#4a4468}
+.section-heading h2,.arcade-heading h3,.game-intro h2{font-family:"Fredoka","Outfit",sans-serif !important;font-weight:600;letter-spacing:0 !important}
 
-/* Videos: dejan ver el fondo con logos y el video va sobre negro */
-.video-section,.video-section .section-wrap,.video-section .video-grid,.video-section .video-featured,.video-section .video-frame{background:transparent !important;background-color:transparent !important}
-.video-section .video-frame video{background:#000 !important}
+/* Videos sobre el fondo con logos; marco chico y flechas dentro del video */
+.video-section,.video-section .section-wrap,.video-section .video-grid,.video-section .video-featured{background:transparent !important}
 .video-section{padding-top:14px !important}
-.video-section .section-heading{margin-bottom:10px}
-.video-section .light-heading h2{margin:6px 0}
+.video-section .section-heading{margin-bottom:8px}
+.video-section .video-grid .video-featured{width:auto !important;max-width:100%;display:flex;flex-direction:column;align-items:center}
+.video-section .video-featured-title{font:600 clamp(16px,1.8vw,21px) "Fredoka","Outfit",sans-serif;letter-spacing:.3px;color:#4a2fb0;padding:0 0 10px}
+.video-section .video-grid .video-featured .video-frame{position:relative;display:block !important;width:auto !important;max-width:100%;padding:5px !important;border-radius:18px !important;background:linear-gradient(135deg,#7657ed,#ff6b9c 55%,#ffc93c) !important;box-shadow:0 10px 26px rgba(54,30,130,.22) !important;overflow:hidden !important}
+.video-section .video-grid .video-featured .video-frame video{display:block;width:auto !important;max-width:100%;height:auto !important;max-height:min(72vh,640px) !important;border-radius:13px;background:transparent !important}
+.video-section .video-arrow{top:50%;width:42px;height:42px;flex-basis:42px;font-size:18px;line-height:1;display:grid;place-items:center;padding:0;border:1px solid rgba(255,255,255,.55);background:rgba(255,255,255,.16);color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.5);backdrop-filter:blur(3px);box-shadow:none;opacity:.7;transition:opacity .2s,background .2s}
+.video-section .video-arrow:hover{opacity:1;background:rgba(255,255,255,.34)}
+.video-section .video-prev{left:12px}.video-section .video-next{right:12px}
+.video-section .video-caption{font:500 13px "DM Sans",sans-serif;color:#6a6488;padding-top:8px}
+
+/* Payasito saludando */
+.hero-banner{position:relative}
+.clown-hola{position:absolute;left:calc(50% - 50vw + 14px);top:14px;width:clamp(120px,13vw,190px);z-index:2;pointer-events:none}
+.clown-hola img{display:block;width:100%;height:auto;transform-origin:50% 96%;filter:drop-shadow(0 8px 10px rgba(36,20,93,.25));animation:clown-entra .9s cubic-bezier(.2,1.4,.4,1) both,clown-saluda 2.2s ease-in-out 1s infinite}
+.clown-bubble{position:absolute;left:68%;top:-6px;z-index:3;padding:6px 14px;border-radius:16px;background:#fff;border:2px solid #7657ed;color:#4a2fb0;font:600 clamp(14px,1.5vw,19px) "Fredoka","DM Sans",sans-serif;box-shadow:0 4px 10px rgba(54,30,130,.18);transform-origin:0 100%;animation:burbuja-pop .5s cubic-bezier(.2,1.5,.4,1) .7s both,burbuja-mueve 2.2s ease-in-out 1.3s infinite}
+.clown-bubble:after{content:"";position:absolute;left:12px;bottom:-9px;border:6px solid transparent;border-top:9px solid #7657ed;border-bottom:0}
+@keyframes clown-entra{from{transform:translateY(40px) scale(.7);opacity:0}to{transform:none;opacity:1}}
+@keyframes clown-saluda{0%,100%{transform:rotate(-3deg) translateY(0)}25%{transform:rotate(3deg) translateY(-6px)}50%{transform:rotate(-3deg) translateY(0)}75%{transform:rotate(3deg) translateY(-6px)}}
+@keyframes burbuja-pop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes burbuja-mueve{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+@media(max-width:1180px){.clown-hola{position:relative;left:auto;top:auto;width:130px;margin:0 auto 4px}}
+@media(prefers-reduced-motion:reduce){.clown-hola img,.clown-bubble{animation:none}}
