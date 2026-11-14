@@ -341,3 +341,39 @@ body{padding-top:82px !important}
  .video-arrow{width:38px;height:38px;flex-basis:38px;font-size:18px}
  .video-prev{left:8px}.video-next{right:8px}
 }
+
+
+/* Corrección definitiva del área del video: sin lienzo negro ni bandas */
+.video-section,
+.video-section .section-wrap,
+.video-section .video-grid,
+.video-section .video-featured,
+.video-section .video-frame,
+.video-section .video-frame video{
+ background:#fff !important;
+ background-color:#fff !important;
+}
+.video-section{padding-top:36px !important;padding-bottom:48px !important}
+.video-featured{width:min(100%,560px) !important}
+.video-featured .video-frame{
+ width:100% !important;
+ height:auto !important;
+ min-height:0 !important;
+ max-height:none !important;
+ aspect-ratio:auto !important;
+ border:0 !important;
+ outline:0 !important;
+ box-shadow:none !important;
+ overflow:visible !important;
+}
+.video-featured .video-frame video{
+ width:100% !important;
+ height:auto !important;
+ max-height:78vh !important;
+ aspect-ratio:auto !important;
+ object-fit:contain !important;
+ object-position:center !important;
+ border:0 !important;
+ outline:0 !important;
+ box-shadow:none !important;
+}
