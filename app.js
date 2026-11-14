@@ -569,7 +569,7 @@ startGame();
     runnerBackgroundOffset=(runnerBackgroundOffset+(runnerState.speed*.34*dt))%runner.width;
     runnerState.frame+=dt;runnerState.distance+=runnerState.speed*dt;runnerState.spawn-=dt;runnerState.rewardSpawn-=dt;
     if(runnerState.spawn<=0){spawnObstacle();runnerState.spawn=Math.max(78,112-Math.floor(runner.score/35))+Math.random()*32;}
-    if(runnerState.rewardSpawn<=0){const r=Math.random();const type=r<.12?"ticket":r<.22?"dogBalloon":r<.58?"coin":"star";runnerState.rewards.push({type,x:830,y:135+Math.random()*65});runnerState.rewardSpawn=34+Math.random()*28;}
+    if(runnerState.rewardSpawn<=0){const r=Math.random();const type=r<.10?"ticket":r<.18?"dogBalloon":r<.27?"hat":r<.36?"popcorn":r<.68?"coin":"star";runnerState.rewards.push({type,x:830,y:135+Math.random()*65});runnerState.rewardSpawn=34+Math.random()*28;}
     runnerState.y+=runnerState.vy*dt;runnerState.vy+=.62*dt;
     if(runnerState.y>0){runnerState.y=0;runnerState.vy=0;}
     runnerState.obstacles.forEach(o=>o.x-=runnerState.speed*dt);
@@ -580,7 +580,7 @@ startGame();
     const hit=runnerState.obstacles.some(o=>{const oy=o.air?o.y:RUN_GROUND-o.h;return px+pw-8>o.x+8&&px+8<o.x+o.w-8&&py+ph-8>oy+8&&py+8<oy+o.h-5;});
     if(hit){runner.running=false;runnerMusic.pause();runnerState.over=true;runnerSound("crash");runner.message.textContent="¡Uy! 😄 ¡Casi lo logras! Presiona Volver a jugar y sigue coleccionando premios.";document.getElementById("runnerStart").textContent="▶ Volver a jugar";drawRunner();return;}
     runnerState.rewards=runnerState.rewards.filter(o=>{
-      if(o.x>70&&o.x<170&&o.y>py-8&&o.y<py+ph+8){const points=o.type==="ticket"?5:o.type==="star"?3:o.type==="dogBalloon"?4:1;runner.score+=points;if(o.type==="coin")runnerState.coins++;runner.scoreEl.textContent=runner.score;runnerSound(o.type==="dogBalloon"?"star":o.type);return false;}
+      if(o.x>70&&o.x<170&&o.y>py-8&&o.y<py+ph+8){const points=o.type==="ticket"?5:o.type==="star"?3:o.type==="dogBalloon"?4:o.type==="hat"?5:o.type==="popcorn"?2:1;runner.score+=points;if(o.type==="coin")runnerState.coins++;runner.scoreEl.textContent=runner.score;runnerSound(o.type==="dogBalloon"?"star":o.type);return false;}
       return o.x>-50;
     });
     runnerState.obstacles=runnerState.obstacles.filter(o=>o.x+o.w>-20);
