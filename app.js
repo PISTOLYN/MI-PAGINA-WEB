@@ -537,7 +537,7 @@ startGame();
         c.fillStyle="#ed4c43";c.fillRect(o.x,RUN_GROUND-o.h,o.w,o.h);
       }
     });
-    const clownW=isMobileRunner?190:160,clownH=isMobileRunner?170:143,clownX=isMobileRunner?24:34;
+    const clownW=isMobileRunner?210:176,clownH=isMobileRunner?187:157,clownX=isMobileRunner?24:34;
     const clownY=RUN_GROUND-clownH+runnerState.y;
     if(!isMobileRunner){c.fillStyle="rgba(0,0,0,.18)";c.beginPath();c.ellipse(clownX+clownW/2,RUN_GROUND+2,27,5,0,0,Math.PI*2);c.fill();}
     if(!runnerArt.clown.complete||!runnerArt.clown.naturalWidth){
@@ -553,7 +553,7 @@ startGame();
     if(runnerState.distance>1780){c.fillStyle="#fff";c.font="900 19px sans-serif";c.textAlign="right";c.fillText("🏁 ¡YA CASI LLEGAS!",780,91);}
   }
   function spawnObstacle(){
-    const factor=isMobileRunner?1.25:1.12;
+    const factor=isMobileRunner?1.08:.96;
     const types=["cone","wood","fire","hydrant","spring","boxes","ball"];
     const sizes={cone:[48*factor,55*factor],wood:[66*factor,48*factor],fire:[58*factor,62*factor],hydrant:[48*factor,55*factor],spring:[52*factor,58*factor],boxes:[62*factor,58*factor],ball:[48*factor,48*factor]};
     const type=types[Math.floor(Math.random()*types.length)];const [w,h]=sizes[type];
@@ -576,10 +576,10 @@ startGame();
     runnerState.rewards.forEach(o=>o.x-=runnerState.speed*dt);
     runnerState.dust.forEach(p=>{p.x-=2*dt;p.life-=dt;});
     runnerState.dust=runnerState.dust.filter(p=>p.life>0);
-    const clownX=isMobileRunner?24:34,clownW=isMobileRunner?190:160,clownH=isMobileRunner?170:143;
+    const clownX=isMobileRunner?24:34,clownW=isMobileRunner?210:176,clownH=isMobileRunner?187:157;
     // Colisión más justa: solo cuenta el centro del cuerpo, no todo el dibujo del payaso.
-    const px=clownX+clownW*.32,py=RUN_GROUND-clownH+runnerState.y+clownH*.30,pw=clownW*.38,ph=clownH*.58;
-    const hit=runnerState.obstacles.some(o=>{if(o.air)return false;const oy=RUN_GROUND-o.h;const padX=Math.min(14,o.w*.18),padY=Math.min(12,o.h*.16);return runnerState.powerFrames>0?false:px+pw>o.x+padX&&px<o.x+o.w-padX&&py+ph>oy+padY&&py<oy+o.h-padY;});
+    const px=clownX+clownW*.36,py=RUN_GROUND-clownH+runnerState.y+clownH*.38,pw=clownW*.28,ph=clownH*.46;
+    const hit=runnerState.obstacles.some(o=>{if(o.air||!['cone','wood','fire','hydrant','spring','boxes','ball'].includes(o.type))return false;const oy=RUN_GROUND-o.h;const padX=Math.min(16,o.w*.22),padY=Math.min(14,o.h*.20);return runnerState.powerFrames>0?false:px+pw>o.x+padX&&px<o.x+o.w-padX&&py+ph>oy+padY&&py<oy+o.h-padY;});
     if(hit){runner.running=false;runnerMusic.pause();runnerState.over=true;runnerSound("crash");runner.message.textContent="¡Uy! 😄 ¡Casi lo logras! Presiona Volver a jugar y sigue coleccionando premios.";document.getElementById("runnerStart").textContent="▶ Volver a jugar";drawRunner();return;}
     runnerState.rewards=runnerState.rewards.filter(o=>{
       if(o.x>55&&o.x<190&&o.y>py-32&&o.y<py+ph+32){const points=o.type==="ticket"?5:o.type==="star"?3:o.type==="dogBalloon"?4:o.type==="hat"?5:o.type==="popcorn"?2:o.type==="cake"?8:1;runner.score+=points;if(o.type==="coin")runnerState.coins++;if(o.type==="cake"){runnerState.powerFrames=420;runner.message.textContent="¡SÚPER PODER! 🎂 ¡Velocidad extra y protección por 7 segundos!";runnerSound("ticket");}else runnerSound(o.type==="dogBalloon"?"star":o.type);runner.scoreEl.textContent=runner.score;return false;}
