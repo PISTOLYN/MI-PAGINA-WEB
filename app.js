@@ -250,6 +250,14 @@ $("#mainNav").addEventListener("click", e => {
 
 // Juego de memoria con los seis payasitos del repositorio
 const clownImages = ["1.png", "2.png", "3.png", "4.png", "5.png", "6.png"];
+// Cargar las seis fotos al iniciar para que no haya pausas al voltear cartas.
+const clownImageCache = new Map();
+clownImages.forEach(src => {
+  const img = new Image();
+  img.src = src;
+  if (img.decode) img.decode().catch(() => {});
+  clownImageCache.set(src, img);
+});
 let deck = [], firstCard = null, lockBoard = false, moveCount = 0, matchCount = 0;
 function shuffle(items) {
   const result = [...items];
@@ -260,7 +268,12 @@ function shuffle(items) {
   return result;
 }
 function revealClown(card, image) {
-  card.innerHTML = `<img src="${image}" alt="Payasito del memorama" draggable="false">`;
+  const cachedImage = clownImageCache.get(image);
+  const picture = cachedImage ? cachedImage.cloneNode() : new Image();
+  if (!cachedImage) picture.src = image;
+  picture.alt = "Payasito del memorama";
+  picture.draggable = false;
+  card.replaceChildren(picture);
   card.classList.add("revealed");
 }
 function hideClown(card) {
@@ -293,7 +306,7 @@ $("#memoryBoard").addEventListener("click", e => {
     setTimeout(() => {
       hideClown(previous); hideClown(card);
       lockBoard = false;
-    }, 850);
+    }, 550);
   }
 });
 $("#restartGame").addEventListener("click", startGame);
