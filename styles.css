@@ -601,3 +601,22 @@ body.about-open{overflow:hidden}
 .review-stars{color:#f2a900;font-size:34px;letter-spacing:4px}
 .reviews-info-card strong{margin-top:12px;color:#4a2fb0;font:700 18px "Fredoka","DM Sans",sans-serif}
 @media(max-width:720px){.reviews-layout{grid-template-columns:1fr}.reviews-section{padding-top:42px;padding-bottom:48px}}
+
+
+/* Tira horizontal animada de reseñas */
+.reviews-wall{margin:8px auto 34px;max-width:1160px}
+.reviews-wall-heading{text-align:center;margin:0 auto 18px;padding:0 12px}
+.reviews-wall-heading h3{margin:0 0 7px;color:#382078;font:700 clamp(22px,3vw,30px) "Fredoka","Outfit",sans-serif}
+.reviews-wall-heading p{max-width:760px;margin:0 auto;color:#777087;font-size:12px;line-height:1.55}
+.reviews-marquee{width:100%;overflow:hidden;padding:10px 0 20px;position:relative;mask-image:linear-gradient(to right,transparent 0,#000 4%,#000 96%,transparent 100%)}
+.reviews-track{display:flex;align-items:stretch;gap:18px;width:max-content;animation:reviews-roll 72s linear infinite}
+.reviews-marquee:hover .reviews-track,.reviews-marquee:focus-within .reviews-track{animation-play-state:paused}
+.review-tile{flex:0 0 320px;display:flex;flex-direction:column;justify-content:space-between;min-height:190px;margin:0;padding:22px 23px;border:1.5px solid #e6dcff;border-radius:20px;background:linear-gradient(145deg,#fff 0%,#faf7ff 100%);box-shadow:0 8px 22px rgba(49,22,105,.09);white-space:normal}
+.review-tile-wide{flex-basis:390px}
+.review-tile-long{flex-basis:430px;min-height:210px;background:linear-gradient(145deg,#fff 0%,#fff6fa 100%)}
+.review-tile-stars{margin-bottom:10px;color:#f2a900;font-size:19px;letter-spacing:3px}
+.review-tile p{margin:0 0 17px;color:#39314f;font-size:15px;line-height:1.65;font-style:italic}
+.review-tile cite{display:block;margin-top:auto;color:#7657c8;font-size:12px;font-style:normal;font-weight:800}
+@keyframes reviews-roll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media(max-width:650px){.reviews-wall{margin-bottom:24px}.reviews-track{gap:12px;animation-duration:58s}.review-tile{flex-basis:280px;min-height:190px;padding:19px}.review-tile-wide{flex-basis:310px}.review-tile-long{flex-basis:330px}}
+@media(prefers-reduced-motion:reduce){.reviews-track{animation:none}.reviews-marquee{overflow-x:auto;mask-image:none;scrollbar-width:thin}}
