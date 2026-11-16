@@ -441,10 +441,17 @@ startGame();
   function loadRunnerAssets(){
     if(runnerAssetsLoaded)return;
     runnerAssetsLoaded=true;
-    Object.entries(runnerAssets).forEach(([key,src])=>{
-      const im=new Image();runnerArt[key]=im;
-      im.onload=()=>{
-        if(key==="clown")return;
+    runnerBackground.onload=()=>{prepareRunnerBackground();if(!runner.running)drawRunner();};
+    runnerBackground.src="FONDO.jpg";
+  }
+  // Cada dibujo del juego solicita únicamente el recurso que necesita en ese momento.
+  function loadRunnerAsset(key){
+    if(runnerArt[key])return runnerArt[key];
+    const src=runnerAssets[key];
+    if(!src)return null;
+    const im=new Image();runnerArt[key]=im;
+    im.onload=()=>{
+      if(key!=="clown"){
         try{
           const scan=document.createElement("canvas");scan.width=im.naturalWidth;scan.height=im.naturalHeight;
           const cx=scan.getContext("2d",{willReadFrequently:true});cx.drawImage(im,0,0);
@@ -455,12 +462,11 @@ startGame();
           }
           if(maxX>=minX&&maxY>=minY)runnerArtBounds[key]={x:minX,y:minY,w:maxX-minX+1,h:maxY-minY+1};
         }catch(e){}
-        if(!runner.running)drawRunner();
-      };
-      im.src=src;
-    });
-    runnerBackground.onload=()=>{prepareRunnerBackground();if(!runner.running)drawRunner();};
-    runnerBackground.src="FONDO.jpg";
+      }
+      if(!runner.running)drawRunner();
+    };
+    im.src=src;
+    return im;
   }
   // El fondo se prepara una sola vez; no se vuelve a escalar la foto en cada cuadro.
   const runnerBackgroundCache=document.createElement("canvas");
@@ -553,7 +559,7 @@ startGame();
     }else{c.fillStyle="#b9e5ff";c.fillRect(0,0,w,h);}
   }
   function drawGroundArt(key,x,ground,maxW,maxH){
-    const c=runner.ctx,im=runnerArt[key];
+    const c=runner.ctx,im=runnerArt[key]||loadRunnerAsset(key);
     if(!im||!im.complete||!im.naturalWidth)return false;
     const b=runnerArtBounds[key]||{x:0,y:0,w:im.naturalWidth,h:im.naturalHeight};
     const scale=Math.min(maxW/b.w,maxH/b.h);
@@ -565,7 +571,7 @@ startGame();
     return true;
   }
   function drawRunnerArt(key,x,y,w,h){
-    const im=runnerArt[key];
+    const im=runnerArt[key]||loadRunnerAsset(key);
     if(im&&im.complete&&im.naturalWidth){
       const scale=Math.min(w/im.naturalWidth,h/im.naturalHeight);
       const dw=im.naturalWidth*scale,dh=im.naturalHeight*scale;
