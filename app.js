@@ -178,7 +178,7 @@ function renderVideos() {
     <article class="video-card video-featured">
       <h3 class="video-featured-title">VIDEOS DE NUESTRO SHOW</h3>
       <div class="video-frame">
-        <video id="featuredShowVideo" controls playsinline preload="metadata"></video>
+        <video id="featuredShowVideo" controls autoplay muted playsinline preload="auto"></video>
         <button class="video-arrow video-prev" type="button" aria-label="Video anterior">❮</button>
         <button class="video-arrow video-next" type="button" aria-label="Video siguiente">❯</button>
       </div>
@@ -186,7 +186,8 @@ function renderVideos() {
     </article>`;
   const player = $("#featuredShowVideo");
   const caption = $("#featuredVideoCaption");
-  let autoMuted = false;
+  let autoMuted = true;
+  player.muted = true;
   async function showVideo(index, autoplay = true) {
     current = (index + videos.length) % videos.length;
     player.pause();
@@ -211,7 +212,7 @@ function renderVideos() {
   grid.querySelector(".video-prev").addEventListener("click", () => showVideo(current - 1));
   grid.querySelector(".video-next").addEventListener("click", () => showVideo(current + 1));
   player.addEventListener("ended", () => showVideo(current + 1)); // pasa al siguiente y vuelve al primero
-  showVideo(0, false);
+  showVideo(0, true);
 }
 
 function renderSocial() {
