@@ -20,7 +20,7 @@
     </a>
     <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false">☰</button>
     <nav class="main-nav" id="mainNav">
-      <a href="#inicio">Inicio</a><a href="#quienes-somos" id="openAbout">¿Quiénes somos?</a><a href="#galeria">Fotos</a><a href="#videos">Videos</a><a href="#juegos">Juegos</a>
+      <a href="#inicio">Inicio</a><a href="#quienes-somos" id="openAbout">¿Quiénes somos?</a><a href="#galeria">Fotos</a><a href="#videos">Videos</a><a href="#juegos">Juegos</a><a href="#resenas">Reseñas</a>
     </nav>
       <section class="music-player" id="musicPlayer" aria-label="Música de Desafíos Locos">
       <audio id="siteMusic" preload="metadata"></audio>
@@ -85,6 +85,40 @@
         <p class="arcade-hint">Computadora: flechas izquierda/derecha. Celular: mantén presionadas las flechas.</p>
         <p class="arcade-message" id="catchMessage" aria-live="polite">Presiona Jugar para comenzar.</p>
       </article>
+    </section>
+
+    <section class="reviews-section section-wrap" id="resenas">
+      <div class="section-heading"><div><span class="eyebrow">TU OPINIÓN NOS AYUDA</span><h2>¡Cuéntanos cómo <span>te fue!</span></h2><p>Si ya viviste la diversión de Desafíos Locos, comparte tu experiencia con otros visitantes.</p></div></div>
+      <div class="reviews-layout">
+        <div class="review-form-card">
+          <h3>Deja tu reseña</h3>
+          <p class="review-form-intro">Tu reseña será enviada para revisión. Solo se publicará cuando Desafíos Locos la apruebe.</p>
+          <form id="reviewForm">
+            <label for="reviewName">Tu nombre</label>
+            <input id="reviewName" name="name" type="text" maxlength="60" placeholder="Escribe tu nombre" required>
+            <label for="reviewRating">Calificación</label>
+            <select id="reviewRating" name="rating" required>
+              <option value="5">★★★★★ — Excelente</option>
+              <option value="4">★★★★☆ — Muy bueno</option>
+              <option value="3">★★★☆☆ — Bueno</option>
+              <option value="2">★★☆☆☆ — Puede mejorar</option>
+              <option value="1">★☆☆☆☆ — No fue lo esperado</option>
+            </select>
+            <label for="reviewText">Cuéntanos tu experiencia</label>
+            <textarea id="reviewText" name="review" rows="5" maxlength="1000" placeholder="¿Qué te pareció el show? Puedes compartir qué fue lo que más disfrutaron..." required></textarea>
+            <button class="button button-primary review-submit" type="submit">Enviar reseña para revisión</button>
+            <p class="review-privacy">Al enviar, se abrirá WhatsApp para compartir tu reseña. No se publicará automáticamente.</p>
+            <p class="review-feedback" id="reviewFeedback" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+        <div class="reviews-info-card">
+          <div class="review-stars" aria-hidden="true">★★★★★</div>
+          <h3>Tu experiencia cuenta</h3>
+          <p>Queremos conocer la opinión de las familias, escuelas y empresas que han compartido un evento con nosotros.</p>
+          <p>Leemos cada comentario antes de publicarlo para mantener este espacio útil y respetuoso para todos.</p>
+          <strong>¡Gracias por ayudarnos a mejorar!</strong>
+        </div>
+      </div>
     </section>
     </main>
 
@@ -209,5 +243,29 @@
       loadTrack(0, false);
     })();
   </script>
-</body>
+
+  <script>
+    (() => {
+      const form = document.getElementById("reviewForm");
+      if (!form) return;
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const name = document.getElementById("reviewName").value.trim();
+        const rating = Number(document.getElementById("reviewRating").value);
+        const review = document.getElementById("reviewText").value.trim();
+        const feedback = document.getElementById("reviewFeedback");
+        if (!name || !review || !rating) {
+          feedback.textContent = "Completa tu nombre, calificación y comentario.";
+          return;
+        }
+        const stars = "★".repeat(rating) + "☆".repeat(5 - rating);
+        const message = "Hola, quiero enviar una reseña para Desafíos Locos.\n\nNombre: " + name +
+          "\nCalificación: " + stars + " (" + rating + "/5)\nReseña: " + review +
+          "\n\nEsta reseña queda pendiente de aprobación para publicarse en la página.";
+        feedback.textContent = "Se abrirá WhatsApp para que envíes tu reseña. Recuerda presionar Enviar en WhatsApp.";
+        window.open("https://wa.me/528110276858?text=" + encodeURIComponent(message), "_blank", "noopener");
+      });
+    })();
+  </script>
+\n</body>
 </html>
