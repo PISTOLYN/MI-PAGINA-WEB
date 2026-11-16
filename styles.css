@@ -620,3 +620,8 @@ body.about-open{overflow:hidden}
 @keyframes reviews-roll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 @media(max-width:650px){.reviews-wall{margin-bottom:24px}.reviews-track{gap:12px;animation-duration:58s}.review-tile{flex-basis:280px;min-height:190px;padding:19px}.review-tile-wide{flex-basis:310px}.review-tile-long{flex-basis:330px}}
 @media(prefers-reduced-motion:reduce){.reviews-track{animation:none}.reviews-marquee{overflow-x:auto;mask-image:none;scrollbar-width:thin}}
+
+
+/* Botón verde para enviar reseñas */
+#reviewForm .review-submit{background:linear-gradient(110deg,#20c96b,#079447);color:#fff;box-shadow:0 8px 20px rgba(7,148,71,.28)}
+#reviewForm .review-submit:hover{background:linear-gradient(110deg,#18b85e,#067d3c);box-shadow:0 11px 24px rgba(7,148,71,.36)}
