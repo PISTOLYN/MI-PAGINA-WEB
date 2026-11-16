@@ -157,7 +157,7 @@ function renderGallery() {
   if (!photos.length) { grid.innerHTML = ""; return; }
   const makePhotoSet = (copy = false) => photos.map((photo, index) => `
     <figure class="rollup-photo">
-      <img src="${encodeURI(photo)}" alt="Fotografía ${index + 1} de un evento de Desafíos Locos" loading="${copy ? "lazy" : "eager"}">
+      <img src="${encodeURI(photo)}" alt="Fotografía ${index + 1} de un evento de Desafíos Locos" loading="lazy" decoding="async">
       <figcaption>Desafíos Locos en vivo</figcaption>
     </figure>`).join("");
   grid.innerHTML = `
@@ -178,7 +178,7 @@ function renderVideos() {
     <article class="video-card video-featured">
       <h3 class="video-featured-title">VIDEOS DE NUESTRO SHOW</h3>
       <div class="video-frame">
-        <video id="featuredShowVideo" controls playsinline autoplay preload="auto"></video>
+        <video id="featuredShowVideo" controls playsinline preload="metadata"></video>
         <button class="video-arrow video-prev" type="button" aria-label="Video anterior">❮</button>
         <button class="video-arrow video-next" type="button" aria-label="Video siguiente">❯</button>
       </div>
@@ -211,7 +211,7 @@ function renderVideos() {
   grid.querySelector(".video-prev").addEventListener("click", () => showVideo(current - 1));
   grid.querySelector(".video-next").addEventListener("click", () => showVideo(current + 1));
   player.addEventListener("ended", () => showVideo(current + 1)); // pasa al siguiente y vuelve al primero
-  showVideo(0);
+  showVideo(0, false);
 }
 
 function renderSocial() {
