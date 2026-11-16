@@ -188,6 +188,14 @@ function renderVideos() {
   const caption = $("#featuredVideoCaption");
   let autoMuted = true;
   player.muted = true;
+  // En datos móviles o redes lentas no descargamos ni reproducimos videos automáticamente.
+  const network = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  const cellularOrSlow = Boolean(network && (
+    network.saveData ||
+    network.type === "cellular" ||
+    ["slow-2g", "2g", "3g"].includes(network.effectiveType)
+  ));
+  player.preload = cellularOrSlow ? "none" : "metadata";
   async function showVideo(index, autoplay = true) {
     current = (index + videos.length) % videos.length;
     player.pause();
@@ -212,7 +220,7 @@ function renderVideos() {
   grid.querySelector(".video-prev").addEventListener("click", () => showVideo(current - 1));
   grid.querySelector(".video-next").addEventListener("click", () => showVideo(current + 1));
   player.addEventListener("ended", () => showVideo(current + 1)); // pasa al siguiente y vuelve al primero
-  showVideo(0, true);
+  showVideo(0, !cellularOrSlow);
 }
 
 function renderSocial() {
@@ -268,14 +276,8 @@ $("#quoteWa").href = waUrl("Hola, quiero cotizar mi evento con Desafíos Locos M
 
 // Juego de memoria con los seis payasitos del repositorio
 const clownImages = ["1.png", "2.png", "3.png", "4.png", "5.png", "6.png"];
-// Cargar las seis fotos al iniciar para que no haya pausas al voltear cartas.
+// Las imágenes del memorama se descargan solo cuando el visitante voltea una carta.
 const clownImageCache = new Map();
-clownImages.forEach(src => {
-  const img = new Image();
-  img.src = src;
-  if (img.decode) img.decode().catch(() => {});
-  clownImageCache.set(src, img);
-});
 let deck = [], firstCard = null, lockBoard = false, moveCount = 0, matchCount = 0;
 function shuffle(items) {
   const result = [...items];
@@ -286,9 +288,13 @@ function shuffle(items) {
   return result;
 }
 function revealClown(card, image) {
-  const cachedImage = clownImageCache.get(image);
-  const picture = cachedImage ? cachedImage.cloneNode() : new Image();
-  if (!cachedImage) picture.src = image;
+  let cachedImage = clownImageCache.get(image);
+  if (!cachedImage) {
+    cachedImage = new Image();
+    cachedImage.src = image;
+    clownImageCache.set(image, cachedImage);
+  }
+  const picture = cachedImage.cloneNode();
   picture.alt = "Payasito del memorama";
   picture.draggable = false;
   card.replaceChildren(picture);
@@ -430,25 +436,32 @@ startGame();
     popcorn: "PALOMITAS.png"
   };
   const runnerArtBounds={};
-  Object.entries(runnerAssets).forEach(([key,src])=>{
-    const im=new Image();runnerArt[key]=im;
-    im.onload=()=>{
-      if(key==="clown")return;
-      try{
-        const scan=document.createElement("canvas");scan.width=im.naturalWidth;scan.height=im.naturalHeight;
-        const cx=scan.getContext("2d",{willReadFrequently:true});cx.drawImage(im,0,0);
-        const pixels=cx.getImageData(0,0,scan.width,scan.height).data;
-        let minX=scan.width,minY=scan.height,maxX=-1,maxY=-1;
-        for(let y=0;y<scan.height;y++)for(let x=0;x<scan.width;x++){
-          if(pixels[(y*scan.width+x)*4+3]>18){if(x<minX)minX=x;if(x>maxX)maxX=x;if(y<minY)minY=y;if(y>maxY)maxY=y;}
-        }
-        if(maxX>=minX&&maxY>=minY)runnerArtBounds[key]={x:minX,y:minY,w:maxX-minX+1,h:maxY-minY+1};
-      }catch(e){}
-    };
-    im.src=src;
-  });
+  let runnerAssetsLoaded=false;
   const runnerBackground=new Image();
-  runnerBackground.src="FONDO.jpg";
+  function loadRunnerAssets(){
+    if(runnerAssetsLoaded)return;
+    runnerAssetsLoaded=true;
+    Object.entries(runnerAssets).forEach(([key,src])=>{
+      const im=new Image();runnerArt[key]=im;
+      im.onload=()=>{
+        if(key==="clown")return;
+        try{
+          const scan=document.createElement("canvas");scan.width=im.naturalWidth;scan.height=im.naturalHeight;
+          const cx=scan.getContext("2d",{willReadFrequently:true});cx.drawImage(im,0,0);
+          const pixels=cx.getImageData(0,0,scan.width,scan.height).data;
+          let minX=scan.width,minY=scan.height,maxX=-1,maxY=-1;
+          for(let y=0;y<scan.height;y++)for(let x=0;x<scan.width;x++){
+            if(pixels[(y*scan.width+x)*4+3]>18){if(x<minX)minX=x;if(x>maxX)maxX=x;if(y<minY)minY=y;if(y>maxY)maxY=y;}
+          }
+          if(maxX>=minX&&maxY>=minY)runnerArtBounds[key]={x:minX,y:minY,w:maxX-minX+1,h:maxY-minY+1};
+        }catch(e){}
+        if(!runner.running)drawRunner();
+      };
+      im.src=src;
+    });
+    runnerBackground.onload=()=>{prepareRunnerBackground();if(!runner.running)drawRunner();};
+    runnerBackground.src="FONDO.jpg";
+  }
   // El fondo se prepara una sola vez; no se vuelve a escalar la foto en cada cuadro.
   const runnerBackgroundCache=document.createElement("canvas");
   runnerBackgroundCache.width=runner.width;
@@ -479,7 +492,8 @@ startGame();
   if(bestLabel)bestLabel.textContent=runnerBest;
   const RUN_GROUND=278;
   // Música exclusiva del juego 1; no modifica el reproductor general de la página.
-  const runnerMusic=new Audio("./CORRE%20CORRE%20CORRE.MP3");
+  const runnerMusic=new Audio();
+  runnerMusic.preload="none";
   runnerMusic.loop=true;
   runnerMusic.volume=0.28;
   // Efectos de sonido ligeros generados con Web Audio (sin descargar archivos).
@@ -641,7 +655,7 @@ startGame();
     document.getElementById("runnerStart").textContent="▶ Jugar";drawRunner();
   }
   function jump(){if(!runner.running)return;unlockRunnerAudio();if(runnerState.y===0){runnerSound("jump");runnerState.vy=-12.2;if(!isMobileRunner)for(let i=0;i<3;i++)runnerState.dust.push({x:95+Math.random()*18,y:RUN_GROUND,size:2+Math.random()*3,life:18});}}
-  document.getElementById("runnerStart").addEventListener("click",()=>{if(runnerState.over)resetRunner();unlockRunnerAudio();runnerMusic.play().catch(()=>{});runner.running=true;runner.last=0;runnerLastPaint=0;runner.message.textContent="¡Prepárate para una carrera larga! Brinca los obstáculos, recoge monedas y encuentra el pastel de súper poder.";runnerSound("start");runner.raf=requestAnimationFrame(runnerTick);document.getElementById("runnerStart").textContent="¡EN JUEGO!";});
+  document.getElementById("runnerStart").addEventListener("click",()=>{if(runnerState.over)resetRunner();loadRunnerAssets();unlockRunnerAudio();if(!runnerMusic.src)runnerMusic.src="./CORRE%20CORRE%20CORRE.MP3";runnerMusic.play().catch(()=>{});runner.running=true;runner.last=0;runnerLastPaint=0;runner.message.textContent="¡Prepárate para una carrera larga! Brinca los obstáculos, recoge monedas y encuentra el pastel de súper poder.";runnerSound("start");runner.raf=requestAnimationFrame(runnerTick);document.getElementById("runnerStart").textContent="¡EN JUEGO!";});
   document.getElementById("runnerJump").addEventListener("click",jump);
   document.getElementById("runnerReset").addEventListener("click",resetRunner);
   // Modo de juego en pantalla completa; en móviles solicita orientación horizontal.
