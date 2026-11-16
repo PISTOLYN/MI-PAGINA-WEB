@@ -1,0 +1,75 @@
+<!-- PEGA ESTE BLOQUE JUSTO ANTES DE  </main>  (después de la sección "mini-juegos") -->
+
+    <section class="zonas-section section-wrap" id="zonas">
+      <div class="section-heading"><div>
+        <span class="eyebrow">SHOW INFANTIL Y PAYASO EN MONTERREY</span>
+        <h2>Animación para fiestas en <span>Monterrey y su área metropolitana</span></h2>
+        <p>Llevamos el show de Desafíos Locos, con nuestro payasito Pistolyn, a fiestas infantiles, baby showers, eventos escolares y celebraciones familiares en Monterrey, Cumbres, San Pedro Garza García, Solidaridad, Apodaca, San Nicolás, Guadalupe y Escobedo. Juegos, música, concursos, premios y un ambiente 100% familiar.</p>
+      </div></div>
+    </section>
+
+    <section class="resenas-section section-wrap" id="resenas">
+      <div class="section-heading"><div>
+        <span class="eyebrow">OPINIONES DE NUESTROS CLIENTES</span>
+        <h2>Lo que dicen de <span>nuestro show</span></h2>
+      </div></div>
+
+      <div class="dl-resenas-grid">
+        <blockquote class="dl-resena">
+          <div class="dl-estrellas" aria-label="5 estrellas">⭐⭐⭐⭐⭐</div>
+          <p>"¡Excelente show! Los niños no pararon de reír y los adultos también. Muy recomendado."</p>
+          <cite>— Mamá de cumpleañero, Monterrey</cite>
+        </blockquote>
+        <blockquote class="dl-resena">
+          <div class="dl-estrellas" aria-label="5 estrellas">⭐⭐⭐⭐⭐</div>
+          <p>"Muy divertido, puntual y súper profesional. Hicieron que la fiesta fuera inolvidable."</p>
+          <cite>— Cliente, Cumbres</cite>
+        </blockquote>
+        <blockquote class="dl-resena">
+          <div class="dl-estrellas" aria-label="5 estrellas">⭐⭐⭐⭐⭐</div>
+          <p>"El mejor show, nos tuvo a todos jugando y riendo toda la tarde. ¡Muy divertido!"</p>
+          <cite>— Cliente, San Pedro</cite>
+        </blockquote>
+        <blockquote class="dl-resena">
+          <div class="dl-estrellas" aria-label="5 estrellas">⭐⭐⭐⭐⭐</div>
+          <p>"Los juegos fueron muy divertidos y el ambiente 100% familiar. Los globos y la música estuvieron geniales. Ya lo contratamos otra vez."</p>
+          <cite>— Cliente, Solidaridad</cite>
+        </blockquote>
+      </div>
+
+      <form class="dl-resena-form" id="dlResenaForm">
+        <h3>Deja tu reseña</h3>
+        <input type="text" id="dlNombre" placeholder="Tu nombre" required maxlength="60">
+        <select id="dlCalif" aria-label="Calificación">
+          <option value="5">⭐⭐⭐⭐⭐ Excelente</option>
+          <option value="4">⭐⭐⭐⭐ Muy bueno</option>
+          <option value="3">⭐⭐⭐ Bueno</option>
+        </select>
+        <textarea id="dlTexto" rows="4" placeholder="Cuéntanos cómo estuvo el show" required maxlength="500"></textarea>
+        <button type="submit" class="button button-primary">Enviar mi reseña por WhatsApp</button>
+        <small>Se abrirá WhatsApp con tu mensaje listo para enviar.</small>
+      </form>
+    </section>
+
+    <style>
+      .dl-resenas-grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));margin:24px 0 36px}
+      .dl-resena{background:#fff;color:#1c2140;margin:0;padding:20px;border-radius:16px;border-left:6px solid #ff4d6d;box-shadow:0 6px 18px rgba(16,21,43,.15)}
+      .dl-resena p{margin:8px 0;line-height:1.5}
+      .dl-resena cite{display:block;font-size:.9em;font-weight:700;color:#5b4bc4;font-style:normal}
+      .dl-estrellas{font-size:1.1rem}
+      .dl-resena-form{max-width:560px;margin:0 auto;display:grid;gap:12px;background:#fff;color:#1c2140;padding:22px;border-radius:16px;box-shadow:0 6px 18px rgba(16,21,43,.15)}
+      .dl-resena-form h3{margin:0}
+      .dl-resena-form input,.dl-resena-form select,.dl-resena-form textarea{padding:12px;border:1px solid #ccd;border-radius:10px;font:inherit;width:100%;box-sizing:border-box}
+      .dl-resena-form small{color:#666}
+    </style>
+    <script>
+      document.getElementById("dlResenaForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        var n = document.getElementById("dlNombre").value.trim();
+        var c = document.getElementById("dlCalif").value;
+        var t = document.getElementById("dlTexto").value.trim();
+        var msg = "Hola, quiero dejar una reseña de Desafíos Locos:\n" +
+                  "Nombre: " + n + "\nCalificación: " + c + " de 5 estrellas\nReseña: " + t;
+        window.open("https://wa.me/528110276858?text=" + encodeURIComponent(msg), "_blank", "noopener");
+      });
+    </script>

@@ -1,0 +1,9 @@
+En tu menú, busca esta línea:
+
+<a href="#juegos">Juegos</a>
+    </nav>
+
+y déjala así (agregando el enlace de Reseñas):
+
+<a href="#juegos">Juegos</a><a href="#resenas">Reseñas</a>
+    </nav>

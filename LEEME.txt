@@ -1,26 +1,8 @@
-CÓMO USAR ESTOS ARCHIVOS
-========================
-
-1) robots.txt y sitemap.xml
-   Súbelos tal cual a la raíz de tu repositorio MI-PAGINA-WEB
-   (junto a tu index.html).
-
-2) 2-seo-para-el-head.html
-   Abre el archivo, copia su contenido y pégalo dentro de <head> ... </head>
-   de tu index.html. Cambia "Tu Nombre" y el teléfono.
-   Si ya tienes un <title>, bórralo para no tenerlo duplicado.
-
-3) 1-resenas-y-contador.html
-   Copia su contenido y pégalo en tu index.html justo antes de </body>.
-   - Cambia TU_ID por el ID de tu formulario de formspree.io (gratis).
-   - Cambia "payaso-pistolyn" por un nombre único tuyo (contador).
-
-4) Sube los cambios a GitHub (Add file > Upload files, o edita index.html
-   y haz Commit). En ~45 segundos GitHub Pages publica solo.
-
-5) Dale de alta en Google:
-   - business.google.com (Perfil de Negocio, lo más importante)
-   - search.google.com/search-console (agrega tu página y envía el sitemap)
-
-NOTA: las reseñas son de ejemplo. Cámbialas por reseñas reales de tus
-clientes en cuanto las tengas.
+PASOS (en tu index.html de GitHub)
+1. Abre 2-REEMPLAZAR-title-y-description.html y haz lo que dice (head).
+2. Abre 1-PEGAR-ANTES-DE-cierre-main.html y pega todo antes de </main>.
+3. Abre 3-MENU-agregar-enlace.txt y agrega el enlace "Reseñas" al menú.
+4. Sube robots.txt y sitemap.xml a la raíz del repositorio (junto a index.html).
+5. Commit changes. En ~1 minuto se publica. Recarga con Ctrl+F5.
+Las reseñas de ejemplo cámbialas por reales cuando las tengas.
+El formulario de reseñas abre tu WhatsApp (8110276858) con el mensaje listo.
