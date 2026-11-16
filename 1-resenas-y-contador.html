@@ -1,0 +1,65 @@
+<!-- PEGA ESTO EN TU index.html ANTES DE </body> -->
+
+<section id="resenas">
+  <h2>⭐ Lo que dicen nuestros clientes</h2>
+
+  <div class="resenas-grid">
+    <blockquote>
+      <p>"¡Excelente show! Los niños no pararon de reír y los adultos también. Muy recomendado."</p>
+      <cite>— Mamá de cumpleañero, Monterrey ⭐⭐⭐⭐⭐</cite>
+    </blockquote>
+    <blockquote>
+      <p>"Muy divertido, puntual y súper profesional. Hicieron que la fiesta fuera inolvidable."</p>
+      <cite>— Cliente, Cumbres ⭐⭐⭐⭐⭐</cite>
+    </blockquote>
+    <blockquote>
+      <p>"El mejor payaso, nos tuvo a todos jugando y riendo toda la tarde. ¡Un show muy divertido!"</p>
+      <cite>— Cliente, San Pedro ⭐⭐⭐⭐⭐</cite>
+    </blockquote>
+    <blockquote>
+      <p>"Los juegos fueron muy divertidos y el ambiente 100% familiar. Los globos y la música estuvieron geniales. Ya lo contratamos otra vez."</p>
+      <cite>— Cliente, Solidaridad ⭐⭐⭐⭐⭐</cite>
+    </blockquote>
+  </div>
+
+  <h3>Deja tu reseña</h3>
+  <!-- CAMBIA TU_ID por el ID de tu formulario de formspree.io -->
+  <form action="https://formspree.io/f/TU_ID" method="POST" class="form-resena">
+    <input type="text" name="nombre" placeholder="Tu nombre" required>
+    <select name="calificacion" required>
+      <option value="5">⭐⭐⭐⭐⭐ Excelente</option>
+      <option value="4">⭐⭐⭐⭐ Muy bueno</option>
+      <option value="3">⭐⭐⭐ Bueno</option>
+    </select>
+    <textarea name="resena" rows="4" placeholder="Cuéntanos cómo estuvo el show" required></textarea>
+    <button type="submit">Enviar reseña</button>
+  </form>
+</section>
+
+<p class="contador">👀 Visitantes: <strong id="contador">...</strong></p>
+
+<style>
+  #resenas { max-width: 900px; margin: 40px auto; padding: 0 16px; }
+  .resenas-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); margin-bottom: 30px; }
+  #resenas blockquote { background: #fff8e1; border-left: 5px solid #ff5252; margin: 0; padding: 16px; border-radius: 10px; }
+  #resenas cite { display: block; margin-top: 8px; font-size: .9em; color: #555; }
+  .form-resena { display: grid; gap: 10px; }
+  .form-resena input, .form-resena select, .form-resena textarea { padding: 10px; border-radius: 8px; border: 1px solid #ccc; font: inherit; }
+  .form-resena button { padding: 12px; border: 0; border-radius: 8px; background: #ff5252; color: #fff; font-weight: bold; cursor: pointer; }
+  .contador { text-align: center; margin: 30px 0; font-size: 1.1em; }
+</style>
+
+<script>
+  (async () => {
+    const base = "https://api.counterapi.dev/v1/payaso-pistolyn/visitas";
+    const url = sessionStorage.getItem("contado") ? base : base + "/up";
+    try {
+      const r = await fetch(url);
+      const d = await r.json();
+      document.getElementById("contador").textContent = d.count.toLocaleString("es-MX");
+      sessionStorage.setItem("contado", "1");
+    } catch (e) {
+      document.getElementById("contador").textContent = "—";
+    }
+  })();
+</script>
