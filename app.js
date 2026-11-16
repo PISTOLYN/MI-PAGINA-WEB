@@ -329,24 +329,46 @@ $("#memoryBoard").addEventListener("click", e => {
 });
 $("#restartGame").addEventListener("click", startGame);
 
-// Permite excluir este navegador del contador de visitas.
+// Contador: este navegador puede consultar el total sin sumar sus propias visitas.
 const visitorOptOutKey = "dl_exclude_my_visits";
+const visitorPageId = "desafioslocosmonterrey.github.io.MI-PAGINA-WEB";
 const visitorCounter = document.querySelector("#visitorCounter");
 const visitorImage = visitorCounter?.querySelector("img");
 const visitorOptOutButton = document.querySelector("#excludeMyVisits");
+
+function isVisitorExcluded() {
+  try {
+    return localStorage.getItem(visitorOptOutKey) === "yes";
+  } catch {
+    return false;
+  }
+}
+
 function updateVisitorCounter() {
-  const excluded = localStorage.getItem(visitorOptOutKey) === "yes";
+  const excluded = isVisitorExcluded();
   if (visitorImage) {
-    if (excluded) visitorImage.removeAttribute("src");
-    else if (!visitorImage.getAttribute("src")) visitorImage.src = visitorImage.dataset.src;
+    const hitMode = excluded ? "false" : "true";
+    const badgeUrl = "https://vbr.nathanchung.dev/badge?page_id=" +
+      encodeURIComponent(visitorPageId) +
+      "&text=VISITANTES&color=7657ed&style=flat&hit=" + hitMode;
+    if (visitorImage.src !== badgeUrl) visitorImage.src = badgeUrl;
   }
   if (visitorCounter) visitorCounter.classList.toggle("visitor-excluded", excluded);
-  if (visitorOptOutButton) visitorOptOutButton.textContent = excluded ? "Mis visitas excluidas ✓" : "No contar mis visitas";
+  if (visitorOptOutButton) {
+    visitorOptOutButton.textContent = excluded ? "Mis visitas excluidas ✓" : "No contar mis visitas";
+    visitorOptOutButton.setAttribute("aria-pressed", excluded ? "true" : "false");
+  }
 }
+
 visitorOptOutButton?.addEventListener("click", () => {
-  localStorage.setItem(visitorOptOutKey, "yes");
+  try {
+    localStorage.setItem(visitorOptOutKey, "yes");
+  } catch {
+    if (visitorCounter) visitorCounter.classList.add("visitor-exclusion-unavailable");
+  }
   updateVisitorCounter();
 });
+
 updateVisitorCounter();
 
 applyBrand();
