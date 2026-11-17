@@ -441,7 +441,7 @@ startGame();
   function loadRunnerAssets(){
     if(runnerAssetsLoaded)return;
     runnerAssetsLoaded=true;
-    runnerBackground.onload=()=>{prepareRunnerBackground();if(!runner.running)drawRunner();};
+    runnerBackground.onload=()=>{prepareRunnerBackground();drawRunner();};
     runnerBackground.src="FONDO.jpg";
   }
   // Cada dibujo del juego solicita únicamente el recurso que necesita en ese momento.
@@ -487,7 +487,6 @@ startGame();
     runnerBackgroundCtx.fillRect(0,RUN_GROUND,w,4);
     runnerBackgroundReady=true;
   }
-  runnerBackground.onload=prepareRunnerBackground;
   if(runnerBackground.complete&&runnerBackground.naturalWidth)prepareRunnerBackground();
   const isMobileRunner=window.matchMedia("(max-width: 700px), (pointer: coarse)").matches;
   const runnerFrameInterval=isMobileRunner?1000/30:1000/60;
@@ -661,7 +660,7 @@ startGame();
     document.getElementById("runnerStart").textContent="▶ Jugar";drawRunner();
   }
   function jump(){if(!runner.running)return;unlockRunnerAudio();if(runnerState.y===0){runnerSound("jump");runnerState.vy=-12.2;if(!isMobileRunner)for(let i=0;i<3;i++)runnerState.dust.push({x:95+Math.random()*18,y:RUN_GROUND,size:2+Math.random()*3,life:18});}}
-  document.getElementById("runnerStart").addEventListener("click",()=>{if(runnerState.over)resetRunner();loadRunnerAssets();unlockRunnerAudio();if(!runnerMusic.src)runnerMusic.src="./CORRE%20CORRE%20CORRE.MP3";runnerMusic.play().catch(()=>{});runner.running=true;runner.last=0;runnerLastPaint=0;runner.message.textContent="¡Prepárate para una carrera larga! Brinca los obstáculos, recoge monedas y encuentra el pastel de súper poder.";runnerSound("start");runner.raf=requestAnimationFrame(runnerTick);document.getElementById("runnerStart").textContent="¡EN JUEGO!";});
+  document.getElementById("runnerStart").addEventListener("click",()=>{if(runnerState.over)resetRunner();loadRunnerAssets();loadRunnerAsset("clown");unlockRunnerAudio();if(!runnerMusic.src)runnerMusic.src="./CORRE%20CORRE%20CORRE.MP3";runnerMusic.play().catch(()=>{});runner.running=true;runner.last=0;runnerLastPaint=0;runner.message.textContent="¡Prepárate para una carrera larga! Brinca los obstáculos, recoge monedas y encuentra el pastel de súper poder.";runnerSound("start");runner.raf=requestAnimationFrame(runnerTick);document.getElementById("runnerStart").textContent="¡EN JUEGO!";});
   document.getElementById("runnerJump").addEventListener("click",jump);
   document.getElementById("runnerReset").addEventListener("click",resetRunner);
   // Modo de juego en pantalla completa; en móviles solicita orientación horizontal.
